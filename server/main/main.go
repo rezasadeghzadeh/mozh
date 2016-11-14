@@ -26,6 +26,10 @@ func registerStaticRoutes() {
 	//thumbnail url
 	thumbnailUrl :=  config.Config.StaticUrl + config.Config.ThumbnailUrl
 	iris.StaticServe(config.Config.ItemThumbnailImagesPath, thumbnailUrl)
+	//full image size
+	fullImageSizeUrl :=  config.Config.StaticUrl + config.Config.FullImageUrl
+	iris.StaticServe(config.Config.ItemImagesPath, fullImageSizeUrl)
+
 }
 
 func SessionFactory() *mgo.Session{

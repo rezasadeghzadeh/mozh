@@ -76,7 +76,7 @@ public class DetailItemFragment extends BaseFragment{
                 date.setText(item.Date);
                 city.setText(String.valueOf(item.CityTitle));
                 if(item.ImageExt != null && !item.ImageExt.isEmpty()){
-                    String uri = Const.SERVER_URL + Const.THUMBNAIL_URL + "/" + item.id + item.ImageExt;
+                    String uri = Const.SERVER_URL + Const.FULL_IMAGE_URL + "/" + item.id + item.ImageExt;
                     itemImage.setImageUrl(uri, ApplicationController.getInstance().getImageLoaderInstance());
                 }
             }

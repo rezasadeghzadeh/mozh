@@ -8,9 +8,9 @@
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_image"
-        android:layout_width="@dimen/item_image_height"
-        android:layout_height="@dimen/item_image_width"
-        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_image_height"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_no_photo"
         android:layout_weight="0.40" />
     <TextView

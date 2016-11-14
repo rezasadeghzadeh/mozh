@@ -14,6 +14,7 @@ type config struct {
 	ItemThumbnailImagesPath string
 	StaticUrl string
 	ThumbnailUrl string
+	FullImageUrl string
 }
 
 var Config config

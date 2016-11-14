@@ -16,6 +16,7 @@ public class Const {
 
     private static final String STATIC_URL = "/static";
     public static final String THUMBNAIL_URL = STATIC_URL + "/t";
+    public static final String FULL_IMAGE_URL = STATIC_URL + "/f";
     public static final String DETAIL_ITEM_URL = SERVER_URL + "/item/detail";
 
 

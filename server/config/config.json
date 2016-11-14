@@ -4,5 +4,6 @@
 	"itemImagesPath" : "/home/reza/tmp/itemImages/",
 	"itemThumbnailImagesPath" : "/home/reza/tmp/itemImages/t/",
 	"staticUrl": "/static",
-	"thumbnailUrl" : "/t"
+	"thumbnailUrl" : "/t",
+	"fullImageUrl" : "/f"
 }
