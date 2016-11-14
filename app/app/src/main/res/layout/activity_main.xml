@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ir.sadeghzadeh.mozhdegani.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout">
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:id="@+id/linearLayout">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="@dimen/main_bottom_bar_width"
+            android:gravity="center"
+            android:layout_height="@dimen/main_bottom_bar_height">
+            <Button
+                android:layout_width="@dimen/main_bottom_bar_icon_width"
+                android:background="@drawable/ic_home_black"
+                android:layout_height="@dimen/main_bottom_bar_icon_height"
+                android:id="@+id/home_button" />
+            <TextView
+                android:text="@string/home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/main_bottom_bar_text_size" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="@dimen/main_bottom_bar_width"
+            android:layout_height="@dimen/main_bottom_bar_height">
+            <Button
+                android:layout_width="@dimen/main_bottom_bar_icon_width"
+                android:background="@drawable/ic_search_black"
+                android:layout_height="@dimen/main_bottom_bar_icon_height"
+                android:id="@+id/search_items_button" />
+            <TextView
+                android:text="@string/search"
+                android:textSize="@dimen/main_bottom_bar_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="@dimen/main_bottom_bar_width"
+            android:layout_height="@dimen/main_bottom_bar_height">
+            <Button
+                android:layout_width="@dimen/main_bottom_bar_icon_width"
+                android:background="@drawable/ic_category_black"
+                android:layout_height="@dimen/main_bottom_bar_icon_height"
+                android:id="@+id/category_button" />
+            <TextView
+                android:text="@string/category"
+                android:textSize="@dimen/main_bottom_bar_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="@dimen/main_bottom_bar_width"
+            android:layout_height="@dimen/main_bottom_bar_height">
+            <Button
+                android:layout_width="@dimen/main_bottom_bar_icon_width"
+                android:background="@drawable/ic_new_black"
+                android:layout_height="@dimen/main_bottom_bar_icon_height"
+                android:id="@+id/new_bbutton" />
+            <TextView
+                android:text="@string/new_item"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/main_bottom_bar_text_size"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="@dimen/main_bottom_bar_width"
+            android:layout_height="@dimen/main_bottom_bar_height"
+            android:gravity="center">
+            <Button
+                android:layout_width="@dimen/main_bottom_bar_icon_width"
+                android:background="@drawable/ic_my_items_black"
+                android:layout_height="@dimen/main_bottom_bar_icon_height"
+                android:id="@+id/my_items_button" />
+            <TextView
+                android:text="@string/my_items"
+                android:textSize="@dimen/main_bottom_bar_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

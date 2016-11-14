@@ -1,0 +1,36 @@
+<resources>
+    <string name="home">خانه</string>
+    <string name="search">جستجو</string>
+    <string name="category">دسته بندی</string>
+    <string name="new_item">ثبت</string>
+    <string name="my_items">موارد من</string>
+    <string name="app_name">مژدگانی</string>
+    <string name="select">انتخاب</string>
+    <string name="title">عنوان</string>
+    <string name="description">توضیحات</string>
+    <string name="date">تاریخ وقوع</string>
+    <string name="submit">ارسال</string>
+    <string name="back">لغو</string>
+    <string name="image">عکس</string>
+    <string name="add_image">افزودن عکس</string>
+    <string name="connection_error">خطا در اتصال به سرور</string>
+    <string name="title_is_required">عنوان الزامی  الست</string>
+    <string name="description_is_required">توضیحات الزامی است</string>
+    <string name="choose_date">تاریخ را انتخاب کنید</string>
+    <string name="from_camera">دوربین</string>
+    <string name="select_image_from">انتخاب عکس از</string>
+    <string name="from_gallery">گالری</string>
+    <string name="occurred_date_is_required" >تاریخ وقوع الزامی است</string>
+    <string name="category_is_required" >دسته بندی الزامی است</string>
+    <string name="type">نوع</string>
+    <string name="lost">گمشده</string>
+    <string name="found">پیدا شده</string>
+    <string name="location">محل</string>
+    <string name="select_location">انتخاب محل</string>
+    <string name="close">بستن</string>
+    <string name="ok">تایید</string>
+    <string name="select_province">استان را انتخاب کنید</string>
+    <string name="select_city">شهر را انتخاب  کنید</string>
+    <string name="new_item_added_successfully">مورد جدید با موفقیت ثبت شد</string>
+    <string name="search_in">جستجو در</string>
+</resources>

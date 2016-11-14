@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">مژدگانی</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="category">Category</string>
+    <string name="new_item">New Item</string>
+    <string name="my_items">My Items</string>
+    <string name="select">Select</string>
+    <string name="title">TItle</string>
+    <string name="description">Description</string>
+    <string name="date">Date</string>
+    <string name="submit">Submit</string>
+    <string name="back">Back</string>
+    <string name="add_image">Add Image</string>
+    <string name="image">Image</string>
+    <string name="title_is_required">Title is required</string>
+    <string name="connection_error">Error in connecting to server</string>
+    <string name="description_is_required">Description is required</string>
+    <string name="choose_date">Pick date</string>
+    <string name="from_camera">Camera</string>
+    <string name="from_gallery">Gallery</string>
+    <string name="select_image_from">Select image from</string>
+    <string name="occurred_date_is_required">Occured date is required</string>
+    <string name="category_is_required">Category is required</string>
+    <string name="found">Found</string>
+    <string name="lost">Lost</string>
+    <string name="type">Type</string>
+    <string name="location">Location</string>
+    <string name="select_location">Select Location</string>
+    <string name="ok">OK</string>
+    <string name="close">Close</string>
+    <string name="select_city">Select City</string>
+    <string name="select_province">Select Province</string>
+    <string name="new_item_added_successfully">New item added successfully</string>
+    <string name="search_in">Search in</string>
+
+</resources>
