@@ -5,4 +5,6 @@
     <dimen name="item_thumbnail_width">80dp</dimen>
     <dimen name="item_thumbnail_height">80dp</dimen>
     <dimen name="layout_padding" >3dp</dimen>
+    <dimen name="item_image_height" >200dp</dimen>
+    <dimen name="item_image_width" >200dp</dimen>
 </resources>

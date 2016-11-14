@@ -146,7 +146,7 @@ public class SearchFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 ApplicationController.getInstance().addToRequestQueue(
-                        new GsonRequest(MyR.LIST_CATEGORY_URL, Category[].class, null,null, new Response.Listener<Category[]>() {
+                        new GsonRequest(Const.LIST_CATEGORY_URL, Category[].class, null,null, new Response.Listener<Category[]>() {
                             @Override
                             public void onResponse(Category[] categories) {
                                 ChooseOneItemDialog dialog = new ChooseOneItemDialog();

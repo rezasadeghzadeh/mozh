@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -50,9 +51,24 @@ public class BrowseFragment extends BaseFragment {
         args  =  getArguments();
         activity.highlightHomeIcon();
         View view = layoutInflater.inflate(R.layout.browse_fragment, container, false);
-        itemsListView = (ListView) view.findViewById(R.id.items_list_view);
+        initItemsListView(view);
         showItems();
         return view;
+    }
+
+    private void initItemsListView(View view) {
+        itemsListView = (ListView) view.findViewById(R.id.items_list_view);
+        itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItemId =  view.getTag().toString();
+                Bundle args  =  new Bundle();
+                args.putString(Const.ID,selectedItemId);
+                DetailItemFragment fragment  = new DetailItemFragment();
+                fragment.setArguments(args);
+                activity.addFragmentToContainer(fragment,TAG);
+            }
+        });
     }
 
     private void showItems() {
@@ -81,7 +97,7 @@ public class BrowseFragment extends BaseFragment {
         }
 
         ApplicationController.getInstance().addToRequestQueue(
-                new GsonRequest(MyR.LIST_ITEMS_URL, Item[].class, params,null, new Response.Listener<Item[]>() {
+                new GsonRequest(Const.LIST_ITEMS_URL, Item[].class, params,null, new Response.Listener<Item[]>() {
                     @Override
                     public void onResponse(Item[] response) {
                         if(response == null){
@@ -98,6 +114,7 @@ public class BrowseFragment extends BaseFragment {
 
                 }
         );
+
     }
 
 }

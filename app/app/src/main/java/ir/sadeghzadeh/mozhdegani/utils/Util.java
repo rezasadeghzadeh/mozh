@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import ir.sadeghzadeh.mozhdegani.BuildConfig;
+import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
 import ir.sadeghzadeh.mozhdegani.MyR;
 
@@ -156,12 +157,12 @@ public class Util {
     }
 
     public static String fetchFromPreferences(String key) {
-        String str = MyR.APP_CONFIG;
+        String str = Const.APP_CONFIG;
         return context.getSharedPreferences(str, 0).getString(key, null);
     }
 
     public static void saveInPreferences(String key, String value) {
-        String str = MyR.APP_CONFIG;
+        String str = Const.APP_CONFIG;
         Editor editor = context.getSharedPreferences(str, 0).edit();
         editor.putString(key, value.toLowerCase());
         editor.commit();

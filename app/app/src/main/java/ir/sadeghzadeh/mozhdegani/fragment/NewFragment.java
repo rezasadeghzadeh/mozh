@@ -80,6 +80,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     String selectedCityTitle;
     String selectedProvinceId;
     String  selectedProvideTitle;
+    String currentCategoryTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -185,6 +186,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     multipartEntity.addPart(Const.DESCRIPTION, new StringBody(description.getText().toString(),chars));
                     multipartEntity.addPart(Const.DATE, new StringBody(occurredDate,chars));
                     multipartEntity.addPart(Const.CATEGORY, new StringBody(currentCategoryId));
+                    multipartEntity.addPart(Const.CATEGORY_TITLE, new StringBody(currentCategoryTitle,chars));
                     multipartEntity.addPart(Const.PROVINCE_ID, new StringBody(selectedProvinceId));
                     multipartEntity.addPart(Const.PROVINCE_TITLE, new StringBody(selectedProvideTitle,chars));
                     multipartEntity.addPart(Const.CITY_ID, new StringBody(selectedCityId));
@@ -194,7 +196,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     }
                     multipartEntity.addPart(Const.ITEM_TYPE, new StringBody(String.valueOf(itemType)));
 
-                    CustomMultipartVolleyRequest request = new CustomMultipartVolleyRequest(MyR.ADD_ITEM_URL, new Response.ErrorListener() {
+                    CustomMultipartVolleyRequest request = new CustomMultipartVolleyRequest(Const.ADD_ITEM_URL, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.e(TAG,error.toString());
@@ -383,7 +385,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
             @Override
             public void onClick(View v) {
                 ApplicationController.getInstance().addToRequestQueue(
-                        new GsonRequest(MyR.LIST_CATEGORY_URL, Category[].class, null, null, new Response.Listener<Category[]>() {
+                        new GsonRequest(Const.LIST_CATEGORY_URL, Category[].class, null, null, new Response.Listener<Category[]>() {
                             @Override
                             public void onResponse(Category[] categories) {
                                 ChooseOneItemDialog dialog = new ChooseOneItemDialog();
@@ -398,6 +400,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                                     public void onItemSelected(String selectedId, String selectedTitle) {
                                         currentCategoryId = selectedId;
                                         openCategoryPopup.setText(selectedTitle);
+                                        currentCategoryTitle = selectedTitle;
 
                                     }
                                 });

@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Util.writeToLogFile("Version: " + MyR.VERSION);
+        Util.writeToLogFile("Version: " + Const.VERSION);
         registerExceptionHandler();
         setDefaultLanguage();
         setContentView(R.layout.activity_main);

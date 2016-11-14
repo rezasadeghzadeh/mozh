@@ -19,6 +19,7 @@ func NewItemHandler(mongoSession *mgo.Session)  {
 
 		title:= ctx.PostValue("Title")
 		category := ctx.PostValue("Category")
+		categoryTitle := ctx.PostValue("CategoryTitle")
 		description :=ctx.PostValue("Description")
 		date := ctx.PostValue("Date")
 		itemType := ctx.PostValue("ItemType")
@@ -31,7 +32,7 @@ func NewItemHandler(mongoSession *mgo.Session)  {
 		if  imageHeader.Filename != ""{
 			imageExt= filepath.Ext(imageHeader.Filename)
 		}
-		id,err := NewItem(mongoSession,title, category, description, date, itemType, imageExt,
+		id,err := NewItem(mongoSession,title, category, categoryTitle, description, date, itemType, imageExt,
 		cityId, cityTitle, provinceId, provinceTitle)
 		if err != nil {
 			log.Printf("Error on inserting new Item: %s",err)
@@ -90,5 +91,14 @@ func ListItemHandler(mongoSession *mgo.Session)  {
 		log.Printf("Category: %s",category)
 		items := Items(mongoSession,title,category,provinceId,cityId,itemType)
 		ctx.JSON(iris.StatusOK,	items)
+	})
+}
+
+func DetailItemHandler(mongoSession *mgo.Session)  {
+	iris.Get("/item/detail",func(ctx *iris.Context)	{
+		log.Println("Start serving /item/detail request")
+		id:= ctx.URLParam("Id")
+		item := ItemById(mongoSession,id)
+		ctx.JSON(iris.StatusOK,	item)
 	})
 }

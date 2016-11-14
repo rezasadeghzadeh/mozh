@@ -11,6 +11,7 @@ public class Item {
     public long RegisterDate;
     public String Date;
     public String CategoryId;
+    public String CategoryTitle;
     public String CityId;
     public String CityTitle;
     public String ProvinceId;

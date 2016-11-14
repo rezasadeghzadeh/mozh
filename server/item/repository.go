@@ -17,6 +17,7 @@ type Item struct {
 	RegisterDate int64
 	Date string
 	CategoryId string
+	CategoryTitle string
 	CityId string
 	ImageExt string
 	CityTitle string
@@ -57,11 +58,12 @@ func   Items(mongoSession *mgo.Session, title string, categoryId string, provinc
 	return items
 }
 
-func NewItem(mongoSession *mgo.Session, title string, category string, description string, date string,
+func NewItem(mongoSession *mgo.Session, title string, category string, categoryTitle string, description string, date string,
 	itemType string, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string ) (string,error) {
 	newItem  :=  Item{
 		Title:title,
 		CategoryId:category,
+		CategoryTitle:categoryTitle,
 		Description:description,
 		Date:date,
 		ItemType:itemType,
@@ -84,3 +86,13 @@ func NewItem(mongoSession *mgo.Session, title string, category string, descripti
 	return newId.Hex(),nil
 }
 
+func ItemById(session *mgo.Session, id string) *Item {
+	log.Printf("Finding Item by Id %s",id)
+	var foundedItem Item
+	q := bson.M{}
+	q["_id"] = bson.ObjectIdHex(id)
+
+	session.DB(config.Config.MongoDatabaseName).C(R.ItemCollection).FindId(bson.ObjectIdHex(id)).One(&foundedItem)
+	log.Printf("Founded Item: %v",foundedItem)
+	return &foundedItem
+}

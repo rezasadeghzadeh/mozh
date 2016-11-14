@@ -46,7 +46,7 @@ public class CategoryFragment extends BaseFragment {
 
     private void initListView(View view) {
         listView  = (ListView) view.findViewById(R.id.category_list);
-        GsonRequest<Category[]> request  =  new GsonRequest<>(MyR.LIST_CATEGORY_URL, Category[].class,
+        GsonRequest<Category[]> request  =  new GsonRequest<>(Const.LIST_CATEGORY_URL, Category[].class,
                 null, null, new Response.Listener<Category[]>() {
             @Override
             public void onResponse(Category[] response) {

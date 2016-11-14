@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 
 import ir.sadeghzadeh.mozhdegani.ApplicationController;
+import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MyR;
 import ir.sadeghzadeh.mozhdegani.R;
 import ir.sadeghzadeh.mozhdegani.entity.Item;
@@ -63,12 +64,13 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         holder.date.setText(item.Date + "");
         holder.city.setText(String.valueOf(item.CityTitle));
         if(item.ImageExt != null && !item.ImageExt.isEmpty()){
-            String uri = MyR.SERVER_URL + MyR.THUMBNAIL_URL + "/" + item.id + item.ImageExt;
+            String uri = Const.SERVER_URL + Const.THUMBNAIL_URL + "/" + item.id + item.ImageExt;
             holder.thumbnail.setImageUrl(uri, ApplicationController.getInstance().getImageLoaderInstance());
         }else {
             holder.thumbnail.setImageUrl(null, null);
             holder.thumbnail.setDefaultImageResId(R.drawable.ic_no_photo);
         }
+        rowView.setTag(item.id);
         return rowView;
     }
 
