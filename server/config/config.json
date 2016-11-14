@@ -1,0 +1,8 @@
+{
+	"mongoServerIP": "127.0.0.1",
+	"mongoDatabaseName": "mozhdegani",
+	"itemImagesPath" : "/home/reza/tmp/itemImages/",
+	"itemThumbnailImagesPath" : "/home/reza/tmp/itemImages/t/",
+	"staticUrl": "/static",
+	"thumbnailUrl" : "/t"
+}
