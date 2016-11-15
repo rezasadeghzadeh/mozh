@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="3dp">
     <LinearLayout
-        android:background="@color/mdtp_date_picker_month_day_dark_theme"
+        android:background="@color/layoutBackground"
         android:padding="2dp"
         android:layout_weight="1"
         android:layout_height="@dimen/item_thumbnail_height"

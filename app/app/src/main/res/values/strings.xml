@@ -33,5 +33,7 @@
     <string name="select_province">Select Province</string>
     <string name="new_item_added_successfully">New item added successfully</string>
     <string name="search_in">Search in</string>
+    <string name="no_item_found">No Item Found</string>
+    <string name="cell_phone_for_example">Cell phone for example</string>
 
 </resources>

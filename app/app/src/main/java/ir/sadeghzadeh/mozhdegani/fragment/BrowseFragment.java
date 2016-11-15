@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -30,6 +31,7 @@ public class BrowseFragment extends BaseFragment {
     public static String TAG =  "BrowseFragment";
     MainActivity activity;
     ListView itemsListView;
+    TextView message;
     Bundle args;
     String title;
     String itemType;
@@ -58,6 +60,7 @@ public class BrowseFragment extends BaseFragment {
 
     private void initItemsListView(View view) {
         itemsListView = (ListView) view.findViewById(R.id.items_list_view);
+        message  = (TextView) view.findViewById(R.id.message);
         itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -101,6 +104,8 @@ public class BrowseFragment extends BaseFragment {
                     @Override
                     public void onResponse(Item[] response) {
                         if(response == null){
+                            message.setText(getString(R.string.no_item_found));
+                            message.setVisibility(View.VISIBLE);
                             return;
                         }
                         itemsListView.setAdapter(new ItemsAdapter(getContext(),0,response));

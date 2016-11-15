@@ -51,7 +51,7 @@ func   Items(mongoSession *mgo.Session, title string, categoryId string, provinc
 		q["itemtype"] = itemType
 	}
 	log.Printf("List items criteria: %v",q)
-	err := collection.Find(q).All(&items)
+	err := collection.Find(q).Sort("-registerdate").All(&items)
 	if(err != nil){
 		log.Printf(err.Error())
 	}
