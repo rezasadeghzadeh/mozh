@@ -1,36 +1,28 @@
 package ir.sadeghzadeh.mozhdegani.fragment;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import ir.sadeghzadeh.mozhdegani.ApplicationController;
 import ir.sadeghzadeh.mozhdegani.Const;
-import ir.sadeghzadeh.mozhdegani.DatabaseHandler;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
-import ir.sadeghzadeh.mozhdegani.MyR;
 import ir.sadeghzadeh.mozhdegani.R;
 import ir.sadeghzadeh.mozhdegani.dialog.ChooseOneItemDialog;
 import ir.sadeghzadeh.mozhdegani.dialog.OnOneItemSelectedInDialog;
 import ir.sadeghzadeh.mozhdegani.entity.Category;
 import ir.sadeghzadeh.mozhdegani.entity.City;
-import ir.sadeghzadeh.mozhdegani.entity.Item;
 import ir.sadeghzadeh.mozhdegani.entity.KeyValuePair;
 import ir.sadeghzadeh.mozhdegani.entity.Province;
 import ir.sadeghzadeh.mozhdegani.volley.GsonRequest;

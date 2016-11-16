@@ -17,7 +17,6 @@ import java.util.HashMap;
 import ir.sadeghzadeh.mozhdegani.ApplicationController;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
-import ir.sadeghzadeh.mozhdegani.MyR;
 import ir.sadeghzadeh.mozhdegani.R;
 import ir.sadeghzadeh.mozhdegani.adapter.ItemsAdapter;
 import ir.sadeghzadeh.mozhdegani.entity.Item;
@@ -75,6 +74,7 @@ public class BrowseFragment extends BaseFragment {
     }
 
     private void showItems() {
+        activity.showProgress();
         HashMap<String,String> params = new HashMap<>();
         if(args!= null){
             if(args.getString(Const.TITLE) != null && !args.getString(Const.TITLE).isEmpty() ){
@@ -103,6 +103,7 @@ public class BrowseFragment extends BaseFragment {
                 new GsonRequest(Const.LIST_ITEMS_URL, Item[].class, params,null, new Response.Listener<Item[]>() {
                     @Override
                     public void onResponse(Item[] response) {
+                        activity.hideProgress();
                         if(response == null){
                             message.setText(getString(R.string.no_item_found));
                             message.setVisibility(View.VISIBLE);
@@ -113,6 +114,7 @@ public class BrowseFragment extends BaseFragment {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        activity.hideProgress();
                         Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG);
                     }
                 }){

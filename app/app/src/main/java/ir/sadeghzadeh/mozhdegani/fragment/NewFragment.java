@@ -40,7 +40,6 @@ import java.util.List;
 import ir.sadeghzadeh.mozhdegani.ApplicationController;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
-import ir.sadeghzadeh.mozhdegani.MyR;
 import ir.sadeghzadeh.mozhdegani.R;
 import ir.sadeghzadeh.mozhdegani.dialog.ChooseOneItemDialog;
 import ir.sadeghzadeh.mozhdegani.dialog.OnOneItemSelectedInDialog;
@@ -65,6 +64,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     Button submit;
     EditText  title;
     EditText description;
+    EditText mobile;
     Button uploadImage;
     Button pickDate;
     Button selectProvince;
@@ -102,7 +102,12 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         initChooseDate(view);
         initSubmit(view);
         initRadioGroup(view);
+        initMobile(view);
         return view;
+    }
+
+    private void initMobile(View view) {
+        mobile = (EditText) view.findViewById(R.id.mobile);
     }
 
     private void initSelectCity(View view) {
@@ -172,6 +177,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
             @Override
             public void onClick(View v) {
                 if(!validateForm()){
+                    Toast.makeText(getContext(),getString(R.string.fill_requirement),Toast.LENGTH_LONG).show();
                     return;
                 }
                 int itemType  = Const.LOST;
@@ -191,11 +197,13 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     multipartEntity.addPart(Const.PROVINCE_TITLE, new StringBody(selectedProvideTitle,chars));
                     multipartEntity.addPart(Const.CITY_ID, new StringBody(selectedCityId));
                     multipartEntity.addPart(Const.CITY_TITLE, new StringBody(selectedCityTitle, chars));
+                    multipartEntity.addPart(Const.MOBILE, new StringBody(mobile.getText().toString(), chars));
+
                     if(photo != null){
                         multipartEntity.addPart(Const.IMAGE_FILE, new FileBody(photo));
                     }
                     multipartEntity.addPart(Const.ITEM_TYPE, new StringBody(String.valueOf(itemType)));
-
+                    activity.showProgress();
                     CustomMultipartVolleyRequest request = new CustomMultipartVolleyRequest(Const.ADD_ITEM_URL, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
@@ -204,6 +212,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     }, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            activity.hideProgress();
                             Log.e(TAG,response.toString());
                             activity.addFragmentToContainer(new BrowseFragment(),BrowseFragment.TAG);
                             Toast.makeText(getContext(),getString(R.string.new_item_added_successfully),Toast.LENGTH_LONG).show();
@@ -224,19 +233,34 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     private boolean validateForm() {
         if(currentCategoryId== null || currentCategoryId.length() == 0){
             openCategoryPopup.setError(getString(R.string.category_is_required));
+            openCategoryPopup.requestFocus();
             return false;
+        }else {
+            openCategoryPopup.setError(null);
         }
+
         if(title.getText().toString().trim().length() == 0){
             title.setError(getString(R.string.title_is_required));
+            title.requestFocus();
             return false;
+        }else {
+            title.setError(null);
         }
+
         if(description.getText().toString().trim().length() == 0){
             description.setError(getString(R.string.description_is_required));
+            description.requestFocus();
             return false;
+        }else {
+            description.setError(null);
         }
+
         if(pickDate.getText().toString().length() > 10){
             pickDate.setError(getString(R.string.occurred_date_is_required));
+            pickDate.requestFocus();
             return false;
+        }else{
+            pickDate.setError(null);
         }
 
         return true;

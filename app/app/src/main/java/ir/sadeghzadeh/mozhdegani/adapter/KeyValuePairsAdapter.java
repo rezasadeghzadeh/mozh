@@ -7,14 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
-
 import java.util.List;
 
-import ir.sadeghzadeh.mozhdegani.ApplicationController;
-import ir.sadeghzadeh.mozhdegani.MyR;
 import ir.sadeghzadeh.mozhdegani.R;
-import ir.sadeghzadeh.mozhdegani.entity.Item;
 import ir.sadeghzadeh.mozhdegani.entity.KeyValuePair;
 
 /**

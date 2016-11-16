@@ -1,19 +1,16 @@
 package ir.sadeghzadeh.mozhdegani.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
 import ir.sadeghzadeh.mozhdegani.ApplicationController;
 import ir.sadeghzadeh.mozhdegani.Const;
-import ir.sadeghzadeh.mozhdegani.MyR;
 import ir.sadeghzadeh.mozhdegani.R;
 import ir.sadeghzadeh.mozhdegani.entity.Item;
 
@@ -51,6 +48,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
             rowView = paramView;
         }
         holder.title = (TextView) rowView.findViewById(R.id.item_title);
+        //holder.mobile= (TextView) rowView.findViewById(R.id.mobile);
         //holder.category = (TextView) rowView.findViewById(R.id.category);
         //holder.description = (TextView) rowView.findViewById(R.id.description);
         holder.date = (TextView) rowView.findViewById(R.id.date);
@@ -59,6 +57,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
 
         //set values
         holder.title.setText(item.Title);
+        //holder.mobile.setText(item.Mobile);
         //holder.category.setText(String.valueOf(item.CategoryId));
         //holder.description.setText(item.Description);
         holder.date.setText(item.Date + "");

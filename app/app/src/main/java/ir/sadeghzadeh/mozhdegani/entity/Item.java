@@ -16,6 +16,7 @@ public class Item {
     public String CityTitle;
     public String ProvinceId;
     public String ProvinceTitle;
-    public String  ImageExt;
+    public String ImageExt;
+    public String Mobile;
 
 }

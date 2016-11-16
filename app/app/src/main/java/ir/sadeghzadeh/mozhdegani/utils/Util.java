@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 import ir.sadeghzadeh.mozhdegani.BuildConfig;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
-import ir.sadeghzadeh.mozhdegani.MyR;
 
 public class Util {
     private static final Pattern DIR_SEPORATOR;

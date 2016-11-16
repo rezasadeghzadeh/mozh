@@ -36,4 +36,5 @@ public class Const {
     public static final int LOST = 1;
     public static final String ID = "Id";
     public static final String CATEGORY_TITLE = "CategoryTitle";
+    public static final String MOBILE = "Mobile";
 }

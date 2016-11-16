@@ -27,13 +27,18 @@ func NewItemHandler(mongoSession *mgo.Session)  {
 		cityTitle := ctx.PostValue("CityTitle")
 		provinceId := ctx.PostValue("ProvinceId")
 		provinceTitle := ctx.PostValue("ProvinceTitle")
+		mobile := ctx.PostValue("Mobile")
 		imageHeader,err := ctx.FormFile("ImageFile")
 		imageExt := ""
-		if  imageHeader.Filename != ""{
-			imageExt= filepath.Ext(imageHeader.Filename)
+		if err == nil {
+			if imageHeader.Filename != "" {
+				imageExt = filepath.Ext(imageHeader.Filename)
+			}
+		}else {
+			log.Printf("Error on uploaded file Error: %s",err)
 		}
 		id,err := NewItem(mongoSession,title, category, categoryTitle, description, date, itemType, imageExt,
-		cityId, cityTitle, provinceId, provinceTitle)
+		cityId, cityTitle, provinceId, provinceTitle, mobile)
 		if err != nil {
 			log.Printf("Error on inserting new Item: %s",err)
 			return ;

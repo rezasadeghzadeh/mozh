@@ -17,6 +17,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:text="@string/type" />
 
             <RadioGroup
@@ -25,14 +26,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left">
                 <RadioButton
-                    android:layout_width="wrap_content"
+                    android:layout_width="103dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/lost"
                     android:checked="true"
                     android:text="@string/lost" />
 
                 <RadioButton
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/found"
                     android:text="@string/found" />
@@ -50,6 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:text="@string/category" />
 
             <Button
@@ -66,7 +68,9 @@
             style="@style/BoxElement">
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="@string/location" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="@string/location" />
             <Button
                 android:layout_gravity="left"
                 android:id="@+id/select_province"
@@ -90,6 +94,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:text="@string/title" />
 
             <EditText
@@ -108,6 +113,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:text="@string/description" />
 
             <EditText
@@ -129,6 +135,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:text="@string/date" />
 
             <Button
@@ -149,6 +156,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:text="@string/image" />
 
             <Button
@@ -162,6 +170,27 @@
                 android:id="@+id/image_item"
                 android:layout_width="80dp"
                 android:layout_height="80dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            style="@style/BoxElement">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="@string/mobile" />
+
+            <EditText
+                android:id="@+id/mobile"
+                android:inputType="number"
+                android:maxLength="11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/mobile_sample" />
+
         </LinearLayout>
 
         <LinearLayout

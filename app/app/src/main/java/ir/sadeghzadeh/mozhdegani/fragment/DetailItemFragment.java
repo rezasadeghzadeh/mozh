@@ -34,6 +34,8 @@ public class DetailItemFragment extends BaseFragment{
     TextView city;
     NetworkImageView itemImage;
     TextView category;
+    TextView mobile;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -64,7 +66,7 @@ public class DetailItemFragment extends BaseFragment{
         date = (TextView) view.findViewById(R.id.date);
         city = (TextView) view.findViewById(R.id.city);
         itemImage = (NetworkImageView) view.findViewById(R.id.item_image);
-
+        mobile = (TextView) view.findViewById(R.id.mobile);
 
         GsonRequest<Item> request = new GsonRequest<>(Const.DETAIL_ITEM_URL, Item.class, params, null, new Response.Listener<Item>() {
             @Override
@@ -72,6 +74,7 @@ public class DetailItemFragment extends BaseFragment{
                 //set values
                 title.setText(item.Title);
                 category.setText(String.valueOf(item.CategoryTitle));
+                mobile.setText(item.Mobile);
                 description.setText(item.Description);
                 date.setText(item.Date);
                 city.setText(String.valueOf(item.CityTitle));

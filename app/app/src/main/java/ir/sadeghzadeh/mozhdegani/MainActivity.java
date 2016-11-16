@@ -1,14 +1,20 @@
 package ir.sadeghzadeh.mozhdegani;
 
+import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.nfc.Tag;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.Locale;
 
@@ -27,18 +33,37 @@ public class MainActivity extends BaseActivity {
     Button searchButton;
     Button categoryButton;
     Button newButton;
-    Button myItemsButton;
+    //Button myItemsButton;
     public DatabaseHandler databaseHandler;
+    ProgressDialog progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Util.writeToLogFile("Version: " + Const.VERSION);
         registerExceptionHandler();
-        setDefaultLanguage();
+        //setDefaultLanguage();
         setContentView(R.layout.activity_main);
         initElements();
         addFragmentToContainer(new BrowseFragment(),BrowseFragment.TAG);
         openDatabase();
+        initProgress();
+        showProgress();
+    }
+
+
+    public void initProgress(){
+        progress = new ProgressDialog(this);
+        progress.setMessage(getString(R.string.please_wait));
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+    }
+
+    public void showProgress(){
+        progress.show();
+    }
+
+    public void hideProgress(){
+        progress.dismiss();
     }
 
     private void openDatabase() {
@@ -77,13 +102,13 @@ public class MainActivity extends BaseActivity {
                 addFragmentToContainer(new NewFragment(), NewFragment.TAG);
             }
         });
-        myItemsButton = (Button) findViewById(R.id.my_items_button);
+      /*  myItemsButton = (Button) findViewById(R.id.my_items_button);
         myItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG);
             }
-        });
+        });*/
         searchButton = (Button) findViewById(R.id.search_items_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,12 +125,13 @@ public class MainActivity extends BaseActivity {
         Configuration config = new Configuration();
         config.locale = locale;
         getApplicationContext().getResources().updateConfiguration(config, null);
+
     }
 
     public void highlightHomeIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_white);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
-        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
+        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_black);
 
@@ -114,28 +140,28 @@ public class MainActivity extends BaseActivity {
     public void highlightSearchIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_white);
-        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
+        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_black);    }
 
     public void highlightMyItemsIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
-        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_white);
+        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_white);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_black);    }
 
     public void highlightCategoryIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
-        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
+        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_white);
         newButton.setBackgroundResource(R.drawable.ic_new_black);    }
 
     public void highlightNewIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
-        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
+        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_white);
     }
