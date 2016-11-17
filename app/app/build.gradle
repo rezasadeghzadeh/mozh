@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'org.apache.httpcomponents:httpmime:4.2.3'
     compile 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
+    compile 'id.zelory:compressor:1.0.4'
 }

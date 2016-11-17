@@ -37,6 +37,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import id.zelory.compressor.Compressor;
+import id.zelory.compressor.FileUtil;
 import ir.sadeghzadeh.mozhdegani.ApplicationController;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
@@ -74,6 +76,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     ImageView imageView;
     String imageUrl;
     File photo;
+    File compressedPhoto;
     Uri mImageUri;
     RadioGroup radioGroup;
     String selectedCityId;
@@ -199,8 +202,8 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     multipartEntity.addPart(Const.CITY_TITLE, new StringBody(selectedCityTitle, chars));
                     multipartEntity.addPart(Const.MOBILE, new StringBody(mobile.getText().toString(), chars));
 
-                    if(photo != null){
-                        multipartEntity.addPart(Const.IMAGE_FILE, new FileBody(photo));
+                    if(compressedPhoto != null){
+                        multipartEntity.addPart(Const.IMAGE_FILE, new FileBody(compressedPhoto));
                     }
                     multipartEntity.addPart(Const.ITEM_TYPE, new StringBody(String.valueOf(itemType)));
                     activity.showProgress();
@@ -351,6 +354,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
             //photo = Bitmap.createScaledBitmap(photo, 80, 80, false);
             //imageView.setImageBitmap(photo);
             grabImage(imageView,mImageUri);
+            compressedPhoto  = Compressor.getDefault(getContext()).compressToFile(photo);
 
         }else if (requestCode  == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){
             Uri selectedImage = data.getData();

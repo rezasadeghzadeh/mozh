@@ -35,6 +35,8 @@ public class DetailItemFragment extends BaseFragment{
     NetworkImageView itemImage;
     TextView category;
     TextView mobile;
+    TextView lost;
+    TextView founded;
 
 
     @Override
@@ -67,7 +69,8 @@ public class DetailItemFragment extends BaseFragment{
         city = (TextView) view.findViewById(R.id.city);
         itemImage = (NetworkImageView) view.findViewById(R.id.item_image);
         mobile = (TextView) view.findViewById(R.id.mobile);
-
+        lost = (TextView) view.findViewById(R.id.lost_type);
+        founded = (TextView) view.findViewById(R.id.founded_type);
         GsonRequest<Item> request = new GsonRequest<>(Const.DETAIL_ITEM_URL, Item.class, params, null, new Response.Listener<Item>() {
             @Override
             public void onResponse(Item item) {
@@ -81,6 +84,14 @@ public class DetailItemFragment extends BaseFragment{
                 if(item.ImageExt != null && !item.ImageExt.isEmpty()){
                     String uri = Const.SERVER_URL + Const.FULL_IMAGE_URL + "/" + item.id + item.ImageExt;
                     itemImage.setImageUrl(uri, ApplicationController.getInstance().getImageLoaderInstance());
+                }
+
+                if(item.ItemType.equals(Const.FOUND+"")){
+                    founded.setVisibility(View.VISIBLE);
+                    lost.setVisibility(View.GONE);
+                }else if(item.ItemType.equals(Const.LOST+"")){
+                    founded.setVisibility(View.GONE);
+                    lost.setVisibility(View.VISIBLE);
                 }
             }
         }, new Response.ErrorListener() {

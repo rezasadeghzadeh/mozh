@@ -8,7 +8,9 @@ import org.apache.http.entity.mime.FormBodyPart;
 public class Const {
     public static final String APP_CONFIG = "mozhdegani";
     public static final String VERSION = "0.1";
-    public static final String SERVER_URL  = "http://192.168.177.104:7777";
+    //public static final String SERVER_URL  = "http://192.168.177.104:7777";
+    public static final String SERVER_URL  = "http://ochm.yourlocalplace.com:7777";
+
     public static final String LIST_ITEMS_URL  = SERVER_URL  + "/item/list";
 
     public static final String LIST_CATEGORY_URL = SERVER_URL + "/category/list";

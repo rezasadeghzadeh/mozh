@@ -1,0 +1,5 @@
+use mozhdegani; //crete database
+db.createCollection("item")
+db.createCollection("category")
+db.category.insert([{       "title" : "حیوانات"},{    "title" : "سایر"}])
+db.category.find()

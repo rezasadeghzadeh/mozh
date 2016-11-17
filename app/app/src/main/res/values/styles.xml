@@ -19,4 +19,14 @@
         <item name="android:padding">@dimen/element_box_padding</item>
     </style>
 
+    <style name="Founded">
+        <item name="android:textColor">@color/foundedTextColor</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="lost">
+        <item name="android:textColor">@color/lostTextColor</item>
+    </style>
+
+
 </resources>

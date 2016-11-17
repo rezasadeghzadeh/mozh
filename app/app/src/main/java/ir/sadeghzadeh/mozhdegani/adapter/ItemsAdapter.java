@@ -1,6 +1,8 @@
 package ir.sadeghzadeh.mozhdegani.adapter;
 
 import android.content.Context;
+import android.nfc.Tag;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +50,8 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
             rowView = paramView;
         }
         holder.title = (TextView) rowView.findViewById(R.id.item_title);
+        holder.founded= (TextView) rowView.findViewById(R.id.founded_type);
+        holder.lost= (TextView) rowView.findViewById(R.id.lost_type);
         //holder.mobile= (TextView) rowView.findViewById(R.id.mobile);
         //holder.category = (TextView) rowView.findViewById(R.id.category);
         //holder.description = (TextView) rowView.findViewById(R.id.description);
@@ -69,6 +73,13 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
             holder.thumbnail.setImageUrl(null, null);
             holder.thumbnail.setDefaultImageResId(R.drawable.ic_no_photo);
         }
+        if(item.ItemType.equals(Const.FOUND+"")){
+            holder.founded.setVisibility(View.VISIBLE);
+            holder.lost.setVisibility(View.GONE);
+        }else if(item.ItemType.equals(Const.LOST+"")){
+            holder.founded.setVisibility(View.GONE);
+            holder.lost.setVisibility(View.VISIBLE);
+        }
         rowView.setTag(item.id);
         return rowView;
     }
@@ -80,6 +91,8 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         TextView date;
         TextView city;
         NetworkImageView thumbnail;
+        TextView founded;
+        TextView lost;
 
         public Holder() {
         }

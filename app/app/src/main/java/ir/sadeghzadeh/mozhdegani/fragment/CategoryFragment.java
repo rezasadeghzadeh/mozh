@@ -43,17 +43,19 @@ public class CategoryFragment extends BaseFragment {
     }
 
     private void initListView(View view) {
+        activity.showProgress();
         listView  = (ListView) view.findViewById(R.id.category_list);
         GsonRequest<Category[]> request  =  new GsonRequest<>(Const.LIST_CATEGORY_URL, Category[].class,
                 null, null, new Response.Listener<Category[]>() {
             @Override
             public void onResponse(Category[] response) {
                 listView.setAdapter(new CategoryAdapter(getContext(),0,response));
+                activity.hideProgress();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                activity.hideProgress();
             }
         });
         ApplicationController.getInstance().addToRequestQueue(request);

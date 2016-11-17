@@ -6,4 +6,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="layoutBackground">#e1e1ea</color>
     <color name="elementBoxBackground">#fff</color>
+    <color name="foundedTextColor">#159119</color>
+    <color name="lostTextColor">#FF4081</color>
 </resources>

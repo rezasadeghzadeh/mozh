@@ -18,11 +18,13 @@ type config struct {
 }
 
 var Config config
-
+const(
+	configPath = "/opt/mozhdeh/config.json"
+)
 func init()  {
 	pwd, _ := os.Getwd()
 	fmt.Println(pwd)
-	file, err  := os.Open(pwd +"/config/config.json")
+	file, err  := os.Open(configPath)
 	if(err != nil){
 		log.Fatal("Couldn't find  config.json file")
 	}
