@@ -2,17 +2,10 @@ package ir.sadeghzadeh.mozhdegani;
 
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
-import android.database.sqlite.SQLiteDatabase;
-import android.nfc.Tag;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBar;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -20,7 +13,6 @@ import java.util.Locale;
 
 import ir.sadeghzadeh.mozhdegani.fragment.BrowseFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.CategoryFragment;
-import ir.sadeghzadeh.mozhdegani.fragment.MyItemsFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.NewFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.SearchFragment;
 import ir.sadeghzadeh.mozhdegani.utils.ExceptionHandler;
@@ -36,6 +28,7 @@ public class MainActivity extends BaseActivity {
     //Button myItemsButton;
     public DatabaseHandler databaseHandler;
     ProgressDialog progress;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +37,27 @@ public class MainActivity extends BaseActivity {
         registerExceptionHandler();
         //setDefaultLanguage();
         setContentView(R.layout.activity_main);
+        initCustomActionBar();
         initElements();
         addFragmentToContainer(new BrowseFragment(),BrowseFragment.TAG);
         openDatabase();
         initProgress();
         showProgress();
+    }
+
+    private void initCustomActionBar() {
+        // Inflate your custom layout
+        final ViewGroup actionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                R.layout.custom_action_bar, null);
+
+        // Set up your ActionBar
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(actionBarLayout);
+
+        title  = (TextView) actionBarLayout.findViewById(R.id.page_title);
     }
 
 
@@ -134,7 +143,7 @@ public class MainActivity extends BaseActivity {
         //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_black);
-
+        setTitle(getString(R.string.home));
     }
 
     public void highlightSearchIcon() {
@@ -142,21 +151,26 @@ public class MainActivity extends BaseActivity {
         searchButton.setBackgroundResource(R.drawable.ic_search_white);
         //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
-        newButton.setBackgroundResource(R.drawable.ic_new_black);    }
+        newButton.setBackgroundResource(R.drawable.ic_new_black);
+        setTitle(getString(R.string.search));
+    }
 
     public void highlightMyItemsIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
         //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_white);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
-        newButton.setBackgroundResource(R.drawable.ic_new_black);    }
+        newButton.setBackgroundResource(R.drawable.ic_new_black);
+    }
 
     public void highlightCategoryIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
         //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_white);
-        newButton.setBackgroundResource(R.drawable.ic_new_black);    }
+        newButton.setBackgroundResource(R.drawable.ic_new_black);
+        setTitle(getString(R.string.category));
+    }
 
     public void highlightNewIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
@@ -164,6 +178,12 @@ public class MainActivity extends BaseActivity {
         //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_white);
+        setTitle(getString(R.string.new_item));
+    }
+
+   @Override
+    public void setTitle(CharSequence string) {
+        title.setText(string);
     }
 
 }

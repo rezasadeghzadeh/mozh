@@ -28,5 +28,20 @@
         <item name="android:textColor">@color/lostTextColor</item>
     </style>
 
+    <style name="appTitle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+
+    <style name="pageTitle">
+        <item name="android:textColor">@color/darkWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
 
 </resources>
