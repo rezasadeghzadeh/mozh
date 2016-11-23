@@ -115,7 +115,7 @@ public class BrowseFragment extends BaseFragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         activity.hideProgress();
-                        Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG);
+                        Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }){
 

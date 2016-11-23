@@ -1,5 +1,6 @@
 package ir.sadeghzadeh.mozhdegani.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -10,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,10 +54,13 @@ import ir.sadeghzadeh.mozhdegani.entity.Province;
 import ir.sadeghzadeh.mozhdegani.utils.Util;
 import ir.sadeghzadeh.mozhdegani.volley.CustomMultipartVolleyRequest;
 import ir.sadeghzadeh.mozhdegani.volley.GsonRequest;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * Created by reza on 11/2/16.
  */
+@RuntimePermissions
 public class NewFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
     public static final String TAG="NewFragment";
     private static final int TAKE_IMAGE = 0;
@@ -69,6 +74,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     EditText mobile;
     Button uploadImage;
     Button pickDate;
+    TextView dateTitle;
     Button selectProvince;
     Button selectCity;
     String occurredDate;
@@ -84,7 +90,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     String selectedProvinceId;
     String  selectedProvideTitle;
     String currentCategoryTitle;
-
+    boolean takeImageFromCamera =false;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -101,12 +107,17 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         initSelectCity(view);
         initTitle(view);
         initDescription(view);
-        initUploadImage(view);
+        NewFragmentPermissionsDispatcher.initUploadImageWithCheck(this,view);
         initChooseDate(view);
         initSubmit(view);
+        initDate(view);
         initRadioGroup(view);
         initMobile(view);
         return view;
+    }
+
+    private void initDate(View view) {
+        dateTitle = (TextView) view.findViewById(R.id.date_title);
     }
 
     private void initMobile(View view) {
@@ -172,6 +183,27 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
 
     private void initRadioGroup(View view) {
         radioGroup  = (RadioGroup) view.findViewById(R.id.type_radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int itemType  =  getSelectedItemType();
+                if(itemType  ==  Const.FOUND){
+                    dateTitle.setText(getString(R.string.founded_date));
+                }else {
+                    dateTitle.setText(getString(R.string.lost_date));
+                }
+
+            }
+        });
+    }
+
+    private int getSelectedItemType(){
+        int selectedTypeId  =radioGroup.getCheckedRadioButtonId();
+        if(selectedTypeId  ==  R.id.found){
+            return Const.FOUND;
+        }
+
+        return Const.LOST;
     }
 
     private void initSubmit(View view) {
@@ -183,11 +215,8 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     Toast.makeText(getContext(),getString(R.string.fill_requirement),Toast.LENGTH_LONG).show();
                     return;
                 }
-                int itemType  = Const.LOST;
-                int selectedTypeId  =  radioGroup.getCheckedRadioButtonId();
-                if(selectedTypeId  ==  R.id.found){
-                    itemType = Const.FOUND;
-                }
+                int itemType = getSelectedItemType();
+
                 Charset chars = Charset.forName(Const.UTF8); // Setting up the encoding
                 MultipartEntity multipartEntity = new MultipartEntity();
                 try {
@@ -219,15 +248,20 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                             Log.e(TAG,response.toString());
                             activity.addFragmentToContainer(new BrowseFragment(),BrowseFragment.TAG);
                             Toast.makeText(getContext(),getString(R.string.new_item_added_successfully),Toast.LENGTH_LONG).show();
+                            if(takeImageFromCamera) {
+                                photo.delete();
+                            }
+
+                            if(compressedPhoto != null){
+                                compressedPhoto.delete();
+                            }
                         }
                     }, multipartEntity, Long.valueOf(0), null);
-                    ApplicationController.getInstance().addToRequestQueue(request,30000);
+                    ApplicationController.getInstance().addToRequestQueue(request,60000);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 } catch (AuthFailureError authFailureError) {
                     authFailureError.printStackTrace();
-                }finally {
-                    //photo.delete();
                 }
             }
         });
@@ -301,7 +335,8 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     // place where to store camera taken picture
                     try {
                         photo = createTemporaryFile("picture"+ System.currentTimeMillis(), ".jpg");
-                        mImageUri = Uri.fromFile(photo);
+                        mImageUri = FileProvider.getUriForFile(getContext(),getContext().getApplicationContext().getPackageName() + ".provider",photo);
+                        //mImageUri = Uri.fromFile(photo);
                         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
                         startActivityForResult(intent, TAKE_IMAGE);
@@ -335,13 +370,16 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         }
     }
 
-    private void initUploadImage(View view) {
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+     public void initUploadImage(View view) {
         uploadImage= (Button) view.findViewById(R.id.upload_mage);
         imageView = (ImageView) view.findViewById(R.id.image_item);
         ImageUploadClickListener listener = new ImageUploadClickListener();
         imageView.setOnClickListener(listener);
         uploadImage.setOnClickListener(listener);
     }
+
+
 
     //call after take image of choose image from gallery
     @Override
@@ -350,6 +388,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
 
         if(requestCode == TAKE_IMAGE && resultCode == Activity.RESULT_OK )
         {
+            takeImageFromCamera  = true;
             //Bitmap photo = (Bitmap) data.getExtras().get("data");
             //photo = Bitmap.createScaledBitmap(photo, 80, 80, false);
             //imageView.setImageBitmap(photo);
@@ -357,6 +396,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
             compressedPhoto  = Compressor.getDefault(getContext()).compressToFile(photo);
 
         }else if (requestCode  == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){
+            takeImageFromCamera =false;
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
@@ -372,6 +412,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
             imageView.setImageBitmap(bitmap);
             imageUrl = picturePath;
             photo =  new File(picturePath);
+            compressedPhoto  = Compressor.getDefault(getContext()).compressToFile(photo);
         }
     }
 

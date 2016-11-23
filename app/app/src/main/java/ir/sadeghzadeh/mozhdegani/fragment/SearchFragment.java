@@ -171,15 +171,17 @@ public class SearchFragment extends BaseFragment {
 
     private void initSubmit(View view) {
         submit = (Button) view.findViewById(R.id.submit);
-        final int selectedTypeId  =  radioGroup.getCheckedRadioButtonId();
-        if(selectedTypeId  ==  R.id.found){
-            selectedItemType = Const.FOUND;
-        }
+
 
         submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                final int selectedTypeId  =  radioGroup.getCheckedRadioButtonId();
+                if(selectedTypeId  ==  R.id.found){
+                    selectedItemType = Const.FOUND;
+                }
+
                 BrowseFragment browseFragment = new BrowseFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(Const.CATEGORY,currentCategoryId);

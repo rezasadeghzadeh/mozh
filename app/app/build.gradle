@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'android-apt'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    repositories {
+        jcenter() // If not already there
+    }
+
 }
 
 dependencies {
@@ -28,4 +32,9 @@ dependencies {
     compile 'org.apache.httpcomponents:httpmime:4.2.3'
     compile 'com.mohamadamin:persianmaterialdatetimepicker:1.2.1'
     compile 'id.zelory:compressor:1.0.4'
+    compile 'com.github.hotchemi:permissionsdispatcher:2.2.0'
+    apt 'com.github.hotchemi:permissionsdispatcher-processor:2.2.0'
 }
+
+
+

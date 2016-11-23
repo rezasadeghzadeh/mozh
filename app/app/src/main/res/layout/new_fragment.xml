@@ -133,10 +133,11 @@
             style="@style/BoxElement">
 
             <TextView
+                android:id="@+id/date_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="@string/date" />
+                android:text="@string/lost_date" />
 
             <Button
                 android:id="@+id/pick_date"

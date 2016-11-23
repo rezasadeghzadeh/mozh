@@ -8,7 +8,8 @@
     <string name="select">انتخاب</string>
     <string name="title">عنوان</string>
     <string name="description">توضیحات</string>
-    <string name="date">تاریخ وقوع</string>
+    <string name="lost_date">تاریخ گم شدن</string>
+    <string name="founded_date">تاریخ پیدا شدن</string>
     <string name="submit">ارسال</string>
     <string name="back">لغو</string>
     <string name="image">عکس</string>
@@ -39,4 +40,10 @@
     <string name="mobile">تلفن همراه</string>
     <string name="fill_requirement">لطفا  موارد مشخص شده را تکمیل  نمایید</string>
     <string name="please_wait">لطفا شکیبا باشید</string>
+    <string name="permission_camera_denied">مجوز استفاده از دوربین  داده نشد</string>
+    <string name="permission_camera_neverask">showNeverAskForCamera</string>
+    <string name="button_allow">اجازه میدهم</string>
+    <string name="button_deny">اجازه نمی دهم</string>
+    <string name="write_permission">اجازه نوشتن در حافظه</string>
+    <string name="date">تاریخ</string>
 </resources>

@@ -28,14 +28,14 @@ func NewItemHandler(mongoSession *mgo.Session)  {
 		provinceId := ctx.PostValue("ProvinceId")
 		provinceTitle := ctx.PostValue("ProvinceTitle")
 		mobile := ctx.PostValue("Mobile")
-		imageHeader,err := ctx.FormFile("ImageFile")
+		imageHeader,errUpload := ctx.FormFile("ImageFile")
 		imageExt := ""
-		if err == nil {
+		if errUpload == nil {
 			if imageHeader.Filename != "" {
 				imageExt = filepath.Ext(imageHeader.Filename)
 			}
 		}else {
-			log.Printf("Error on uploaded file Error: %s",err)
+			log.Printf("Error on uploaded file Error: %s",errUpload)
 		}
 		id,err := NewItem(mongoSession,title, category, categoryTitle, description, date, itemType, imageExt,
 		cityId, cityTitle, provinceId, provinceTitle, mobile)
@@ -47,19 +47,23 @@ func NewItemHandler(mongoSession *mgo.Session)  {
 			log.Printf("%s",err)
 			return
 		}
-		imageFile,_ := imageHeader.Open()
-		imageReader  :=  bufio.NewReader(imageFile)
-		newFileName  := id   + imageExt
-		image,err :=  os.OpenFile(config.Config.ItemImagesPath + newFileName,os.O_WRONLY| os.O_CREATE,0666)
-		if(err != nil){
-			log.Printf("%s",err)
-			return
+
+		if errUpload == nil{
+			imageFile,_ := imageHeader.Open()
+			imageReader  :=  bufio.NewReader(imageFile)
+			newFileName  := id   + imageExt
+			image,err :=  os.OpenFile(config.Config.ItemImagesPath + newFileName,os.O_WRONLY| os.O_CREATE,0666)
+			if(err != nil){
+				log.Printf("%s",err)
+				return
+			}
+			defer image.Close()
+			io.Copy(image, imageReader)
+			log.Printf("File  %s  moved to target dicrectory",newFileName)
+			//create thumbnail
+			createThumbnail(newFileName, newFileName)
 		}
-		defer image.Close()
-		io.Copy(image, imageReader)
-		log.Printf("File  %s  moved to target dicrectory",newFileName)
-		//create thumbnail
-		createThumbnail(newFileName, newFileName)
+
 	})
 }
 

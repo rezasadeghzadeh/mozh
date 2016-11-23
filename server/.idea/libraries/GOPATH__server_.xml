@@ -3,12 +3,14 @@
     <CLASSES>
       <root url="file://$USER_HOME$/go/workspace/src/golang.org" />
       <root url="file://$USER_HOME$/go/workspace/src/github.com" />
+      <root url="file://$USER_HOME$/go/workspace/src/company" />
       <root url="file://$USER_HOME$/go/workspace/src/gopkg.in" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="file://$USER_HOME$/go/workspace/src/golang.org" />
       <root url="file://$USER_HOME$/go/workspace/src/github.com" />
+      <root url="file://$USER_HOME$/go/workspace/src/company" />
       <root url="file://$USER_HOME$/go/workspace/src/gopkg.in" />
     </SOURCES>
     <excluded>

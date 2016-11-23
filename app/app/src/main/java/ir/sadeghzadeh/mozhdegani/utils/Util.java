@@ -1,5 +1,6 @@
 package ir.sadeghzadeh.mozhdegani.utils;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
 import android.os.Build.VERSION;
@@ -69,7 +70,6 @@ public class Util {
     }
 
     public static void writeToLogFile(String inputText, Object... objects) {
-
         String log = new Date().toString() + " : " + String.format(inputText, objects);
         File logFile = new File(getDownloadDirectoryPath() + "/mozhdegani.log");
         if (!logFile.exists()) {
@@ -169,6 +169,19 @@ public class Util {
         editor.putString(key, value.toLowerCase());
         editor.commit();
     }
+
+    public static boolean fetchBooleanFromPreferences(String key, boolean defaultValue) {
+        String str = Const.APP_CONFIG;
+        return context.getSharedPreferences(str, 0).getBoolean(key, defaultValue);
+    }
+
+    public static void saveBooleanInPreferences(String key, boolean value) {
+        String str = Const.APP_CONFIG;
+        Editor editor = context.getSharedPreferences(str, 0).edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
 
     public static void login() {
 /*
