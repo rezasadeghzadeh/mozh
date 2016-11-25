@@ -56,6 +56,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             registerExceptionHandler();
+            initUtil();
             MainActivityPermissionsDispatcher.writeVersionToLogWithCheck(this);
             //setDefaultLanguage();
             setContentView(R.layout.activity_main);
@@ -66,6 +67,10 @@ public class MainActivity extends BaseActivity {
             initProgress();
             showProgress();
 
+    }
+
+    private void initUtil() {
+        Util.context  = getApplicationContext();
     }
 
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA})

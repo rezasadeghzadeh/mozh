@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="@string/location" />
-            <Button
+           <!-- <Button
                 android:layout_gravity="left"
                 android:id="@+id/select_province"
                 android:layout_width="wrap_content"
@@ -81,7 +81,12 @@
                 android:layout_gravity="left"
                 android:id="@+id/select_city"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="@string/select_city" />
+                android:layout_height="wrap_content" android:text="@string/select_city" />-->
+            <Button
+                android:id="@+id/showMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_location" />
 
         </LinearLayout>
 

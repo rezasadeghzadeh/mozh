@@ -3,10 +3,15 @@ package ir.sadeghzadeh.mozhdegani.utils;
 import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build.VERSION;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -31,6 +36,7 @@ import java.util.regex.Pattern;
 import ir.sadeghzadeh.mozhdegani.BuildConfig;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
+import ir.sadeghzadeh.mozhdegani.entity.CurrentLocation;
 
 public class Util {
     private static final Pattern DIR_SEPORATOR;
@@ -117,7 +123,6 @@ public class Util {
     }
 
 
-
     static {
         DIR_SEPORATOR = Pattern.compile("/");
     }
@@ -198,15 +203,14 @@ public class Util {
         try {
 
             //create output directory if it doesn't exist
-            File dir = new File (outputPath);
-            if (!dir.exists())
-            {
+            File dir = new File(outputPath);
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
 
 
-            in = new FileInputStream( inputFile);
-            out = new FileOutputStream( inputFile);
+            in = new FileInputStream(inputFile);
+            out = new FileOutputStream(inputFile);
 
             byte[] buffer = new byte[1024];
             int read;
@@ -225,15 +229,73 @@ public class Util {
             new File(inputFile).delete();
 
 
-        }
-
-        catch (FileNotFoundException fnfe1) {
+        } catch (FileNotFoundException fnfe1) {
             Log.e("tag", fnfe1.getMessage());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.e("tag", e.getMessage());
         }
     }
 
+    public static CurrentLocation getLocation() {
+        Location location=null;
+        CurrentLocation currentLocation= null;
+        try {
+            double latitude; // latitude
+            double longitude; // longitude
+
+            LocationManager locationManager = (LocationManager) context
+                    .getSystemService(context.LOCATION_SERVICE);
+
+            // getting GPS status
+            boolean isGPSEnabled = locationManager
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            // getting network status
+            boolean isNetworkEnabled = locationManager
+                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if (!isGPSEnabled && !isNetworkEnabled) {
+                // no network provider is enabled
+            } else {
+                // First get location from Network Provider
+                if (isNetworkEnabled) {
+
+                    if (locationManager != null) {
+                        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            return null;
+                        }
+                        location = locationManager
+                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if (location != null) {
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            currentLocation  = new CurrentLocation(latitude,longitude);
+                        }
+                    }
+                }
+                // if GPS Enabled get lat/long using GPS Services
+                if (isGPSEnabled) {
+                    if (location == null) {
+                        Log.d("GPS Enabled", "GPS Enabled");
+                        if (locationManager != null) {
+                            location = locationManager
+                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            if (location != null) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                                currentLocation  = new CurrentLocation(latitude,longitude);
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+         return currentLocation;
+    }
 
 }
