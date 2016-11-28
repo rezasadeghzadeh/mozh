@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +30,6 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
@@ -55,6 +50,7 @@ import ir.sadeghzadeh.mozhdegani.MainActivity;
 import ir.sadeghzadeh.mozhdegani.R;
 import ir.sadeghzadeh.mozhdegani.dialog.ChooseLocationOnMapDialog;
 import ir.sadeghzadeh.mozhdegani.dialog.ChooseOneItemDialog;
+import ir.sadeghzadeh.mozhdegani.dialog.FetchAddressIntentService;
 import ir.sadeghzadeh.mozhdegani.dialog.OnOneItemSelectedInDialog;
 import ir.sadeghzadeh.mozhdegani.entity.Category;
 import ir.sadeghzadeh.mozhdegani.entity.City;
@@ -70,10 +66,12 @@ import permissions.dispatcher.RuntimePermissions;
  * Created by reza on 11/2/16.
  */
 @RuntimePermissions
-public class NewFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener {
+public class NewFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener, ChooseLocationOnMapDialog.OnLocationChoosed {
     public static final String TAG = "NewFragment";
     private static final int TAKE_IMAGE = 0;
     private static final int PICK_IMAGE = 1;
+    private static final int DECODE_LOCATION_ADDRESS = 2;
+
     String currentCategoryId;
     MainActivity activity;
     Button openCategoryPopup;
@@ -101,6 +99,11 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     String currentCategoryTitle;
     boolean takeImageFromCamera = false;
     Button showMap;
+    private String selectedAddress;
+    private String latitude;
+    private String longitude;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,8 +116,8 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         activity.highlightNewIcon();
         View view = layoutInflater.inflate(R.layout.new_fragment, container, false);
         initOpenCategoryPopup(view);
-        //initSelectProvice(view);
-        //initSelectCity(view);
+        initSelectProvice(view);
+        initSelectCity(view);
         initShowMap(view);
         initTitle(view);
         initDescription(view);
@@ -141,6 +144,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     public void showMap2() {
         ChooseLocationOnMapDialog dialog = new ChooseLocationOnMapDialog();
+        dialog.mListener = this;
         dialog.show(activity.getSupportFragmentManager(),TAG);
     }
 
@@ -254,11 +258,25 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     multipartEntity.addPart(Const.DATE, new StringBody(occurredDate, chars));
                     multipartEntity.addPart(Const.CATEGORY, new StringBody(currentCategoryId));
                     multipartEntity.addPart(Const.CATEGORY_TITLE, new StringBody(currentCategoryTitle, chars));
-                    multipartEntity.addPart(Const.PROVINCE_ID, new StringBody(selectedProvinceId));
-                    multipartEntity.addPart(Const.PROVINCE_TITLE, new StringBody(selectedProvideTitle, chars));
-                    multipartEntity.addPart(Const.CITY_ID, new StringBody(selectedCityId));
-                    multipartEntity.addPart(Const.CITY_TITLE, new StringBody(selectedCityTitle, chars));
+                    if(selectedProvinceId != null && !selectedProvinceId.isEmpty()){
+                        multipartEntity.addPart(Const.PROVINCE_ID, new StringBody(selectedProvinceId));
+                        multipartEntity.addPart(Const.PROVINCE_TITLE, new StringBody(selectedProvideTitle, chars));
+                    }
+
+                    if(selectedCityId != null && !selectedCityId.isEmpty()){
+                        multipartEntity.addPart(Const.CITY_ID, new StringBody(selectedCityId));
+                        multipartEntity.addPart(Const.CITY_TITLE, new StringBody(selectedCityTitle, chars));
+                    }
                     multipartEntity.addPart(Const.MOBILE, new StringBody(mobile.getText().toString(), chars));
+                    if(latitude != null &&  !latitude.isEmpty()){
+                        multipartEntity.addPart(Const.LATITUDE, new StringBody(latitude, chars));
+                        multipartEntity.addPart(Const.LONGITUDE, new StringBody(longitude, chars));
+                    }
+
+                    if(selectedAddress== null  || selectedAddress.isEmpty()){
+                        selectedAddress = selectedProvideTitle + " " + selectedCityTitle;
+                    }
+                    multipartEntity.addPart(Const.ADDRESS, new StringBody(String.valueOf(selectedAddress), chars));
 
                     if (compressedPhoto != null) {
                         multipartEntity.addPart(Const.IMAGE_FILE, new FileBody(compressedPhoto));
@@ -347,6 +365,19 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                 datePickerDialog.show(fragmentTransaction, "Datepickerdialog");
             }
         });
+    }
+
+    public void onSelectedLocation(Location location, String address) {
+        showMap.setText(address);
+
+    }
+
+    @Override
+    public void onLocationChoosed(Location location, String address) {
+        this.latitude = String.valueOf(location.getLatitude());
+        this.longitude = String.valueOf(location.getLongitude());
+        this.selectedAddress = address;
+        showMap.setText(address);
     }
 
     class ImageUploadClickListener implements View.OnClickListener {
@@ -440,6 +471,14 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
             imageUrl = picturePath;
             photo = new File(picturePath);
             compressedPhoto = Compressor.getDefault(getContext()).compressToFile(photo);
+        }else  if(requestCode == DECODE_LOCATION_ADDRESS ){
+            if(resultCode == FetchAddressIntentService.SUCCESS_RESULT){
+                Location location = data.getExtras().getParcelable(FetchAddressIntentService.LOCATION_DATA_EXTRA);
+                String address = data.getExtras().getString(FetchAddressIntentService.RESULT_DATA_KEY);
+                onSelectedLocation(location, address);
+            }else{
+                Toast.makeText(getContext(),getString(R.string.connection_error),Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -541,6 +580,5 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
             Log.d(TAG, "Failed to load", e);
         }
     }
-
 
 }

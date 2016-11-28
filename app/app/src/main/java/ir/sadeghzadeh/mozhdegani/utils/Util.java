@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
 import ir.sadeghzadeh.mozhdegani.BuildConfig;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
-import ir.sadeghzadeh.mozhdegani.entity.CurrentLocation;
 
 public class Util {
     private static final Pattern DIR_SEPORATOR;
@@ -236,9 +235,8 @@ public class Util {
         }
     }
 
-    public static CurrentLocation getLocation() {
+    public static Location getLocation() {
         Location location=null;
-        CurrentLocation currentLocation= null;
         try {
             double latitude; // latitude
             double longitude; // longitude
@@ -267,11 +265,6 @@ public class Util {
                         }
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if (location != null) {
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                            currentLocation  = new CurrentLocation(latitude,longitude);
-                        }
                     }
                 }
                 // if GPS Enabled get lat/long using GPS Services
@@ -281,11 +274,6 @@ public class Util {
                         if (locationManager != null) {
                             location = locationManager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                                currentLocation  = new CurrentLocation(latitude,longitude);
-                            }
                         }
                     }
                 }
@@ -295,7 +283,7 @@ public class Util {
             e.printStackTrace();
         }
 
-         return currentLocation;
+         return location;
     }
 
 }

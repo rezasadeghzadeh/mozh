@@ -39,4 +39,7 @@ public class Const {
     public static final String ID = "Id";
     public static final String CATEGORY_TITLE = "CategoryTitle";
     public static final String MOBILE = "Mobile";
+    public static final String LATITUDE = "Latitude";
+    public static final String LONGITUDE = "Longitude";
+    public static final String ADDRESS = "Address";
 }

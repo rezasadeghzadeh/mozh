@@ -71,22 +71,44 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="@string/location" />
-           <!-- <Button
-                android:layout_gravity="left"
-                android:id="@+id/select_province"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="@string/select_province" />
-            <Button
-                android:enabled="false"
-                android:layout_gravity="left"
-                android:id="@+id/select_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="@string/select_city" />-->
-            <Button
-                android:id="@+id/showMap"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="@string/location_choose_hint" />
+
+            <Button
+                android:id="@+id/showMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/select_location" />
+
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/or"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_gravity="left"
+                    android:id="@+id/select_province"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/select_province" />
+                <Button
+                    android:layout_gravity="left"
+                    android:enabled="false"
+                    android:id="@+id/select_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/select_city" />
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

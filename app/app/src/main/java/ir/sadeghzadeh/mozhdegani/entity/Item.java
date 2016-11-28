@@ -18,5 +18,8 @@ public class Item {
     public String ProvinceTitle;
     public String ImageExt;
     public String Mobile;
+    public String Latitude;
+    public String Longitude;
+    public String Address;
 
 }

@@ -24,6 +24,9 @@ type Item struct {
 	ProvinceId string
 	ProvinceTitle string
 	Mobile string
+	Latitude string
+	Longitude string
+	Address string
 }
 
 type mongoSession struct {
@@ -61,7 +64,7 @@ func   Items(mongoSession *mgo.Session, title string, categoryId string, provinc
 
 func NewItem(mongoSession *mgo.Session, title string, category string, categoryTitle string, description string, date string,
 	itemType string, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string,
-	mobile string ) (string,error) {
+	mobile string, latitude string, longitude string, address string ) (string,error) {
 	newItem  :=  Item{
 		Title:title,
 		CategoryId:category,
@@ -76,6 +79,9 @@ func NewItem(mongoSession *mgo.Session, title string, category string, categoryT
 		ProvinceId : provinceId,
 		ProvinceTitle : provinceTitle,
 		Mobile:mobile,
+		Latitude:latitude,
+		Longitude:longitude,
+		Address:address,
 	}
 	log.Printf("New Item Values: %v",newItem)
 	collection  := mongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)
