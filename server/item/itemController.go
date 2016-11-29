@@ -103,6 +103,7 @@ func ListItemHandler(mongoSession *mgo.Session)  {
 		provinceId := ctx.URLParam("ProvinceId")
 		log.Printf("Category: %s",category)
 		items := Items(mongoSession,title,category,provinceId,cityId,itemType)
+		ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 		ctx.JSON(iris.StatusOK,	items)
 	})
 }
