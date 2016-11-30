@@ -46,6 +46,7 @@ func registerRoutes(mongoSession *mgo.Session)  {
 	listCategories(mongoSession)
 	item.NewItemHandler(mongoSession)
 	item.DetailItemHandler(mongoSession)
+	item.ApproveItemHandler(mongoSession)
 }
 
 func listCategories(mongoSession *mgo.Session) {

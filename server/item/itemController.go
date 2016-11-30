@@ -101,8 +101,9 @@ func ListItemHandler(mongoSession *mgo.Session)  {
 		itemType := ctx.URLParam("ItemType")
 		cityId := ctx.URLParam("CityId")
 		provinceId := ctx.URLParam("ProvinceId")
+		approved := ctx.URLParam("Approved")
 		log.Printf("Category: %s",category)
-		items := Items(mongoSession,title,category,provinceId,cityId,itemType)
+		items := Items(mongoSession,title,category,provinceId,cityId,itemType,approved)
 		ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 		ctx.JSON(iris.StatusOK,	items)
 	})
@@ -114,5 +115,19 @@ func DetailItemHandler(mongoSession *mgo.Session)  {
 		id:= ctx.URLParam("Id")
 		item := ItemById(mongoSession,id)
 		ctx.JSON(iris.StatusOK,	item)
+	})
+}
+
+func ApproveItemHandler(mongoSession  *mgo.Session){
+	iris.Get("/item/approve",func(ctx  *iris.Context){
+		id:=  ctx.URLParam("Id")
+		log.Printf("Approving item Id\t %s",id)
+		if id  == ""{
+			log.Printf("Approving item Id is null. skip")
+			return
+		}
+		approveItem(mongoSession, id)
+		ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
+		ctx.JSON(iris.StatusOK,	"{status:1}")
 	})
 }

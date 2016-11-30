@@ -5,7 +5,7 @@ import (
 	"../config"
 	"../R"
 	"log"
-	"time"
+	"../util"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -27,13 +27,16 @@ type Item struct {
 	Latitude string
 	Longitude string
 	Address string
+	Approved string
+	ApprovedTime int64
 }
 
 type mongoSession struct {
 	Session *mgo.Session
 }
 
-func   Items(mongoSession *mgo.Session, title string, categoryId string, provinceId string, cityId string, itemType string) []Item {
+func   Items(mongoSession *mgo.Session, title string, categoryId string, provinceId string,
+	cityId string, itemType string, approved string) []Item {
 	var items []Item
 	log.Printf("Connecting to  %s  database \n",config.Config.MongoDatabaseName )
 	collection  := mongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)
@@ -54,6 +57,9 @@ func   Items(mongoSession *mgo.Session, title string, categoryId string, provinc
 	if itemType != "" {
 		q["itemtype"] = itemType
 	}
+	if approved != ""{
+		q["approved"] = approved
+	}
 	log.Printf("List items criteria: %v",q)
 	err := collection.Find(q).Sort("-registerdate").All(&items)
 	if(err != nil){
@@ -72,7 +78,7 @@ func NewItem(mongoSession *mgo.Session, title string, category string, categoryT
 		Description:description,
 		Date:date,
 		ItemType:itemType,
-		RegisterDate:time.Now().UnixNano() / (int64(time.Millisecond) / int64(time.Nanosecond) ),
+		RegisterDate: util.GetCurrentMilis(),
 		ImageExt: imageExt,
 		CityId: cityId,
 		CityTitle : cityTitle,
@@ -82,6 +88,7 @@ func NewItem(mongoSession *mgo.Session, title string, category string, categoryT
 		Latitude:latitude,
 		Longitude:longitude,
 		Address:address,
+		Approved:"false",
 	}
 	log.Printf("New Item Values: %v",newItem)
 	collection  := mongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)
@@ -105,3 +112,17 @@ func ItemById(session *mgo.Session, id string) *Item {
 	log.Printf("Founded Item: %v",foundedItem)
 	return &foundedItem
 }
+
+func approveItem(session *mgo.Session, id string) {
+	// Update
+	q := bson.M{}
+	q["_id"] = bson.ObjectIdHex(id)
+	change := bson.M{"$set": bson.M{"approved": "true", "approvedtime": util.GetCurrentMilis() }}
+	err := session.DB(config.Config.MongoDatabaseName).C(R.ItemCollection).Update(q, change)
+	if err != nil {
+		log.Printf("Error in approving  item %d  error: %v \n",err)
+	}else {
+		log.Printf("Item %d successfully approved",id)
+	}
+}
+

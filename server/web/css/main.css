@@ -1,4 +1,7 @@
 .grid {
     width: 500px;
-    height: 250px;
+    height: 100%;
+}
+.imageCell{
+    cursor: pointer;
 }
