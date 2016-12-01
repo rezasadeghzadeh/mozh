@@ -1,11 +1,20 @@
 package ir.sadeghzadeh.mozhdegani.fragment;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -25,6 +34,7 @@ import ir.sadeghzadeh.mozhdegani.ApplicationController;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
 import ir.sadeghzadeh.mozhdegani.R;
+import ir.sadeghzadeh.mozhdegani.dialog.FetchAddressIntentService;
 import ir.sadeghzadeh.mozhdegani.entity.Item;
 import ir.sadeghzadeh.mozhdegani.volley.GsonRequest;
 
@@ -48,7 +58,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
     Item item;
     SupportMapFragment mapFragment;
     View mapLayout;
-
+    String uri;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -65,10 +75,45 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         if(args != null  && !args.getString(Const.ID).isEmpty()){
             id  =  args.getString(Const.ID);
             initDetails(view);
-
+            initFullScreenImage(view);
         }
-
+        activity.hideProgress();
         return view;
+    }
+
+    private void initFullScreenImage(View view) {
+        itemImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                // Get the layout inflater
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View view  = inflater.inflate(R.layout.full_screen_image, null);
+                builder.setView(view);
+                NetworkImageView imageView = (NetworkImageView) view.findViewById(R.id.item_image);
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                ((Activity) getContext()).getWindowManager()
+                        .getDefaultDisplay()
+                        .getMetrics(displaymetrics);
+                int height = displaymetrics.heightPixels;
+                int width = displaymetrics.widthPixels;
+                imageView.setMaxWidth(width);
+                imageView.setMaxHeight(height);
+                imageView.setImageUrl(uri,ApplicationController.getInstance().getImageLoaderInstance());
+                final Dialog dialog = builder.create();
+                dialog.show();
+                View itemImageContainer  =  view.findViewById(R.id.item_image_container);
+                Button exit = (Button) view.findViewById(R.id.exit_button);
+                View.OnClickListener listener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                };
+                exit.setOnClickListener(listener);
+                itemImageContainer.setOnClickListener(listener);
+            }
+        });
     }
 
     private void initDetails(View view) {
@@ -96,7 +141,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
                 date.setText(item.Date);
                 address.setText(String.valueOf(item.Address));
                 if(item.ImageExt != null && !item.ImageExt.isEmpty()){
-                    String uri = Const.SERVER_URL + Const.FULL_IMAGE_URL + "/" + item.id + item.ImageExt;
+                    uri = Const.SERVER_URL + Const.FULL_IMAGE_URL + "/" + item.id + item.ImageExt;
                     itemImage.setImageUrl(uri, ApplicationController.getInstance().getImageLoaderInstance());
                 }
 

@@ -1,12 +1,12 @@
 package item
 
 import (
-	"gopkg.in/mgo.v2"
 	"../config"
 	"../R"
 	"log"
 	"../util"
 	"gopkg.in/mgo.v2/bson"
+	"../mongo"
 )
 
 type Item struct {
@@ -31,15 +31,12 @@ type Item struct {
 	ApprovedTime int64
 }
 
-type mongoSession struct {
-	Session *mgo.Session
-}
 
-func   Items(mongoSession *mgo.Session, title string, categoryId string, provinceId string,
+func   Items(title string, categoryId string, provinceId string,
 	cityId string, itemType string, approved string) []Item {
 	var items []Item
 	log.Printf("Connecting to  %s  database \n",config.Config.MongoDatabaseName )
-	collection  := mongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)
+	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)
 	q := bson.M{}
 
 	if title != ""{
@@ -68,7 +65,7 @@ func   Items(mongoSession *mgo.Session, title string, categoryId string, provinc
 	return items
 }
 
-func NewItem(mongoSession *mgo.Session, title string, category string, categoryTitle string, description string, date string,
+func NewItem(title string, category string, categoryTitle string, description string, date string,
 	itemType string, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string,
 	mobile string, latitude string, longitude string, address string ) (string,error) {
 	newItem  :=  Item{
@@ -91,7 +88,7 @@ func NewItem(mongoSession *mgo.Session, title string, category string, categoryT
 		Approved:"false",
 	}
 	log.Printf("New Item Values: %v",newItem)
-	collection  := mongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)
+	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)
 	newId  := bson.NewObjectId()
 	_,err:=collection.UpsertId(newId,newItem)
 	if(err != nil){
@@ -102,23 +99,23 @@ func NewItem(mongoSession *mgo.Session, title string, category string, categoryT
 	return newId.Hex(),nil
 }
 
-func ItemById(session *mgo.Session, id string) *Item {
+func ItemById(id string) *Item {
 	log.Printf("Finding Item by Id %s",id)
 	var foundedItem Item
 	q := bson.M{}
 	q["_id"] = bson.ObjectIdHex(id)
 
-	session.DB(config.Config.MongoDatabaseName).C(R.ItemCollection).FindId(bson.ObjectIdHex(id)).One(&foundedItem)
+	mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection).FindId(bson.ObjectIdHex(id)).One(&foundedItem)
 	log.Printf("Founded Item: %v",foundedItem)
 	return &foundedItem
 }
 
-func approveItem(session *mgo.Session, id string) {
+func approveItem(id string) {
 	// Update
 	q := bson.M{}
 	q["_id"] = bson.ObjectIdHex(id)
 	change := bson.M{"$set": bson.M{"approved": "true", "approvedtime": util.GetCurrentMilis() }}
-	err := session.DB(config.Config.MongoDatabaseName).C(R.ItemCollection).Update(q, change)
+	err := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection).Update(q, change)
 	if err != nil {
 		log.Printf("Error in approving  item %d  error: %v \n",err)
 	}else {

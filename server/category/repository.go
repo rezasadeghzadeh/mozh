@@ -1,11 +1,11 @@
 package category
 
 import (
-	"gopkg.in/mgo.v2"
 	"log"
 	"../config"
 	"../R"
 	"gopkg.in/mgo.v2/bson"
+	"../mongo"
 )
 
 type Category struct {
@@ -13,9 +13,9 @@ type Category struct {
 	Title string
 }
 
-func  Categories(mongoSession *mgo.Session) []Category {
+func  Categories() []Category {
 	var categories []Category
-	collection  := mongoSession.DB(config.Config.MongoDatabaseName).C(R.CategoryCollection)
+	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.CategoryCollection)
 	err := collection.Find(nil).All(&categories)
 	if(err != nil){
 		log.Printf(err.Error())

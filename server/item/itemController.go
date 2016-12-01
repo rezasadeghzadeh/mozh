@@ -2,7 +2,6 @@ package item
 
 import (
 	"log"
-	"gopkg.in/mgo.v2"
 	"github.com/kataras/iris"
 	"io"
 	"os"
@@ -13,7 +12,7 @@ import (
 	"github.com/nfnt/resize"
 )
 
-func NewItemHandler(mongoSession *mgo.Session)  {
+func NewItemHandler()  {
 	iris.Post("/item/add", func(ctx  *iris.Context) {
 		log.Println("Start serving /items/new request")
 
@@ -41,7 +40,7 @@ func NewItemHandler(mongoSession *mgo.Session)  {
 		}else {
 			log.Printf("Error on uploaded file Error: %s",errUpload)
 		}
-		id,err := NewItem(mongoSession,title, category, categoryTitle, description, date, itemType, imageExt,
+		id,err := NewItem(title, category, categoryTitle, description, date, itemType, imageExt,
 		cityId, cityTitle, provinceId, provinceTitle, mobile, latitude, longitude, address)
 		if err != nil {
 			log.Printf("Error on inserting new Item: %s",err)
@@ -93,7 +92,7 @@ func createThumbnail(newFileName string, newFileThumbnailName string) {
 	log.Printf("Thumbnail for  %s created successfully",newFileName)
 }
 
-func ListItemHandler(mongoSession *mgo.Session)  {
+func ListItemHandler()  {
 	iris.Get("/item/list",func(ctx *iris.Context)	{
 		log.Println("Start serving /items request")
 		title:= ctx.URLParam("Title")
@@ -103,22 +102,22 @@ func ListItemHandler(mongoSession *mgo.Session)  {
 		provinceId := ctx.URLParam("ProvinceId")
 		approved := ctx.URLParam("Approved")
 		log.Printf("Category: %s",category)
-		items := Items(mongoSession,title,category,provinceId,cityId,itemType,approved)
+		items := Items(title,category,provinceId,cityId,itemType,approved)
 		ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 		ctx.JSON(iris.StatusOK,	items)
 	})
 }
 
-func DetailItemHandler(mongoSession *mgo.Session)  {
+func DetailItemHandler()  {
 	iris.Get("/item/detail",func(ctx *iris.Context)	{
 		log.Println("Start serving /item/detail request")
 		id:= ctx.URLParam("Id")
-		item := ItemById(mongoSession,id)
+		item := ItemById(id)
 		ctx.JSON(iris.StatusOK,	item)
 	})
 }
 
-func ApproveItemHandler(mongoSession  *mgo.Session){
+func ApproveItemHandler(){
 	iris.Get("/item/approve",func(ctx  *iris.Context){
 		id:=  ctx.URLParam("Id")
 		log.Printf("Approving item Id\t %s",id)
@@ -126,7 +125,7 @@ func ApproveItemHandler(mongoSession  *mgo.Session){
 			log.Printf("Approving item Id is null. skip")
 			return
 		}
-		approveItem(mongoSession, id)
+		approveItem(id)
 		ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 		ctx.JSON(iris.StatusOK,	"{status:1}")
 	})

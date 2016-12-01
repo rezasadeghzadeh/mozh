@@ -32,7 +32,7 @@
     <string name="ok">تایید</string>
     <string name="select_province">انتخاب استان</string>
     <string name="select_city">انتخاب شهر</string>
-    <string name="new_item_added_successfully">مورد جدید با موفقیت ثبت شد</string>
+    <string name="new_item_added_successfully">مورد جدید با موفقیت ثبت شد و پس از تایید ناظر منتشر خواهد شد</string>
     <string name="search_in">جستجو در</string>
     <string name="no_item_found">موردی یافت نشد</string>
     <string name="cell_phone_for_example">مثلا گوشی موبایل</string>
@@ -53,5 +53,12 @@
     <string name="invalid_lat_long_used">نقاط آدرس معتبر نیست</string>
     <string name="no_address_found">آدرسی ویدا نشد</string>
     <string name="address_found">آدرس پیدا شد</string>
+    <string name="bashe">باشه</string>
+    <string name="contact">تماس با</string>
+    <string name="founded_address">محل  ویدا شدن</string>
+    <string name="lost_address">محل گم شدن</string>
+    <string name="detail">جزئیات</string>
+    <string name="return1">برگشت</string>
+
 
 </resources>

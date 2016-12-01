@@ -5,15 +5,15 @@ import (
 	"log"
 	"../item"
 	"../category"
-	"gopkg.in/mgo.v2"
 	"../config"
 	"github.com/kataras/iris"
+	"../mongo"
 )
 
 func main()  {
 	fmt.Println("Start Mozhdegani server")
-	mongoSession  := SessionFactory()
-	registerRoutes(mongoSession)
+	mongo.Setup()
+	registerRoutes()
 	registerStaticRoutes()
 	iris.Listen(":7777")
 	/*
@@ -32,27 +32,18 @@ func registerStaticRoutes() {
 
 }
 
-func SessionFactory() *mgo.Session{
-	session, err := mgo.Dial(config.Config.MongoServerIP)
-	if err != nil {
-		panic(err)
-	}
-	session.SetMode(mgo.Monotonic, true)
-	return session
+func registerRoutes()  {
+	item.ListItemHandler()
+	listCategories()
+	item.NewItemHandler()
+	item.DetailItemHandler()
+	item.ApproveItemHandler()
 }
 
-func registerRoutes(mongoSession *mgo.Session)  {
-	item.ListItemHandler(mongoSession)
-	listCategories(mongoSession)
-	item.NewItemHandler(mongoSession)
-	item.DetailItemHandler(mongoSession)
-	item.ApproveItemHandler(mongoSession)
-}
-
-func listCategories(mongoSession *mgo.Session) {
+func listCategories() {
 	iris.Get("/category/list",func(ctx *iris.Context)	{
 		log.Println("Start serving /categories request")
-		categories := category.Categories(mongoSession)
+		categories := category.Categories()
 		ctx.JSON(iris.StatusOK,	categories)
 	})
 }

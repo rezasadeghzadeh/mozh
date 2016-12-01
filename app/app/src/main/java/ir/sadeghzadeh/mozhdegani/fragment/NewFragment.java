@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -294,7 +296,16 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                             activity.hideProgress();
                             Log.e(TAG, response.toString());
                             activity.addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
-                            Toast.makeText(getContext(), getString(R.string.new_item_added_successfully), Toast.LENGTH_LONG).show();
+                            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(getContext());
+                            dlgAlert.setMessage(getString(R.string.new_item_added_successfully))
+                            .setPositiveButton(getString(R.string.bashe), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            dlgAlert.show();
+
                             if (takeImageFromCamera) {
                                 photo.delete();
                             }

@@ -12,7 +12,7 @@
 </head>
 <body>
 <div ng-controller="FetchItemCtrl">
-    <div  id="grid1" external-scopes="clickHandler" ui-grid="gridOption" class="grid"></div>
+    <div ng-if="!refresh" id="grid1" external-scopes="clickHandler" ui-grid="gridOption" class="grid"></div>
 </div>
 </body>
 </html>

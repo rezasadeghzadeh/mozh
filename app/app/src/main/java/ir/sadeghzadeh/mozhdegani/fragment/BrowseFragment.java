@@ -63,6 +63,7 @@ public class BrowseFragment extends BaseFragment {
         itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                activity.showProgress();
                 String selectedItemId =  view.getTag().toString();
                 Bundle args  =  new Bundle();
                 args.putString(Const.ID,selectedItemId);
@@ -98,6 +99,7 @@ public class BrowseFragment extends BaseFragment {
                 params.put(Const.ITEM_TYPE,itemType);
             }
         }
+        params.put(Const.APPROVED,"true");
 
         ApplicationController.getInstance().addToRequestQueue(
                 new GsonRequest(Const.LIST_ITEMS_URL, Item[].class, params,null, new Response.Listener<Item[]>() {
