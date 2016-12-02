@@ -60,6 +60,12 @@
     <string name="detail">جزئیات</string>
     <string name="return1">برگشت</string>
     <string name="press_back_again_to_exit">برای  خروج دوباره  کلید Back را بزنید</string>
-
-
+    <string name="android_auto_update_dialog_title">بروزرسانی مژده</string>
+    <string name="android_auto_update_notify_ticker"></string>
+    <string name="android_auto_update_notify_content">نسخه جدید مژده قابل دریافت است</string>
+    <string name="android_auto_update_dialog_btn_download">بروزرسانی</string>
+    <string name="android_auto_update_dialog_btn_cancel">بی خیال</string>
+    <string name="android_auto_update_toast_no_new_update">نسخه جدیدی وجود ندارد</string>
+    <string name="android_auto_update_dialog_checking">در حال بررسی برای نسخه جدید</string>
+        <string name="android_auto_update_download_progress">%1$d\\%</string>
 </resources>

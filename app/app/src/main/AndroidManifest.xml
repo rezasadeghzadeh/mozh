@@ -29,6 +29,7 @@
         </activity>
 
         <service android:name=".dialog.FetchAddressIntentService" android:exported="false"></service>
+        <service android:name="com.loveplusplus.update.DownloadService" android:exported="false"></service>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -42,7 +43,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyDBt70N5jMWVuz4QaUQzIms92NCLToN4qI" />
 
     </application>
 

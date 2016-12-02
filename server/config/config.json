@@ -3,6 +3,8 @@
 	"mongoDatabaseName": "mozhdegani",
 	"itemImagesPath" : "/home/reza/tmp/itemImages/",
 	"itemThumbnailImagesPath" : "/home/reza/tmp/itemImages/t/",
+	"updatePath": "/opt/mozhdeh/updates",
+	"updateUrl" : "/updates",
 	"staticUrl": "/static",
 	"thumbnailUrl" : "/t",
 	"fullImageUrl" : "/f"

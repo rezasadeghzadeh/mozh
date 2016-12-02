@@ -15,6 +15,8 @@ type config struct {
 	StaticUrl string
 	ThumbnailUrl string
 	FullImageUrl string
+	UpdatePath string
+	UpdateUrl string
 }
 
 var Config config

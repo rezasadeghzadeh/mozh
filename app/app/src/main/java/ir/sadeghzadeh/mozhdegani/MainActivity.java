@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loveplusplus.update.UpdateChecker;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -60,6 +62,7 @@ public class MainActivity extends BaseActivity {
             registerExceptionHandler();
             initUtil();
             MainActivityPermissionsDispatcher.writeVersionToLogWithCheck(this);
+            UpdateChecker.checkForDialog(this);
             //setDefaultLanguage();
             setContentView(R.layout.activity_main);
             initCustomActionBar();

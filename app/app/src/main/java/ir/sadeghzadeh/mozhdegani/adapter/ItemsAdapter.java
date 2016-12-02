@@ -22,10 +22,11 @@ import ir.sadeghzadeh.mozhdegani.entity.Item;
 public class ItemsAdapter extends ArrayAdapter<Item>{
     Item[] items;
     private static LayoutInflater inflater = null;
-
+    Context context;
     public ItemsAdapter(Context context, int resource, Item[] items) {
         super(context, resource, items);
         this.items  =  items;
+        this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -58,6 +59,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         holder.date = (TextView) rowView.findViewById(R.id.date);
         holder.city = (TextView) rowView.findViewById(R.id.city);
         holder.thumbnail = (NetworkImageView) rowView.findViewById(R.id.thumbnail);
+        holder.itemContainer = rowView.findViewById(R.id.item_container);
 
         //set values
         holder.title.setText(item.Title);
@@ -76,15 +78,18 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         if(item.ItemType.equals(Const.FOUND+"")){
             holder.founded.setVisibility(View.VISIBLE);
             holder.lost.setVisibility(View.GONE);
+            holder.itemContainer.setBackgroundColor( context.getResources().getColor(R.color.foundedItemBackground));
         }else if(item.ItemType.equals(Const.LOST+"")){
             holder.founded.setVisibility(View.GONE);
             holder.lost.setVisibility(View.VISIBLE);
+            holder.itemContainer.setBackgroundColor( context.getResources().getColor(R.color.lostItemBackground));
         }
         rowView.setTag(item.id);
         return rowView;
     }
 
     public class Holder {
+        View itemContainer;
         TextView title;
         TextView category;
         TextView description;
