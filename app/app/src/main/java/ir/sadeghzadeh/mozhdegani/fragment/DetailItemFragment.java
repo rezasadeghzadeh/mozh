@@ -75,13 +75,17 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         if(args != null  && !args.getString(Const.ID).isEmpty()){
             id  =  args.getString(Const.ID);
             initDetails(view);
-            initFullScreenImage(view);
+            initFullScreenImage();
         }
-        activity.hideProgress();
+        initBackButton();
         return view;
     }
 
-    private void initFullScreenImage(View view) {
+    private void initBackButton() {
+        activity.backButton.setVisibility(View.VISIBLE);
+    }
+
+    private void initFullScreenImage() {
         itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +161,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
                 }else {
                     mapLayout.setVisibility(View.GONE);
                 }
+                activity.hideProgress();
             }
         }, new Response.ErrorListener() {
             @Override

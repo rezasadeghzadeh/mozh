@@ -31,7 +31,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    boolean doubleBackToExitPressed = false;
+  /*  boolean doubleBackToExitPressed = false;
 
     @Override
     public void onBackPressed() {
@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
                 doubleBackToExitPressed =false;
             }
         }, 2000);
-    }
+    }*/
 
 
 

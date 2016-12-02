@@ -62,7 +62,12 @@ public class SearchFragment extends BaseFragment {
         initSelectProvince(view);
         initSelectCity(view);
         initSubmit(view);
+        initBackButton();
         return view;
+    }
+
+    private void initBackButton() {
+        activity.backButton.setVisibility(View.GONE);
     }
 
     private void initItemTypes(View view) {

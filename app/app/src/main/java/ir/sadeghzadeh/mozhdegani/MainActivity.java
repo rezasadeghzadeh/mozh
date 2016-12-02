@@ -40,6 +40,8 @@ public class MainActivity extends BaseActivity {
     Button searchButton;
     Button categoryButton;
     Button newButton;
+    public Button backButton;
+
     //Button myItemsButton;
     public DatabaseHandler databaseHandler;
     ProgressDialog progress;
@@ -61,12 +63,24 @@ public class MainActivity extends BaseActivity {
             //setDefaultLanguage();
             setContentView(R.layout.activity_main);
             initCustomActionBar();
+            initBackButton();
             initElements();
             addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
             openDatabase();
             initProgress();
             showProgress();
 
+    }
+
+    private void initBackButton() {
+        backButton = (Button) findViewById(R.id.back);
+        backButton.setVisibility(View.GONE);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void initUtil() {

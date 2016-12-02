@@ -129,7 +129,12 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         initDate(view);
         initRadioGroup(view);
         initMobile(view);
+        initBackButton();
         return view;
+    }
+
+    private void initBackButton() {
+        activity.backButton.setVisibility(View.GONE);
     }
 
     private void initShowMap(View view) {

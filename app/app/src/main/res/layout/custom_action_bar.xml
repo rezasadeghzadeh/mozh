@@ -9,7 +9,8 @@
         style="@style/appTitle"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/textView" />
 
     <TextView
         style="@style/pageTitle"
@@ -20,5 +21,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
-
+    <Button
+        android:id="@+id/back"
+        android:background="@drawable/ic_back_en"
+        android:gravity="left"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/textView" />
 </RelativeLayout>

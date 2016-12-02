@@ -51,8 +51,7 @@
                     android:id="@+id/category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:text="category" />
+                    android:layout_gravity="left" />
 
             </LinearLayout>
 
@@ -70,8 +69,7 @@
                     android:id="@+id/item_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:text="title" />
+                    android:layout_gravity="left" />
 
             </LinearLayout>
             <LinearLayout
@@ -91,8 +89,7 @@
                     android:id="@+id/item_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:text="desc" />
+                    android:layout_gravity="left" />
 
             </LinearLayout>
 
@@ -113,8 +110,7 @@
                     android:id="@+id/address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:text="city" />
+                    android:layout_gravity="left" />
 
             </LinearLayout>
 
@@ -135,8 +131,7 @@
                     android:id="@+id/date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:text="date" />
+                    android:layout_gravity="left" />
 
             </LinearLayout>
 
@@ -157,8 +152,7 @@
                     android:id="@+id/mobile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:text="mobile" />
+                    android:layout_gravity="left" />
             </LinearLayout>
 
 

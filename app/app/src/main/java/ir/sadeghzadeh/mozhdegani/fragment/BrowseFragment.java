@@ -53,8 +53,13 @@ public class BrowseFragment extends BaseFragment {
         activity.highlightHomeIcon();
         View view = layoutInflater.inflate(R.layout.browse_fragment, container, false);
         initItemsListView(view);
+        initBackButton();
         showItems();
         return view;
+    }
+
+    private void initBackButton() {
+        activity.backButton.setVisibility(View.GONE);
     }
 
     private void initItemsListView(View view) {

@@ -40,7 +40,12 @@ public class CategoryFragment extends BaseFragment {
         activity.highlightCategoryIcon();
         View view = layoutInflater.inflate(R.layout.category_fragment, container, false);
         initListView(view);
+        initBackButton();
         return view;
+    }
+
+    private void initBackButton() {
+        activity.backButton.setVisibility(View.GONE);
     }
 
     private void initListView(View view) {
