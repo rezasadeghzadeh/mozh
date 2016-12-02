@@ -1,12 +1,12 @@
 package ir.sadeghzadeh.mozhdegani;
 
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import java.util.ArrayList;
+import android.widget.Toast;
 
 /**
  * Created by reza on 11/2/16.
@@ -31,6 +31,26 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
+    boolean doubleBackToExitPressed = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressed) {
+            finish();
+            System.exit(0);
+        }
+
+        this.doubleBackToExitPressed = true;
+        Toast.makeText(this, getString(R.string.press_back_again_to_exit), Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressed =false;
+            }
+        }, 2000);
+    }
 
 
 

@@ -59,6 +59,7 @@
     <string name="lost_address">محل گم شدن</string>
     <string name="detail">جزئیات</string>
     <string name="return1">برگشت</string>
+    <string name="press_back_again_to_exit">برای  خروج دوباره  کلید Back را بزنید</string>
 
 
 </resources>
