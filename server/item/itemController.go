@@ -30,6 +30,8 @@ func NewItemHandler()  {
 		latitude := ctx.PostValue("Latitude")
 		longitude := ctx.PostValue("Longitude")
 		address := ctx.PostValue("Address")
+		email := ctx.PostValue("Email")
+		telegramId := ctx.PostValue("TelegramId");
 
 		imageHeader,errUpload := ctx.FormFile("ImageFile")
 		imageExt := ""
@@ -41,7 +43,7 @@ func NewItemHandler()  {
 			log.Printf("Error on uploaded file Error: %s",errUpload)
 		}
 		id,err := NewItem(title, category, categoryTitle, description, date, itemType, imageExt,
-		cityId, cityTitle, provinceId, provinceTitle, mobile, latitude, longitude, address)
+		cityId, cityTitle, provinceId, provinceTitle, mobile, latitude, longitude, address, email, telegramId)
 		if err != nil {
 			log.Printf("Error on inserting new Item: %s",err)
 			return ;

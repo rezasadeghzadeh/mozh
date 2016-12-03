@@ -29,6 +29,8 @@ type Item struct {
 	Address string
 	Approved string
 	ApprovedTime int64
+	Email string
+	TelegramId string
 }
 
 
@@ -67,7 +69,7 @@ func   Items(title string, categoryId string, provinceId string,
 
 func NewItem(title string, category string, categoryTitle string, description string, date string,
 	itemType string, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string,
-	mobile string, latitude string, longitude string, address string ) (string,error) {
+	mobile string, latitude string, longitude string, address string, email string, telegramId string ) (string,error) {
 	newItem  :=  Item{
 		Title:title,
 		CategoryId:category,
@@ -86,6 +88,8 @@ func NewItem(title string, category string, categoryTitle string, description st
 		Longitude:longitude,
 		Address:address,
 		Approved:"false",
+		Email : email,
+		TelegramId : telegramId,
 	}
 	log.Printf("New Item Values: %v",newItem)
 	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)

@@ -21,5 +21,6 @@ public class Item {
     public String Latitude;
     public String Longitude;
     public String Address;
-
+    public String Email;
+    public String TelegramId;
 }

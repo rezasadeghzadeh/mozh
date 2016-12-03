@@ -81,6 +81,8 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     EditText title;
     EditText description;
     EditText mobile;
+    EditText email;
+    EditText telegramId;
     Button uploadImage;
     Button pickDate;
     TextView dateTitle;
@@ -129,8 +131,18 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         initDate(view);
         initRadioGroup(view);
         initMobile(view);
+        initEmail(view);
+        initTelegramId(view);
         initBackButton();
         return view;
+    }
+
+    private void initTelegramId(View view) {
+        telegramId = (EditText) view.findViewById(R.id.telegram_id);
+    }
+
+    private void initEmail(View view) {
+        email = (EditText) view.findViewById(R.id.email);
     }
 
     private void initBackButton() {
@@ -275,6 +287,8 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                         multipartEntity.addPart(Const.CITY_TITLE, new StringBody(selectedCityTitle, chars));
                     }
                     multipartEntity.addPart(Const.MOBILE, new StringBody(mobile.getText().toString(), chars));
+                    multipartEntity.addPart(Const.EMAIL, new StringBody(email.getText().toString(), chars));
+                    multipartEntity.addPart(Const.TELEGRAM_ID, new StringBody(telegramId.getText().toString(), chars));
                     if(latitude != null &&  !latitude.isEmpty()){
                         multipartEntity.addPart(Const.LATITUDE, new StringBody(latitude, chars));
                         multipartEntity.addPart(Const.LONGITUDE, new StringBody(longitude, chars));

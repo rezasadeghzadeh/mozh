@@ -43,4 +43,6 @@ public class Const {
     public static final String LONGITUDE = "Longitude";
     public static final String ADDRESS = "Address";
     public static final String APPROVED = "Approved";
+    public static final String EMAIL = "Email";
+    public static final String TELEGRAM_ID = "TelegramId";
 }

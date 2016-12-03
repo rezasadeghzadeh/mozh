@@ -54,6 +54,9 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
     TextView mobile;
     TextView lost;
     TextView founded;
+    TextView email;
+    TextView telegramId;
+
     private GoogleMap mMap;
     Item item;
     SupportMapFragment mapFragment;
@@ -133,6 +136,9 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         mobile = (TextView) view.findViewById(R.id.mobile);
         lost = (TextView) view.findViewById(R.id.lost_type);
         founded = (TextView) view.findViewById(R.id.founded_type);
+        email  = (TextView) view.findViewById(R.id.email);
+        telegramId = (TextView) view.findViewById(R.id.telegram_id);
+
         GsonRequest<Item> request = new GsonRequest<>(Const.DETAIL_ITEM_URL, Item.class, params, null, new Response.Listener<Item>() {
             @Override
             public void onResponse(Item item) {
@@ -141,6 +147,8 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
                 title.setText(item.Title);
                 category.setText(String.valueOf(item.CategoryTitle));
                 mobile.setText(item.Mobile);
+                email.setText(item.Email);
+                telegramId.setText(item.TelegramId);
                 description.setText(item.Description);
                 date.setText(item.Date);
                 address.setText(String.valueOf(item.Address));

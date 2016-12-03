@@ -67,5 +67,7 @@
     <string name="android_auto_update_dialog_btn_cancel">بی خیال</string>
     <string name="android_auto_update_toast_no_new_update">نسخه جدیدی وجود ندارد</string>
     <string name="android_auto_update_dialog_checking">در حال بررسی برای نسخه جدید</string>
-        <string name="android_auto_update_download_progress">%1$d\\%</string>
+    <string name="android_auto_update_download_progress">%1$d\\%</string>
+    <string name="telegram_id">تلگرام ID</string>
+    <string name="email">ایمیل</string>
 </resources>
