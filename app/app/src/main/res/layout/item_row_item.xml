@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="3dp">
+    android:padding="5dp">
     <LinearLayout
         android:id="@+id/item_container"
         android:background="@color/layoutBackground"
-        android:padding="2dp"
+        android:padding="5dp"
         android:layout_weight="1"
         android:layout_height="@dimen/item_thumbnail_height"
         android:layout_alignParentLeft="true"

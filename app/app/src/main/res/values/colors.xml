@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#960000</color>
     <color name="textColorPrimary">#000000</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="layoutBackground">#e1e1ea</color>
+    <color name="layoutBackground">#dcdbd9</color>
     <color name="elementBoxBackground">#fff</color>
     <color name="foundedTextColor">#159119</color>
     <color name="lostTextColor">#FF4081</color>
     <color name="white">#fff</color>
     <color name="darkWhite">#e1e1ea</color>
-    <color name="foundedItemBackground">#dcf4c8</color>
-    <color name="lostItemBackground">#fcd6d4</color>
+    <color name="foundedItemBackground">#ffffff</color>
+    <color name="lostItemBackground">#ffffff</color>
 
 </resources>
