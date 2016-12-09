@@ -14,5 +14,6 @@ func init() {
 			return []byte(constant.JWTSecretKey), nil
 		},
 		SigningMethod: jwt.SigningMethodHS256,
+		Extractor: jwtmiddleware.FromParameter("token"),
 	})
 }
