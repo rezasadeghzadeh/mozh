@@ -2,7 +2,7 @@ package item
 
 import (
 	"../config"
-	"../R"
+	"../constant"
 	"log"
 	"../util"
 	"gopkg.in/mgo.v2/bson"
@@ -38,7 +38,7 @@ func   Items(title string, categoryId string, provinceId string,
 	cityId string, itemType string, approved string) []Item {
 	var items []Item
 	log.Printf("Connecting to  %s  database \n",config.Config.MongoDatabaseName )
-	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)
+	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection)
 	q := bson.M{}
 
 	if title != ""{
@@ -92,7 +92,7 @@ func NewItem(title string, category string, categoryTitle string, description st
 		TelegramId : telegramId,
 	}
 	log.Printf("New Item Values: %v",newItem)
-	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection)
+	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection)
 	newId  := bson.NewObjectId()
 	_,err:=collection.UpsertId(newId,newItem)
 	if(err != nil){
@@ -109,7 +109,7 @@ func ItemById(id string) *Item {
 	q := bson.M{}
 	q["_id"] = bson.ObjectIdHex(id)
 
-	mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection).FindId(bson.ObjectIdHex(id)).One(&foundedItem)
+	mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection).FindId(bson.ObjectIdHex(id)).One(&foundedItem)
 	log.Printf("Founded Item: %v",foundedItem)
 	return &foundedItem
 }
@@ -119,7 +119,7 @@ func approveItem(id string) {
 	q := bson.M{}
 	q["_id"] = bson.ObjectIdHex(id)
 	change := bson.M{"$set": bson.M{"approved": "true", "approvedtime": util.GetCurrentMilis() }}
-	err := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.ItemCollection).Update(q, change)
+	err := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection).Update(q, change)
 	if err != nil {
 		log.Printf("Error in approving  item %d  error: %v \n",err)
 	}else {

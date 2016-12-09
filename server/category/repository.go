@@ -3,7 +3,7 @@ package category
 import (
 	"log"
 	"../config"
-	"../R"
+	"../constant"
 	"gopkg.in/mgo.v2/bson"
 	"../mongo"
 )
@@ -15,7 +15,7 @@ type Category struct {
 
 func  Categories() []Category {
 	var categories []Category
-	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(R.CategoryCollection)
+	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.CategoryCollection)
 	err := collection.Find(nil).All(&categories)
 	if(err != nil){
 		log.Printf(err.Error())

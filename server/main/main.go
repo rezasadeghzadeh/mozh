@@ -8,6 +8,7 @@ import (
 	"../config"
 	"github.com/kataras/iris"
 	"../mongo"
+	"../auth"
 )
 
 func main()  {
@@ -38,6 +39,7 @@ func registerStaticRoutes() {
 }
 
 func registerRoutes()  {
+	auth.RegisterAuthRoutes()
 	item.ListItemHandler()
 	listCategories()
 	item.NewItemHandler()

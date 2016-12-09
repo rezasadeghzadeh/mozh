@@ -10,10 +10,11 @@ import (
 	"../config"
 	"image/jpeg"
 	"github.com/nfnt/resize"
+	"../auth"
 )
 
 func NewItemHandler()  {
-	iris.Post("/item/add", func(ctx  *iris.Context) {
+	iris.Post("/item/add", auth.JwtMiddleware.Serve , func(ctx  *iris.Context) {
 		log.Println("Start serving /items/new request")
 
 		title:= ctx.PostValue("Title")
