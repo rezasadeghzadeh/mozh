@@ -51,13 +51,8 @@ func RegisterAuthRoutes()  {
 		}
 	})
 	iris.Get("/secure",JwtMiddleware.Serve, func(ctx *iris.Context) {
-		tokenStr := ctx.URLParam("token")
-		log.Print("token:    ", tokenStr)
-		token, _:= jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
-			return []byte(constant.JWTSecretKey), nil
-		})
-		claims := token.Claims.(jwt.MapClaims)
-		ctx.JSON(iris.StatusOK,"User id: " + claims["userid"].(string) )
+		GetCurrentUserId(ctx)
+
 	})
 }
 
@@ -67,4 +62,12 @@ func parseUser(ctx  *iris.Context) *User {
 		Password: []byte(ctx.PostValue("password")),
 	}
 	return &user
+}
+
+func GetCurrentUserId(ctx *iris.Context) string {
+	token :=JwtMiddleware.Get(ctx)
+	claims := token.Claims.(jwt.MapClaims)
+	userId := claims["userid"].(string)
+	log.Printf("Current User Id: " + userId )
+	return userId
 }
