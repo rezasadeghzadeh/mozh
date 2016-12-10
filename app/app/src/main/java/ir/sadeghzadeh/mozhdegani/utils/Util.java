@@ -286,4 +286,12 @@ public class Util {
          return location;
     }
 
+    public static boolean isUserLogged(){
+        String token = fetchFromPreferences(Const.TOKEN);
+        if(token  ==  null || token.isEmpty()){
+            return false;
+        }
+        return true;
+    }
 }
+

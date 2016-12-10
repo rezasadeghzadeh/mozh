@@ -70,4 +70,8 @@
     <string name="android_auto_update_download_progress">%1$d\\%</string>
     <string name="telegram_id">تلگرام ID</string>
     <string name="email">ایمیل</string>
+    <string name="enter_email">لطفا ایمیلتان را وارد کنید</string>
+    <string name="login_hit">لطفا وارد شوید</string>
+    <string name="next">ادامه</string>
+    <string name="invalid_email">ایمیل معتبر نیست</string>
 </resources>

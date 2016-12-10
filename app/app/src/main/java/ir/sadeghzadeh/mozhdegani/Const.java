@@ -9,7 +9,8 @@ public class Const {
     public static final String APP_CONFIG = "mozhdegani";
     public static final String VERSION = "0.1";
     //public static final String SERVER_URL  = "http://192.168.177.104:7777";
-    public static final String SERVER_URL  = "http://209.59.209.181:7777";
+    //public static final String SERVER_URL  = "http://209.59.209.181:7777";
+    public static final String SERVER_URL  = "http://192.168.1.3:7777";
 
     public static final String LIST_ITEMS_URL  = SERVER_URL  + "/item/list";
 
@@ -20,7 +21,7 @@ public class Const {
     public static final String THUMBNAIL_URL = STATIC_URL + "/t";
     public static final String FULL_IMAGE_URL = STATIC_URL + "/f";
     public static final String DETAIL_ITEM_URL = SERVER_URL + "/item/detail";
-
+    public static final String SEND_PASS_TO_EMAIL_URL = SERVER_URL + "/auth/sendPassToEmail";
 
 
     public static final String TITLE  = "Title";
@@ -45,4 +46,5 @@ public class Const {
     public static final String APPROVED = "Approved";
     public static final String EMAIL = "Email";
     public static final String TELEGRAM_ID = "TelegramId";
+    public static final String TOKEN = "token";
 }

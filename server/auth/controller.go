@@ -6,7 +6,14 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"time"
 	"../constant"
+	"../util"
+	"fmt"
+	"strconv"
 )
+type requestResponse struct {
+	Status int
+	Message string
+}
 
 func RegisterAuthRoutes()  {
 	iris.Get("/user/auth", func(ctx *iris.Context) {
@@ -54,6 +61,47 @@ func RegisterAuthRoutes()  {
 		GetCurrentUserId(ctx)
 
 	})
+	sendPassToEmail()
+}
+
+func sendPassToEmail() {
+	iris.Get("/auth/sendPassToEmail", func(ctx *iris.Context) {
+		res := requestResponse{Status:0}
+		email  := ctx.URLParam("email")
+		if email == ""{
+			log.Printf("Invalid Email")
+			res.Message = "Invalid Email"
+			ctx.JSON(iris.StatusOK,res)
+			return
+		}
+
+		//send pass to email
+		pass := util.Random(100000,999999)
+		log.Printf("Sending  email to  %s",email)
+		err := util.SendEmail(email,"Mozhdeh New Account",fmt.Sprintf("Your Confirm Code: %d",pass))
+		if err != nil{
+			log.Printf("Error in sending confirm email, %v",err)
+			res.Message = "Error in sending confirm email"
+			ctx.JSON(iris.StatusOK,res)
+			return
+		}
+		user:= User{
+			Username:email,
+			Password:[]byte(strconv.Itoa(pass)),
+		}
+		_,err = newUser(&user)
+		if err != nil{
+			log.Printf("Error in registering new user, %v",err)
+			res.Message = "Error in registering new user"
+			ctx.JSON(iris.StatusOK,res)
+			return
+		}
+
+		res.Status = 1
+		res.Message = "Email Sent Successfully"
+		log.Printf("Email to  %s sent successfully",email)
+		ctx.JSON(iris.StatusOK,res)
+	})
 }
 
 func parseUser(ctx  *iris.Context) *User {
@@ -71,3 +119,4 @@ func GetCurrentUserId(ctx *iris.Context) string {
 	log.Printf("Current User Id: " + userId )
 	return userId
 }
+

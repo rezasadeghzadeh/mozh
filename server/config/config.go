@@ -8,15 +8,20 @@ import (
 )
 
 type config struct {
-	MongoServerIP string
-	MongoDatabaseName string
-	ItemImagesPath string
+	MongoServerIP           string
+	MongoDatabaseName       string
+	ItemImagesPath          string
 	ItemThumbnailImagesPath string
-	StaticUrl string
-	ThumbnailUrl string
-	FullImageUrl string
-	UpdatePath string
-	UpdateUrl string
+	StaticUrl               string
+	ThumbnailUrl            string
+	FullImageUrl            string
+	UpdatePath              string
+	UpdateUrl               string
+	SmtpAdd                 string
+	SmtpEmail               string
+	SmtpPassword            string
+	EmailSender             string
+	SmtpPort                int
 }
 
 var Config config

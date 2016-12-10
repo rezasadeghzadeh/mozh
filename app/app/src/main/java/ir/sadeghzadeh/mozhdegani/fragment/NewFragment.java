@@ -75,7 +75,6 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     private static final int DECODE_LOCATION_ADDRESS = 2;
 
     String currentCategoryId;
-    MainActivity activity;
     Button openCategoryPopup;
     Button submit;
     EditText title;
@@ -107,12 +106,6 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     private String latitude;
     private String longitude;
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        activity = (MainActivity) getActivity();
-    }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {

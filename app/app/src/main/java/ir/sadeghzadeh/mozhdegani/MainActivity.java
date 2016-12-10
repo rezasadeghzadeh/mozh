@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import ir.sadeghzadeh.mozhdegani.fragment.BrowseFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.CategoryFragment;
+import ir.sadeghzadeh.mozhdegani.fragment.EnterEmailOrMobileFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.NewFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.SearchFragment;
 import ir.sadeghzadeh.mozhdegani.utils.ExceptionHandler;
@@ -159,7 +160,12 @@ public class MainActivity extends BaseActivity {
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFragmentToContainer(new NewFragment(), NewFragment.TAG);
+                if(Util.isUserLogged()){
+                    addFragmentToContainer(new NewFragment(), NewFragment.TAG);
+                }else {
+                    addFragmentToContainer(new EnterEmailOrMobileFragment(), EnterEmailOrMobileFragment.TAG);
+                }
+
             }
         });
       /*  myItemsButton = (Button) findViewById(R.id.my_items_button);

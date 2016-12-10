@@ -7,5 +7,10 @@
 	"updateUrl" : "/updates",
 	"staticUrl": "/static",
 	"thumbnailUrl" : "/t",
-	"fullImageUrl" : "/f"
+	"fullImageUrl" : "/f",
+	"smtpAdd" : "smtp.gmail.com",
+	"smtpEmail" : "reza.sadeqzadeh@gmail.com",
+	"smtpPassword" : "Sghlsghljd2015",
+	"emailSender" : " مژده ",
+	"smtpPort" : 587
 }
