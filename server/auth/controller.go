@@ -13,15 +13,58 @@ import (
 type requestResponse struct {
 	Status int
 	Message string
+	Token string
 }
 
 func RegisterAuthRoutes()  {
-	iris.Get("/user/auth", func(ctx *iris.Context) {
+	authUser()
+	/*
+	iris.Get("user/new", func(ctx  *iris.Context) {
+		user:= parseUser(ctx)
+		if user.Username == "" ||  len(user.Password) == 0{
+			log.Printf("username  or password is empty")
+			return
+		}
+
+		log.Printf("registering  new user  %v",user)
+		userByUsername := userByUsername(user.Username)
+		if userByUsername != nil{
+			id,err := upsertUser(userByUsername.Id.Hex(),user)
+			if err != nil{
+				log.Printf("Error in saving new user")
+			}else {
+				log.Printf("user updated with id  %s",id)
+			}
+		}else {
+			id,err := upsertUser("",user)
+			if err != nil{
+				log.Printf("Error in saving new user")
+			}else {
+				log.Printf("user registered with new id  %s",id)
+			}
+		}
+	})
+	*/
+
+
+	iris.Get("/secure",JwtMiddleware.Serve, func(ctx *iris.Context) {
+		GetCurrentUserId(ctx)
+
+	})
+	sendPassToEmail()
+}
+
+func authUser() {
+	iris.Get("/auth/genToken", func(ctx *iris.Context) {
+		response  :=  requestResponse{}
 		user:= parseUser(ctx)
 		log.Printf("Start authentication user  %v",user)
 		userRecord := userByUsernameAndPass(user.Username, user.Password)
+		log.Printf("result of  founded users: %v",userRecord)
 		if userRecord == nil {
-			ctx.JSON(iris.StatusForbidden,"Error in Authentication")
+			response.Status = 0
+			response.Message = "invalid user/pass"
+			ctx.JSON(iris.StatusOK,response)
 			return
 		}
 		token := jwt.New(jwt.SigningMethodHS256)
@@ -36,32 +79,12 @@ func RegisterAuthRoutes()  {
 			log.Printf("Eror in generating token %v",err)
 			return
 		}
-		data := map[string]string{
-			"token":tokenString,
-		}
-		ctx.JSON(iris.StatusOK,data)
+		log.Printf("User  %s authenticated successfully ",user.Username)
+		response.Token = tokenString
+		response.Status = 1
+		response.Message = "success"
+		ctx.JSON(iris.StatusOK,response)
 	})
-
-	iris.Get("user/new", func(ctx  *iris.Context) {
-		user:= parseUser(ctx)
-		if user.Username == "" ||  len(user.Password) == 0{
-			log.Printf("username  or password is empty")
-			return
-		}
-
-		log.Printf("registering  new user  %v",user)
-		id,err := newUser(user)
-		if err != nil{
-			log.Printf("Error in saving new user")
-		}else {
-			log.Printf("user registered with new id  %s",id)
-		}
-	})
-	iris.Get("/secure",JwtMiddleware.Serve, func(ctx *iris.Context) {
-		GetCurrentUserId(ctx)
-
-	})
-	sendPassToEmail()
 }
 
 func sendPassToEmail() {
@@ -89,9 +112,9 @@ func sendPassToEmail() {
 			Username:email,
 			Password:[]byte(strconv.Itoa(pass)),
 		}
-		_,err = newUser(&user)
+		_,err = upsertUser(&user)
 		if err != nil{
-			log.Printf("Error in registering new user, %v",err)
+			log.Printf("Error in registering/updating  user, %v",err)
 			res.Message = "Error in registering new user"
 			ctx.JSON(iris.StatusOK,res)
 			return

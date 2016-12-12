@@ -8,10 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +18,7 @@ import ir.sadeghzadeh.mozhdegani.ApplicationController;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.R;
 import ir.sadeghzadeh.mozhdegani.entity.RequestResponse;
+import ir.sadeghzadeh.mozhdegani.utils.Util;
 import ir.sadeghzadeh.mozhdegani.volley.GsonRequest;
 
 /**
@@ -33,7 +32,6 @@ public class EnterEmailOrMobileFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        activity.highlightNewIcon();
         View view = layoutInflater.inflate(R.layout.enter_email_mobile_fragment, container, false);
         initEmail(view);
         initContinue(view);
@@ -57,15 +55,19 @@ public class EnterEmailOrMobileFragment extends BaseFragment{
                 }
 
                 Map<String,String> params = new HashMap<>();
-                params.put(Const.EMAIL,email.getText().toString());
+                params.put("email",email.getText().toString());
+                activity.showProgress();
                 GsonRequest<RequestResponse> request = new GsonRequest<RequestResponse>(Const.SEND_PASS_TO_EMAIL_URL, RequestResponse.class, params, null, new Response.Listener<RequestResponse>() {
                     @Override
                     public void onResponse(RequestResponse response) {
-                        if(response.status == 1){
+                        if(response.Status == 1){
+                            Util.saveInPreferences(Const.USERNAME,email.getText().toString());
+                            activity.hideProgress();
                             EnterPasswordFragment  fragment = new EnterPasswordFragment();
                             activity.addFragmentToContainer(fragment, EnterPasswordFragment.TAG);
                         }else {
-                            Toast.makeText(getContext(),response.message,Toast.LENGTH_LONG).show();
+                            activity.hideProgress();
+                            Toast.makeText(getContext(),response.Message,Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {

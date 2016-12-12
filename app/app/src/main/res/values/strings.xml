@@ -74,4 +74,9 @@
     <string name="login_hit">لطفا وارد شوید</string>
     <string name="next">ادامه</string>
     <string name="invalid_email">ایمیل معتبر نیست</string>
+    <string name="enter_received_code">لطفا کد دریافت شده را وارد کنید</string>
+    <string name="received_code">کد دریافت شده</string>
+    <string name="invalid_password">لطفا کد را وارد نمایید</string>
+    <string name="code_sent_to_email">کد ورود به ایمیل شما ارسال شد</string>
+    <string name="auth_failed">کد وارد شده اشتباه است</string>
 </resources>

@@ -18,10 +18,10 @@ type User struct {
 func userByUsernameAndPass(username string , password []byte) (*User) {
 	c := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.UserCollection)
 	q := bson.M{}
-	q["username"] =  username
+	q["username"] = username
 	user := []User{}
 	c.Find(q).All(&user)
-	if user[0].Id == ""{ //user not found
+	if len(user) == 0 || user[0].Id == ""{ //user not found
 		return nil
 	}
 	if bcrypt.CompareHashAndPassword(user[0].Password,password) ==  nil {
@@ -30,18 +30,35 @@ func userByUsernameAndPass(username string , password []byte) (*User) {
 	return nil
 }
 
-func newUser(user  *User) (string,error){
+func userByUsername(username string) (*User) {
+	q:= bson.M{}
+	q["username"] = username
+	users := []User{}
+	c:= mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.UserCollection)
+	c.Find(q).All(&users)
+	if len(users) > 0 && users[0].Id != ""{
+		return &users[0]
+	}
+	return nil
+}
+
+func upsertUser(user  *User) (string,error){
+	userByUsername := userByUsername(user.Username)
+	userId:= bson.NewObjectId()
+	if userByUsername != nil{
+		userId = userByUsername.Id
+	}
+
 	c := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.UserCollection)
 	hashedPassword, err := bcrypt.GenerateFromPassword(user.Password, bcrypt.DefaultCost)
 	if err != nil{
 		log.Printf("Error on encrypting pass")
 	}
 	user.Password =  hashedPassword
-	newId := bson.NewObjectId()
-	_,err = c.UpsertId(newId,user)
+	_,err = c.UpsertId(userId,user)
 	if err != nil{
 		log.Printf("Error  on saving new user: %v",err)
 		return "",err
 	}
-	return newId.Hex(),nil
+	return userId.Hex(),nil
 }

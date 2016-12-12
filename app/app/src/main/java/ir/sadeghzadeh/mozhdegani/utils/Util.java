@@ -244,11 +244,11 @@ public class Util {
             LocationManager locationManager = (LocationManager) context
                     .getSystemService(context.LOCATION_SERVICE);
 
-            // getting GPS status
+            // getting GPS Status
             boolean isGPSEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            // getting network status
+            // getting network Status
             boolean isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
