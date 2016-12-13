@@ -2,12 +2,18 @@ package ir.sadeghzadeh.mozhdegani;
 
 import android.app.Application;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import ir.sadeghzadeh.mozhdegani.utils.Util;
 
 public class ApplicationController extends Application {
     private static final String COOKIE_KEY = "Cookie";

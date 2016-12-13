@@ -24,6 +24,7 @@ import java.util.Locale;
 import ir.sadeghzadeh.mozhdegani.fragment.BrowseFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.CategoryFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.EnterEmailOrMobileFragment;
+import ir.sadeghzadeh.mozhdegani.fragment.MyItemsFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.NewFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.SearchFragment;
 import ir.sadeghzadeh.mozhdegani.utils.ExceptionHandler;
@@ -45,7 +46,7 @@ public class MainActivity extends BaseActivity {
     Button newButton;
     public Button backButton;
 
-    //Button myItemsButton;
+    Button myItemsButton;
     public DatabaseHandler databaseHandler;
     ProgressDialog progress;
     private TextView title;
@@ -168,13 +169,13 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-      /*  myItemsButton = (Button) findViewById(R.id.my_items_button);
+        myItemsButton = (Button) findViewById(R.id.my_items_button);
         myItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG);
             }
-        });*/
+        });
         searchButton = (Button) findViewById(R.id.search_items_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,6 +219,7 @@ public class MainActivity extends BaseActivity {
         //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_white);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_black);
+        setTitle(getString(R.string.my_items));
     }
 
     public void highlightCategoryIcon() {

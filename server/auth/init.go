@@ -13,7 +13,7 @@ func init() {
 		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
 			return []byte(constant.JWTSecretKey), nil
 		},
-		//Debug:true,
+		Debug:true,
 		SigningMethod: jwt.SigningMethodHS256,
 	})
 }

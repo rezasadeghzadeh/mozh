@@ -45,6 +45,7 @@ func registerRoutes()  {
 	item.NewItemHandler()
 	item.DetailItemHandler()
 	item.ApproveItemHandler()
+	item.MyItems()
 }
 
 func listCategories() {

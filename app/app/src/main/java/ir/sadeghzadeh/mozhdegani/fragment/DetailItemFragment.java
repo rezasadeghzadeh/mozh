@@ -42,7 +42,7 @@ import ir.sadeghzadeh.mozhdegani.volley.GsonRequest;
  * Created by reza on 11/14/16.
  */
 public class DetailItemFragment extends BaseFragment implements OnMapReadyCallback {
-    static final String TAG  =  DetailItemFragment.class.getName();
+    public static final String TAG  =  DetailItemFragment.class.getName();
     private MainActivity activity;
     private String  id;
     TextView title;

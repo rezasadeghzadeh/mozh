@@ -2,19 +2,25 @@ package ir.sadeghzadeh.mozhdegani.adapter;
 
 import android.content.Context;
 import android.nfc.Tag;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
 import ir.sadeghzadeh.mozhdegani.ApplicationController;
 import ir.sadeghzadeh.mozhdegani.Const;
+import ir.sadeghzadeh.mozhdegani.MainActivity;
 import ir.sadeghzadeh.mozhdegani.R;
 import ir.sadeghzadeh.mozhdegani.entity.Item;
+import ir.sadeghzadeh.mozhdegani.fragment.BrowseFragment;
+import ir.sadeghzadeh.mozhdegani.fragment.DetailItemFragment;
+import ir.sadeghzadeh.mozhdegani.fragment.NewFragment;
 
 /**
  * Created by reza on 11/3/16.
@@ -23,10 +29,14 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
     Item[] items;
     private static LayoutInflater inflater = null;
     Context context;
-    public ItemsAdapter(Context context, int resource, Item[] items) {
+    boolean myItemsMode;
+    MainActivity activity;
+    public ItemsAdapter(Context context, int resource, Item[] items, MainActivity activity, boolean myItemsMode) {
         super(context, resource, items);
         this.items  =  items;
+        this.myItemsMode  =  myItemsMode;
         this.context = context;
+        this.activity  =  activity;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -43,7 +53,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
 
     public View getView(int position, View paramView, ViewGroup paramViewGroup) {
         Holder holder = new Holder();
-        Item item = items[position];
+        final Item item = items[position];
         View rowView=null;
         if(paramView == null){
             rowView = inflater.inflate(R.layout.item_row_item, null);
@@ -60,6 +70,37 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         holder.city = (TextView) rowView.findViewById(R.id.city);
         holder.thumbnail = (NetworkImageView) rowView.findViewById(R.id.thumbnail);
         holder.itemContainer = rowView.findViewById(R.id.item_container);
+        holder.myItemsButtonContainer  = rowView.findViewById(R.id.my_item_button_container);
+
+        if(myItemsMode){
+            holder.myItemsButtonContainer.setVisibility(View.VISIBLE);
+            holder.edit  = (Button) rowView.findViewById(R.id.edit);
+            holder.preview  = (Button) rowView.findViewById(R.id.preview);
+            holder.edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle args  =  new Bundle();
+                    args.putString(Const.ID,item.id);
+                    NewFragment fragment  = new NewFragment();
+                    fragment.setArguments(args);
+                    activity.addFragmentToContainer(fragment,DetailItemFragment.TAG);
+                }
+            });
+
+            holder.preview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle args  =  new Bundle();
+                    args.putString(Const.ID,item.id);
+                    DetailItemFragment fragment  = new DetailItemFragment();
+                    fragment.setArguments(args);
+                    activity.addFragmentToContainer(fragment,DetailItemFragment.TAG);
+                }
+            });
+
+        }else {
+            holder.myItemsButtonContainer.setVisibility(View.GONE);
+        }
 
         //set values
         holder.title.setText(item.Title);
@@ -98,6 +139,9 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         NetworkImageView thumbnail;
         TextView founded;
         TextView lost;
+        View myItemsButtonContainer;
+        Button edit;
+        Button preview;
 
         public Holder() {
         }

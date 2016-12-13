@@ -1,79 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:padding="5dp">
+
     <LinearLayout
-        android:id="@+id/item_container"
-        android:background="@color/layoutBackground"
-        android:padding="5dp"
-        android:layout_weight="1"
-        android:layout_height="@dimen/item_thumbnail_height"
-        android:layout_alignParentLeft="true"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_width="0dp">
-        <TextView
-            android:layout_gravity="right"
+        android:layout_width="match_parent" android:orientation="horizontal"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/item_container"
+            android:background="@color/layoutBackground"
+            android:padding="5dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/item_thumbnail_height"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_width="0dp">
+            <TextView
+                android:layout_gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_title"
+                android:text="title"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/city"
+                    android:text="city"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/founded_type"
+                    style="@style/Founded"
+                    android:text="@string/found"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="right"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lost_type"
+                    style="@style/lost"
+                    android:text="@string/lost"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="right"
+                    />
+
+
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/date"
+                android:text="date"
+                android:layout_gravity="right"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="0"
             android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_height="wrap_content"
-            android:id="@+id/item_title"
-            android:text="title"
-            />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/city"
-                android:text="city"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="right"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/founded_type"
-                style="@style/Founded"
-                android:text="@string/found"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="right"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/lost_type"
-                style="@style/lost"
-                android:text="@string/lost"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="right"
-                />
-
-
-        </RelativeLayout>
-        <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayout2">
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/thumbnail"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_no_photo"
+                android:layout_width="@dimen/item_thumbnail_width"
+                android:layout_height="@dimen/item_thumbnail_height" />
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/my_item_button_container"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/edit"
+            android:text="@string/edit"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" android:layout_alignParentRight="true"  />
+        <Button
+            android:id="@+id/preview"
+            android:text="@string/preview"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:id="@+id/date"
-            android:text="date"
-            android:layout_gravity="right"
-            />
+            android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_weight="0"
-        android:layout_width="wrap_content" android:layout_alignParentRight="true"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout2">
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/thumbnail"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_no_photo"
-            android:layout_width="@dimen/item_thumbnail_width"
-            android:layout_height="@dimen/item_thumbnail_height" />
-    </LinearLayout>
 
 </LinearLayout>

@@ -14,8 +14,6 @@ import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,21 +54,6 @@ public class Util {
 
         public void onErrorResponse(VolleyError error) {
             Log.d("Login", error.toString());
-        }
-    }
-
-    static class LoginRequest extends StringRequest {
-        LoginRequest(int method, String url, Response.Listener listener, Response.ErrorListener errorListener) {
-            super(method, url, listener, errorListener);
-        }
-
-        protected Map<String, String> getParams() {
-            Map<String, String> params = new HashMap();
-/*
-            params.put(Const.USERNAME, Util.fetchFromPreferences(Const.USERNAME));
-            params.put(Const.PASSWORD, Util.fetchFromPreferences(Const.PASSWORD));
-*/
-            return params;
         }
     }
 
@@ -170,7 +153,7 @@ public class Util {
     public static void saveInPreferences(String key, String value) {
         String str = Const.APP_CONFIG;
         Editor editor = context.getSharedPreferences(str, 0).edit();
-        editor.putString(key, value.toLowerCase());
+        editor.putString(key, value);
         editor.commit();
     }
 

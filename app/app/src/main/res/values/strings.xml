@@ -79,4 +79,6 @@
     <string name="invalid_password">لطفا کد را وارد نمایید</string>
     <string name="code_sent_to_email">کد ورود به ایمیل شما ارسال شد</string>
     <string name="auth_failed">کد وارد شده اشتباه است</string>
+    <string name="edit">ویرایش</string>
+    <string name="preview">پیش نمایش</string>
 </resources>

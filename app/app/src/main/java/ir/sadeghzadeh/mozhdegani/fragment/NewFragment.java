@@ -43,7 +43,9 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import id.zelory.compressor.Compressor;
 import ir.sadeghzadeh.mozhdegani.ApplicationController;
@@ -56,6 +58,7 @@ import ir.sadeghzadeh.mozhdegani.dialog.FetchAddressIntentService;
 import ir.sadeghzadeh.mozhdegani.dialog.OnOneItemSelectedInDialog;
 import ir.sadeghzadeh.mozhdegani.entity.Category;
 import ir.sadeghzadeh.mozhdegani.entity.City;
+import ir.sadeghzadeh.mozhdegani.entity.Item;
 import ir.sadeghzadeh.mozhdegani.entity.KeyValuePair;
 import ir.sadeghzadeh.mozhdegani.entity.Province;
 import ir.sadeghzadeh.mozhdegani.utils.Util;
@@ -105,7 +108,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     private String selectedAddress;
     private String latitude;
     private String longitude;
-
+    String id;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,7 +130,34 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         initEmail(view);
         initTelegramId(view);
         initBackButton();
+        Bundle args = getArguments();
+        if(args != null  && !args.getString(Const.ID).isEmpty()){
+            id  =  args.getString(Const.ID);
+            initValues();
+        }
         return view;
+    }
+
+    private void initValues() {
+        Map<String, String> params = new HashMap<>();
+        params.put(Const.ID,id);
+        GsonRequest<Item> request = new GsonRequest<>(Const.DETAIL_ITEM_URL, Item.class, params, null, new Response.Listener<Item>() {
+            @Override
+            public void onResponse(Item item) {
+                title.setText(item.Title);
+                description.setText(item.Description);
+                pickDate.setText(item.Date);
+                selectCity.setText(item.CityTitle);
+                selectProvince.setText(item.ProvinceTitle);
+                openCategoryPopup.setText(item.CategoryTitle);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(),getString(R.string.connection_error),Toast.LENGTH_LONG).show();
+            }
+        });
+        ApplicationController.getInstance().addToRequestQueue(request);
     }
 
     private void initTelegramId(View view) {

@@ -14,7 +14,9 @@ import (
 )
 
 func NewItemHandler()  {
-	iris.Post("/item/add", auth.JwtMiddleware.Serve , func(ctx  *iris.Context) {
+
+	iris.Post("/item/add" ,auth.JwtMiddleware.Serve, func(ctx  *iris.Context) {
+		log.Printf("%v",ctx.Request.Header)
 		log.Println("Start serving /items/new request")
 
 		title:= ctx.PostValue("Title")
@@ -33,7 +35,7 @@ func NewItemHandler()  {
 		address := ctx.PostValue("Address")
 		email := ctx.PostValue("Email")
 		telegramId := ctx.PostValue("TelegramId");
-
+		ownerId := auth.GetCurrentUserId(ctx)
 		imageHeader,errUpload := ctx.FormFile("ImageFile")
 		imageExt := ""
 		if errUpload == nil {
@@ -44,7 +46,7 @@ func NewItemHandler()  {
 			log.Printf("Error on uploaded file Error: %s",errUpload)
 		}
 		id,err := NewItem(title, category, categoryTitle, description, date, itemType, imageExt,
-		cityId, cityTitle, provinceId, provinceTitle, mobile, latitude, longitude, address, email, telegramId)
+		cityId, cityTitle, provinceId, provinceTitle, mobile, latitude, longitude, address, email, telegramId, ownerId)
 		if err != nil {
 			log.Printf("Error on inserting new Item: %s",err)
 			return ;
@@ -104,8 +106,9 @@ func ListItemHandler()  {
 		cityId := ctx.URLParam("CityId")
 		provinceId := ctx.URLParam("ProvinceId")
 		approved := ctx.URLParam("Approved")
+		ownerId := ctx.URLParam("OwnerId")
 		log.Printf("Category: %s",category)
-		items := Items(title,category,provinceId,cityId,itemType,approved)
+		items := Items(title,category,provinceId,cityId,itemType,approved, ownerId)
 		ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 		ctx.JSON(iris.StatusOK,	items)
 	})
@@ -131,5 +134,16 @@ func ApproveItemHandler(){
 		approveItem(id)
 		ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 		ctx.JSON(iris.StatusOK,	"{status:1}")
+	})
+}
+
+func MyItems()  {
+	iris.Get("/item/my", auth.JwtMiddleware.Serve, func(ctx *iris.Context) {
+		currentUserId  := auth.GetCurrentUserId(ctx)
+		if currentUserId != ""{
+			items := Items("","","","","","", currentUserId)
+			ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
+			ctx.JSON(iris.StatusOK,	items)
+		}
 	})
 }

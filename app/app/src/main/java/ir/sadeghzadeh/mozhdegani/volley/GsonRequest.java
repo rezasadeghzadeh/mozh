@@ -16,6 +16,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.utils.Util;
 
 public class GsonRequest<T> extends Request<T> {
@@ -64,6 +65,10 @@ public class GsonRequest<T> extends Request<T> {
             headers.putAll(this.headers);
         } else {
             headers.putAll(super.getHeaders());
+        }
+        String token = Util.fetchFromPreferences(Const.TOKEN);
+        if(token != null && !token.isEmpty()){
+            headers.put(Const.AUTHORIZATION, Const.BEARER + token);
         }
         return headers;
     }

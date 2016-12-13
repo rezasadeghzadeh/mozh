@@ -28,7 +28,6 @@ import ir.sadeghzadeh.mozhdegani.volley.GsonRequest;
 public class BrowseFragment extends BaseFragment {
 
     public static String TAG =  "BrowseFragment";
-    MainActivity activity;
     ListView itemsListView;
     TextView message;
     Bundle args;
@@ -44,7 +43,6 @@ public class BrowseFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        activity  = (MainActivity) getActivity();
     }
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -116,7 +114,7 @@ public class BrowseFragment extends BaseFragment {
                             message.setVisibility(View.VISIBLE);
                             return;
                         }
-                        itemsListView.setAdapter(new ItemsAdapter(getContext(),0,response));
+                        itemsListView.setAdapter(new ItemsAdapter(getContext(),0,response,activity,false));
                     }
                 }, new Response.ErrorListener() {
                     @Override

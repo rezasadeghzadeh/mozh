@@ -47,7 +47,7 @@ func RegisterAuthRoutes()  {
 	*/
 
 
-	iris.Get("/secure",JwtMiddleware.Serve, func(ctx *iris.Context) {
+	iris.Get("/secure", func(ctx *iris.Context) {
 		GetCurrentUserId(ctx)
 
 	})
@@ -136,6 +136,11 @@ func parseUser(ctx  *iris.Context) *User {
 }
 
 func GetCurrentUserId(ctx *iris.Context) string {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("Recovered : %s", r)
+		}
+	}()
 	token :=JwtMiddleware.Get(ctx)
 	claims := token.Claims.(jwt.MapClaims)
 	userId := claims["userid"].(string)

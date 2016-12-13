@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.utils.Util;
 
 public class CustomMultipartVolleyRequest extends Request<String> {
@@ -116,9 +117,16 @@ public class CustomMultipartVolleyRequest extends Request<String> {
         super.deliverError(error);
     }
 
+    @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return new HashMap();
+        Map<String, String> headers = new HashMap();
+        String token = Util.fetchFromPreferences(Const.TOKEN);
+        if(token != null && !token.isEmpty()){
+            headers.put(Const.AUTHORIZATION, Const.BEARER + token);
+        }
+        return headers;
     }
+
 
     @Override
     public Priority getPriority() {

@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.entity.Item;
 import ir.sadeghzadeh.mozhdegani.utils.Util;
 
@@ -53,12 +54,17 @@ public class GsonPostRequest<T> extends Request<T> {
         this.listener.onResponse(response);
     }
 
+    @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> headers = new HashMap();
         if (this.headers != null) {
             headers.putAll(this.headers);
         } else {
             headers.putAll(super.getHeaders());
+        }
+        String token = Util.fetchFromPreferences(Const.TOKEN);
+        if(token != null && !token.isEmpty()){
+            headers.put(Const.AUTHORIZATION, Const.BEARER + token);
         }
         return headers;
     }

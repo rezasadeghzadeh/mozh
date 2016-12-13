@@ -31,11 +31,12 @@ type Item struct {
 	ApprovedTime int64
 	Email string
 	TelegramId string
+	OwnerId string
 }
 
 
 func   Items(title string, categoryId string, provinceId string,
-	cityId string, itemType string, approved string) []Item {
+	cityId string, itemType string, approved string, ownerId string) []Item {
 	var items []Item
 	log.Printf("Connecting to  %s  database \n",config.Config.MongoDatabaseName )
 	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection)
@@ -59,6 +60,9 @@ func   Items(title string, categoryId string, provinceId string,
 	if approved != ""{
 		q["approved"] = approved
 	}
+	if ownerId !=  ""{
+		q["ownerid"] =  ownerId
+	}
 	log.Printf("List items criteria: %v",q)
 	err := collection.Find(q).Sort("-registerdate").All(&items)
 	if(err != nil){
@@ -69,7 +73,8 @@ func   Items(title string, categoryId string, provinceId string,
 
 func NewItem(title string, category string, categoryTitle string, description string, date string,
 	itemType string, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string,
-	mobile string, latitude string, longitude string, address string, email string, telegramId string ) (string,error) {
+	mobile string, latitude string, longitude string, address string, email string, telegramId string,
+	ownerId string) (string,error) {
 	newItem  :=  Item{
 		Title:title,
 		CategoryId:category,
@@ -90,7 +95,9 @@ func NewItem(title string, category string, categoryTitle string, description st
 		Approved:"false",
 		Email : email,
 		TelegramId : telegramId,
+		OwnerId: ownerId,
 	}
+	log.Printf("Owner Id:" , ownerId)
 	log.Printf("New Item Values: %v",newItem)
 	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection)
 	newId  := bson.NewObjectId()
