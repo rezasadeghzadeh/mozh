@@ -9,10 +9,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.NetworkImageView;
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
@@ -40,7 +43,10 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,6 +67,7 @@ import ir.sadeghzadeh.mozhdegani.entity.City;
 import ir.sadeghzadeh.mozhdegani.entity.Item;
 import ir.sadeghzadeh.mozhdegani.entity.KeyValuePair;
 import ir.sadeghzadeh.mozhdegani.entity.Province;
+import ir.sadeghzadeh.mozhdegani.utils.LoadImageTask;
 import ir.sadeghzadeh.mozhdegani.utils.Util;
 import ir.sadeghzadeh.mozhdegani.volley.CustomMultipartVolleyRequest;
 import ir.sadeghzadeh.mozhdegani.volley.GsonRequest;
@@ -109,6 +116,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     private String latitude;
     private String longitude;
     String id;
+    private boolean edit;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -132,6 +140,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         initBackButton();
         Bundle args = getArguments();
         if(args != null  && !args.getString(Const.ID).isEmpty()){
+            edit= true;
             id  =  args.getString(Const.ID);
             initValues();
         }
@@ -143,13 +152,46 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         params.put(Const.ID,id);
         GsonRequest<Item> request = new GsonRequest<>(Const.DETAIL_ITEM_URL, Item.class, params, null, new Response.Listener<Item>() {
             @Override
-            public void onResponse(Item item) {
+            public void onResponse(final Item item) {
                 title.setText(item.Title);
                 description.setText(item.Description);
                 pickDate.setText(item.Date);
+                occurredDate = item.Date;
                 selectCity.setText(item.CityTitle);
+                selectedCityId =  item.CityId;
+                selectedCityTitle = item.CityTitle;
                 selectProvince.setText(item.ProvinceTitle);
+                selectedProvinceId =  item.ProvinceId;
+                selectedProvideTitle = item.ProvinceTitle;
                 openCategoryPopup.setText(item.CategoryTitle);
+                currentCategoryId = item.CategoryId;
+                currentCategoryTitle = item.CategoryTitle;
+                if(Integer.parseInt(item.ItemType) == Const.FOUND){
+                    radioGroup.check(R.id.found);
+                }else {
+                    radioGroup.check(R.id.lost);
+                }
+                String  url  = Util.imageUrlMaker(true,item);
+                LoadImageTask imageTask = new LoadImageTask(new LoadImageTask.Listener() {
+                    @Override
+                    public void onImageLoaded(Bitmap bitmap) {
+                        FileOutputStream photoOutputStream = null;
+                        try {
+                            compressedPhoto  =  createTemporaryFile("picture" + System.currentTimeMillis(), ".jpg");
+                            photoOutputStream = new FileOutputStream(compressedPhoto);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, photoOutputStream);
+                            imageView.setImageBitmap(bitmap);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+                imageTask.execute(url);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -295,6 +337,9 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                 Charset chars = Charset.forName(Const.UTF8); // Setting up the encoding
                 MultipartEntity multipartEntity = new MultipartEntity();
                 try {
+                    if(edit){
+                        multipartEntity.addPart(Const.ID, new StringBody(id, chars));
+                    }
                     multipartEntity.addPart(Const.TITLE, new StringBody(title.getText().toString(), chars));
                     multipartEntity.addPart(Const.DESCRIPTION, new StringBody(description.getText().toString(), chars));
                     multipartEntity.addPart(Const.DATE, new StringBody(occurredDate, chars));
@@ -337,17 +382,6 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                         public void onResponse(String response) {
                             activity.hideProgress();
                             Log.e(TAG, response.toString());
-                            activity.addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
-                            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(getContext());
-                            dlgAlert.setMessage(getString(R.string.new_item_added_successfully))
-                            .setPositiveButton(getString(R.string.bashe), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            dlgAlert.show();
-
                             if (takeImageFromCamera) {
                                 photo.delete();
                             }
@@ -355,6 +389,28 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                             if (compressedPhoto != null) {
                                 compressedPhoto.delete();
                             }
+
+                            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(getContext());
+                            dlgAlert.setPositiveButton(getString(R.string.bashe), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            if(edit){
+                                dlgAlert.setMessage(getString(R.string.updated_successfully));
+                            }else {
+                                dlgAlert.setMessage(getString(R.string.new_item_added_successfully));
+                            }
+
+                            dlgAlert.show()
+                            ;
+                            if(edit){
+                                activity.addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG);
+                            }else {
+                                activity.addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
+                            }
+
                         }
                     }, multipartEntity, Long.valueOf(0), null);
                     ApplicationController.getInstance().addToRequestQueue(request, 60000);

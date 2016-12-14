@@ -18,7 +18,7 @@ func NewItemHandler()  {
 	iris.Post("/item/add" ,auth.JwtMiddleware.Serve, func(ctx  *iris.Context) {
 		log.Printf("%v",ctx.Request.Header)
 		log.Println("Start serving /items/new request")
-
+		id := ctx.PostValue("Id")
 		title:= ctx.PostValue("Title")
 		category := ctx.PostValue("Category")
 		categoryTitle := ctx.PostValue("CategoryTitle")
@@ -45,7 +45,7 @@ func NewItemHandler()  {
 		}else {
 			log.Printf("Error on uploaded file Error: %s",errUpload)
 		}
-		id,err := NewItem(title, category, categoryTitle, description, date, itemType, imageExt,
+		id,err := NewItem(id,title, category, categoryTitle, description, date, itemType, imageExt,
 		cityId, cityTitle, provinceId, provinceTitle, mobile, latitude, longitude, address, email, telegramId, ownerId)
 		if err != nil {
 			log.Printf("Error on inserting new Item: %s",err)

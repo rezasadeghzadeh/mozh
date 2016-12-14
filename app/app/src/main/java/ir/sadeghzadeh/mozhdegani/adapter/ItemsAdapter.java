@@ -21,6 +21,7 @@ import ir.sadeghzadeh.mozhdegani.entity.Item;
 import ir.sadeghzadeh.mozhdegani.fragment.BrowseFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.DetailItemFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.NewFragment;
+import ir.sadeghzadeh.mozhdegani.utils.Util;
 
 /**
  * Created by reza on 11/3/16.
@@ -110,7 +111,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         holder.date.setText(item.Date + "");
         holder.city.setText(String.valueOf(item.CityTitle));
         if(item.ImageExt != null && !item.ImageExt.isEmpty()){
-            String uri = Const.SERVER_URL + Const.THUMBNAIL_URL + "/" + item.id + item.ImageExt;
+            String uri = Util.imageUrlMaker(true,item);
             holder.thumbnail.setImageUrl(uri, ApplicationController.getInstance().getImageLoaderInstance());
         }else {
             holder.thumbnail.setImageUrl(null, null);

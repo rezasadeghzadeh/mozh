@@ -81,4 +81,5 @@
     <string name="auth_failed">کد وارد شده اشتباه است</string>
     <string name="edit">ویرایش</string>
     <string name="preview">پیش نمایش</string>
+    <string name="updated_successfully">بروزرسانی با موفقیت انجام شد</string>
 </resources>

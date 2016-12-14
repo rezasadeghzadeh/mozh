@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import ir.sadeghzadeh.mozhdegani.BuildConfig;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
+import ir.sadeghzadeh.mozhdegani.entity.Item;
 
 public class Util {
     private static final Pattern DIR_SEPORATOR;
@@ -275,6 +276,17 @@ public class Util {
             return false;
         }
         return true;
+    }
+
+    public static String imageUrlMaker(boolean thumbnail, Item item){
+        String  url  = "";
+        if(thumbnail){
+            url = Const.SERVER_URL + Const.THUMBNAIL_URL + "/" + item.id + item.ImageExt;
+        }else {
+            url = Const.SERVER_URL + Const.FULL_IMAGE_URL + "/" + item.id + item.ImageExt;
+
+        }
+        return url;
     }
 }
 

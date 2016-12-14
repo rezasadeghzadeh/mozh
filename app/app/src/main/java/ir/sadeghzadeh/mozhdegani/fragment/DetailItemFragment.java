@@ -191,7 +191,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         mMap.addMarker(new MarkerOptions().position(point).title("Lost/Found Place"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 17.0f ) );
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 10.0f ) );
     }
 
     @Override

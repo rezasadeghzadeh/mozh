@@ -71,7 +71,7 @@ func   Items(title string, categoryId string, provinceId string,
 	return items
 }
 
-func NewItem(title string, category string, categoryTitle string, description string, date string,
+func NewItem(id string, title string, category string, categoryTitle string, description string, date string,
 	itemType string, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string,
 	mobile string, latitude string, longitude string, address string, email string, telegramId string,
 	ownerId string) (string,error) {
@@ -97,17 +97,20 @@ func NewItem(title string, category string, categoryTitle string, description st
 		TelegramId : telegramId,
 		OwnerId: ownerId,
 	}
-	log.Printf("Owner Id:" , ownerId)
+	log.Printf("Item Id: ",id)
 	log.Printf("New Item Values: %v",newItem)
 	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection)
-	newId  := bson.NewObjectId()
-	_,err:=collection.UpsertId(newId,newItem)
+	itemId := bson.NewObjectId()
+	if id != ""{
+		itemId = bson.ObjectIdHex(id)
+	}
+	_,err:=collection.UpsertId(itemId,newItem)
 	if(err != nil){
 		log.Printf("error on inserting new item : %s",err)
 		return "",err
 	}
-	log.Printf("New item inserted successfully, ID:%s  Values:%v",newId,newItem)
-	return newId.Hex(),nil
+	log.Printf("New item inserted successfully, ID:%s  Values:%v", itemId,newItem)
+	return itemId.Hex(),nil
 }
 
 func ItemById(id string) *Item {
