@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"reflect"
+	"time"
 )
 
 type Node struct {
@@ -11,14 +11,11 @@ type Node struct {
 }
 
 func main()  {
-	n:= Node{"1","reza"}
-	val := reflect.ValueOf(&n).Elem()
-
-	for i:=0; i< val.NumField(); i++ {
-		valueField  := val.Field(i)
-		typeField := val.Type().Field(i)
-		tag  := typeField.Tag
-		fmt.Printf("Field Name: %s,\t Field Value: %v,\t Tag Value: %s\n", typeField.Name, valueField.Interface(), tag.Get("tag_name"))
+	for i:=0;i<=10;i++{
+		fmt.Printf("%d\t",i)
+		go func(index int) {
+			fmt.Printf("%d\n",index)
+		}(i)
 	}
-
+	time.Sleep(time.Second*1)
 }

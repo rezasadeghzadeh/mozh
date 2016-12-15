@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"strconv"
 )
-type requestResponse struct {
+type RequestResponse struct {
 	Status int
 	Message string
 	Token string
@@ -56,7 +56,7 @@ func RegisterAuthRoutes()  {
 
 func authUser() {
 	iris.Get("/auth/genToken", func(ctx *iris.Context) {
-		response  :=  requestResponse{}
+		response  :=  RequestResponse{}
 		user:= parseUser(ctx)
 		log.Printf("Start authentication user  %v",user)
 		userRecord := userByUsernameAndPass(user.Username, user.Password)
@@ -89,7 +89,7 @@ func authUser() {
 
 func sendPassToEmail() {
 	iris.Get("/auth/sendPassToEmail", func(ctx *iris.Context) {
-		res := requestResponse{Status:0}
+		res := RequestResponse{Status:0}
 		email  := ctx.URLParam("email")
 		if email == ""{
 			log.Printf("Invalid Email")

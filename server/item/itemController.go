@@ -137,7 +137,7 @@ func ApproveItemHandler(){
 	})
 }
 
-func MyItems()  {
+func MyItemsHandler()  {
 	iris.Get("/item/my", auth.JwtMiddleware.Serve, func(ctx *iris.Context) {
 		currentUserId  := auth.GetCurrentUserId(ctx)
 		if currentUserId != ""{
@@ -146,4 +146,24 @@ func MyItems()  {
 			ctx.JSON(iris.StatusOK,	items)
 		}
 	})
+}
+
+func AddMessageToItemHandler()  {
+	iris.Get("/item/message/add", func(ctx *iris.Context) {
+		res := auth.RequestResponse{}
+		id :=  ctx.URLParam("Id")
+		if id == ""{
+			return
+		}
+		body  := ctx.URLParam("Body")
+		err:=addMessageToItem(id,body)
+		if err != nil{
+			log.Printf("Error in adding  message to item, Error: %#v",err)
+			res.Status = 0
+		}else {
+			res.Status = 1
+		}
+		ctx.JSON(iris.StatusOK,res)
+	})
+
 }

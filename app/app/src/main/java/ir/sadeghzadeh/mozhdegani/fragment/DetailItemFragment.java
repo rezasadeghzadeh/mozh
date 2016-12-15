@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.DisplayMetrics;
@@ -56,6 +58,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
     TextView founded;
     TextView email;
     TextView telegramId;
+    Button sendMessage;
 
     private GoogleMap mMap;
     Item item;
@@ -67,10 +70,18 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         super.onCreate(savedInstanceState);
         activity  = (MainActivity) getActivity();
     }
+    private static View view;
+
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        View view = layoutInflater.inflate(R.layout.detail_item_fragment, container, false);
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+
+        view = layoutInflater.inflate(R.layout.detail_item_fragment, container, false);
         mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map_container);
         mapLayout= view.findViewById(R.id.map_layout);
@@ -81,7 +92,22 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
             initFullScreenImage();
         }
         initBackButton();
+        initSendMessageButton(view);
         return view;
+    }
+
+    private void initSendMessageButton(View view) {
+        sendMessage = (Button) view.findViewById(R.id.send_message);
+        sendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args  = new Bundle();
+                args.putString(Const.ID,id);
+                SendMessageFragment  fragment = new SendMessageFragment();
+                fragment.setArguments(args);
+                activity.addFragmentToContainer(fragment,SendMessageFragment.TAG);
+            }
+        });
     }
 
     private void initBackButton() {
@@ -181,6 +207,16 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
     }
 
     private void initMap() {
+        FragmentManager fm = getChildFragmentManager();
+        SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentByTag("mapFragment");
+        if (mapFragment == null) {
+            mapFragment = new SupportMapFragment();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.add(R.id.map_layout, mapFragment, "mapFragment");
+            ft.commit();
+            fm.executePendingTransactions();
+        }
+
         mapFragment.getMapAsync(this);
     }
 
@@ -202,5 +238,4 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         if (f != null)
             getFragmentManager().beginTransaction().remove(f).commit();
     }
-
 }

@@ -24,6 +24,7 @@ public class Const {
     public static final String SEND_PASS_TO_EMAIL_URL = SERVER_URL + "/auth/sendPassToEmail";
     public static final String AUTH_USER_URL = SERVER_URL + "/auth/genToken";
     public static final String MY_ITEMS_URL = SERVER_URL + "/item/my";
+    public static final String SEND_MESSAGE_URL = SERVER_URL + "/item/message/add";
 
 
     public static final String TITLE  = "Title";
@@ -53,4 +54,5 @@ public class Const {
     public static final String USERNAME = "username";
     public static final String BEARER = "Bearer ";
     public static final String AUTHORIZATION = "Authorization";
+    public static final String BODY = "Body";
 }

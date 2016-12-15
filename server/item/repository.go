@@ -7,7 +7,15 @@ import (
 	"../util"
 	"gopkg.in/mgo.v2/bson"
 	"../mongo"
+	"time"
 )
+
+type Message struct {
+	Id bson.ObjectId `bson:"_id,omitempty" json:"id"`
+	Body string
+	Read int8
+	CreateDate time.Time
+}
 
 type Item struct {
 	Id bson.ObjectId `bson:"_id,omitempty" json:"id"`
@@ -32,6 +40,7 @@ type Item struct {
 	Email string
 	TelegramId string
 	OwnerId string
+	Messages []Message
 }
 
 
@@ -137,3 +146,22 @@ func approveItem(id string) {
 	}
 }
 
+func addMessageToItem(id string, body string) error {
+	newId:= bson.NewObjectId()
+	message  :=  Message{
+		Id:newId,
+		Body:body,
+		CreateDate:time.Now(),
+	}
+	q:= bson.M{}
+	q["_id"] = bson.ObjectIdHex(id)
+	change  := bson.M{"$push": bson.M{"messages": message}}
+	err := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection).Update(q, change)
+	if err != nil {
+		log.Printf("Error in adding new message error: %v \n",err)
+		return err
+	}else {
+		log.Printf("Message added to item ",id)
+	}
+	return nil
+}
