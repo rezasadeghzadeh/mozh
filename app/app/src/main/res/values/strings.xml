@@ -85,4 +85,6 @@
     <string name="message_sent_successfully">پیام شما برای ثبت کننده آگهی ارسال شد</string>
     <string name="send">ارسال</string>
     <string name="send_message_to_owner">لطفا پیام خود را برای ثبت کننده اگهی  وارد کنید و دکمه ارسال را بزنید</string>
+    <string name="messages">پیام ها</string>
+    <string name="no_message_registered">پیامی ثبت نشده است</string>
 </resources>

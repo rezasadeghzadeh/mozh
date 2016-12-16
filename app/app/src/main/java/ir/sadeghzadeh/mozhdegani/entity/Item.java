@@ -1,9 +1,11 @@
 package ir.sadeghzadeh.mozhdegani.entity;
 
+import java.util.List;
+
 /**
  * Created by reza on 11/3/16.
  */
-public class Item {
+public class Item{
     public String id;
     public String Title;
     public String Description;
@@ -23,4 +25,6 @@ public class Item {
     public String Address;
     public String Email;
     public String TelegramId;
+    public List<ItemMessage> Messages;
+
 }

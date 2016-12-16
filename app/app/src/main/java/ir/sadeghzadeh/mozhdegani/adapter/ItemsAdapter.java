@@ -1,15 +1,14 @@
 package ir.sadeghzadeh.mozhdegani.adapter;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 
@@ -17,8 +16,8 @@ import ir.sadeghzadeh.mozhdegani.ApplicationController;
 import ir.sadeghzadeh.mozhdegani.Const;
 import ir.sadeghzadeh.mozhdegani.MainActivity;
 import ir.sadeghzadeh.mozhdegani.R;
+import ir.sadeghzadeh.mozhdegani.dialog.MessagesListDialog;
 import ir.sadeghzadeh.mozhdegani.entity.Item;
-import ir.sadeghzadeh.mozhdegani.fragment.BrowseFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.DetailItemFragment;
 import ir.sadeghzadeh.mozhdegani.fragment.NewFragment;
 import ir.sadeghzadeh.mozhdegani.utils.Util;
@@ -77,6 +76,8 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
             holder.myItemsButtonContainer.setVisibility(View.VISIBLE);
             holder.edit  = (Button) rowView.findViewById(R.id.edit);
             holder.preview  = (Button) rowView.findViewById(R.id.preview);
+            holder.messages = (Button) rowView.findViewById(R.id.message);
+
             holder.edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -99,6 +100,18 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
                 }
             });
 
+            holder.messages.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(item.Messages != null && item.Messages.size() > 0){
+                        MessagesListDialog dialog = new MessagesListDialog();
+                        dialog.itemMessages = item.Messages;
+                        dialog.show(activity.getSupportFragmentManager(), MessagesListDialog.TAG);
+                    }else {
+                        Toast.makeText(getContext(),getContext().getString(R.string.no_message_registered),Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }else {
             holder.myItemsButtonContainer.setVisibility(View.GONE);
         }
@@ -143,6 +156,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         View myItemsButtonContainer;
         Button edit;
         Button preview;
+        Button messages;
 
         public Holder() {
         }
