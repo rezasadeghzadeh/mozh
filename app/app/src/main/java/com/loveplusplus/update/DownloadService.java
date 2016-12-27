@@ -7,12 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -25,13 +21,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
-import ir.sadeghzadeh.mozhdegani.ApplicationController;
-import ir.sadeghzadeh.mozhdegani.R;
-import ir.sadeghzadeh.mozhdegani.utils.Util;
-import ir.sadeghzadeh.mozhdegani.volley.DownloadFileVolleyRequest;
+import ir.sadeghzadeh.mozhdeh.ApplicationController;
+import ir.sadeghzadeh.mozhdeh.volley.DownloadFileVolleyRequest;
 
 public class DownloadService extends IntentService {
     // 10-10 19:14:32.618: D/DownloadService(1926): 测试缓存：41234 32kb

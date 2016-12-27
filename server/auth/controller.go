@@ -18,41 +18,16 @@ type RequestResponse struct {
 
 func RegisterAuthRoutes()  {
 	authUser()
-	/*
-	iris.Get("user/new", func(ctx  *iris.Context) {
-		user:= parseUser(ctx)
-		if user.Username == "" ||  len(user.Password) == 0{
-			log.Printf("username  or password is empty")
-			return
-		}
-
-		log.Printf("registering  new user  %v",user)
-		userByUsername := userByUsername(user.Username)
-		if userByUsername != nil{
-			id,err := upsertUser(userByUsername.Id.Hex(),user)
-			if err != nil{
-				log.Printf("Error in saving new user")
-			}else {
-				log.Printf("user updated with id  %s",id)
-			}
-		}else {
-			id,err := upsertUser("",user)
-			if err != nil{
-				log.Printf("Error in saving new user")
-			}else {
-				log.Printf("user registered with new id  %s",id)
-			}
-		}
-	})
-	*/
-
-
-	iris.Get("/secure", func(ctx *iris.Context) {
-		GetCurrentUserId(ctx)
-
-	})
 	sendPassToEmail()
+	updateFirebaseToken()
 }
+
+func updateFirebaseToken() {
+	iris.Get("/auth/update/firebaseToken", func(ctx  *iris.Context) {
+
+	})
+}
+
 
 func authUser() {
 	iris.Get("/auth/genToken", func(ctx *iris.Context) {

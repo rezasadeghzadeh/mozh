@@ -10,12 +10,11 @@ import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ir.sadeghzadeh.mozhdegani.R;
+import ir.sadeghzadeh.mozhdeh.R;
 
 
 /**

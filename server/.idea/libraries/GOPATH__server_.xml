@@ -2,16 +2,16 @@
   <library name="GOPATH &lt;server&gt;">
     <CLASSES>
       <root url="file://$USER_HOME$/go/workspace/src/golang.org" />
-      <root url="file://$USER_HOME$/go/workspace/src/github.com" />
       <root url="file://$USER_HOME$/go/workspace/src/company" />
       <root url="file://$USER_HOME$/go/workspace/src/gopkg.in" />
+      <root url="file://$USER_HOME$/go/workspace/src/github.com" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
       <root url="file://$USER_HOME$/go/workspace/src/golang.org" />
-      <root url="file://$USER_HOME$/go/workspace/src/github.com" />
       <root url="file://$USER_HOME$/go/workspace/src/company" />
       <root url="file://$USER_HOME$/go/workspace/src/gopkg.in" />
+      <root url="file://$USER_HOME$/go/workspace/src/github.com" />
     </SOURCES>
     <excluded>
       <root url="file://$PROJECT_DIR$" />

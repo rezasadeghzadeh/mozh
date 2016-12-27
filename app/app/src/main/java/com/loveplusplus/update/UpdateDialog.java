@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Html;
 
-import ir.sadeghzadeh.mozhdegani.R;
+import ir.sadeghzadeh.mozhdeh.R;
 
 class UpdateDialog {
 
