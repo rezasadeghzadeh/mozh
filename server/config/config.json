@@ -1,6 +1,6 @@
 {
 	"mongoServerIP": "127.0.0.1",
-	"mongoDatabaseName": "mozhdegani",
+	"mongoDatabaseName": "mozhdeh",
 	"itemImagesPath" : "/home/reza/tmp/itemImages/",
 	"itemThumbnailImagesPath" : "/home/reza/tmp/itemImages/t/",
 	"updatePath": "/opt/mozhdeh/updates",

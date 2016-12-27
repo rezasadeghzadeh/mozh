@@ -53,6 +53,7 @@ public class EnterPasswordFragment extends BaseFragment{
                 Map<String,String> params = new HashMap<>();
                 params.put(Const.PASSWORD,password.getText().toString());
                 params.put(Const.USERNAME, Util.fetchFromPreferences(Const.USERNAME));
+                params.put(Const.FIREBASE_TOKEN,Util.fetchFromPreferences(Const.FIREBASE_TOKEN));
 
                 activity.showProgress();
                 GsonRequest<AuthResponse> request = new GsonRequest<AuthResponse>(Const.AUTH_USER_URL, AuthResponse.class, params, null, new Response.Listener<AuthResponse>() {

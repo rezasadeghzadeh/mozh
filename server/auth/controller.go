@@ -19,13 +19,6 @@ type RequestResponse struct {
 func RegisterAuthRoutes()  {
 	authUser()
 	sendPassToEmail()
-	updateFirebaseToken()
-}
-
-func updateFirebaseToken() {
-	iris.Get("/auth/update/firebaseToken", func(ctx  *iris.Context) {
-
-	})
 }
 
 
@@ -33,6 +26,7 @@ func authUser() {
 	iris.Get("/auth/genToken", func(ctx *iris.Context) {
 		response  :=  RequestResponse{}
 		user:= parseUser(ctx)
+		firebaseToke  := ctx.URLParam("FirebaseToken")
 		log.Printf("Start authentication user  %v",user)
 		userRecord := userByUsernameAndPass(user.Username, user.Password)
 		log.Printf("result of  founded users: %v",userRecord)
@@ -42,6 +36,8 @@ func authUser() {
 			ctx.JSON(iris.StatusOK,response)
 			return
 		}
+		//update firebase Token
+		updateFirebaseToken(userRecord.Id,firebaseToke)
 		token := jwt.New(jwt.SigningMethodHS256)
 		claims := make(jwt.MapClaims)
 		claims["userid"] = userRecord.Id

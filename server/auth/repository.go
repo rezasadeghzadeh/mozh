@@ -62,3 +62,18 @@ func upsertUser(user  *User) (string,error){
 	}
 	return userId.Hex(),nil
 }
+
+func updateFirebaseToken(userId bson.ObjectId, firebaseToken string) error{
+	c := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.UserCollection)
+	q := bson.M{}
+	q["_id"] = (userId)
+	change  := bson.M{"$set": bson.M{"firebasetoken":firebaseToken}}
+	err := c.Update(q,change)
+	log.Printf("Updating firebase token %s %s",userId.Hex(), firebaseToken)
+	if err != nil{
+		log.Printf("Error on updating firebse token: %v",err)
+		return err
+	}
+	return nil
+}
+

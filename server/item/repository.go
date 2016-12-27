@@ -91,7 +91,7 @@ func NewItem(id string, title string, category string, categoryTitle string, des
 		Description:description,
 		Date:date,
 		ItemType:itemType,
-		RegisterDate: util.GetCurrentMilis(),
+		RegisterDate: time.Now().UnixNano(),
 		ImageExt: imageExt,
 		CityId: cityId,
 		CityTitle : cityTitle,

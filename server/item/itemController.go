@@ -72,6 +72,8 @@ func NewItemHandler()  {
 			createThumbnail(newFileName, newFileName)
 		}
 
+		//send  notification for item registrars that are  looking up
+		sendNotificationToMatches(id)
 	})
 }
 

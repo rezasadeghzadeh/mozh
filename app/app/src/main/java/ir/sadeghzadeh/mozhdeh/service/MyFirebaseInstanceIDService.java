@@ -12,6 +12,7 @@ import java.util.HashMap;
 import ir.sadeghzadeh.mozhdeh.ApplicationController;
 import ir.sadeghzadeh.mozhdeh.Const;
 import ir.sadeghzadeh.mozhdeh.entity.RequestResponse;
+import ir.sadeghzadeh.mozhdeh.utils.Util;
 import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
 
 /**
@@ -49,19 +50,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        HashMap<String,String> params = new HashMap<>();
-        params.put(Const.FIREBASE_TOKEN,token);
-        GsonRequest<RequestResponse> request = new GsonRequest<>(Const.UPDATE_FIREBASE_TOKEN, RequestResponse.class, params, null, new Response.Listener<RequestResponse>() {
-            @Override
-            public void onResponse(RequestResponse response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        ApplicationController.getInstance().addToRequestQueue(request);
+        Util.saveInPreferences(Const.FIREBASE_TOKEN,token);
     }
 }
