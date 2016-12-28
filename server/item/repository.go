@@ -32,8 +32,8 @@ type Item struct {
 	ProvinceId string
 	ProvinceTitle string
 	Mobile string
-	Latitude string
-	Longitude string
+	Latitude float64
+	Longitude float64
 	Address string
 	Approved string
 	ApprovedTime int64
@@ -82,7 +82,7 @@ func   Items(title string, categoryId string, provinceId string,
 
 func NewItem(id string, title string, category string, categoryTitle string, description string, date string,
 	itemType string, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string,
-	mobile string, latitude string, longitude string, address string, email string, telegramId string,
+	mobile string, latitude float64, longitude float64, address string, email string, telegramId string,
 	ownerId string) (string,error) {
 	newItem  :=  Item{
 		Title:title,

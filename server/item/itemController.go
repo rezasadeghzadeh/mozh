@@ -11,6 +11,7 @@ import (
 	"image/jpeg"
 	"github.com/nfnt/resize"
 	"../auth"
+	"strconv"
 )
 
 func NewItemHandler()  {
@@ -30,8 +31,8 @@ func NewItemHandler()  {
 		provinceId := ctx.PostValue("ProvinceId")
 		provinceTitle := ctx.PostValue("ProvinceTitle")
 		mobile := ctx.PostValue("Mobile")
-		latitude := ctx.PostValue("Latitude")
-		longitude := ctx.PostValue("Longitude")
+		latitude,_ := strconv.ParseFloat(ctx.PostValue("Latitude"),32)
+		longitude,_ := strconv.ParseFloat(ctx.PostValue("Longitude"),32)
 		address := ctx.PostValue("Address")
 		email := ctx.PostValue("Email")
 		telegramId := ctx.PostValue("TelegramId");
