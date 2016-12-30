@@ -47,6 +47,7 @@ func registerRoutes()  {
 	item.ApproveItemHandler()
 	item.MyItemsHandler()
 	item.AddMessageToItemHandler()
+	item.TestSendNotification()
 }
 
 func listCategories() {

@@ -2,25 +2,25 @@ package util
 
 import "math"
 
+
 // LatLongInDistance calculate min,max lat lng for a distance in km
-func LatLongInDistance(lat float64, lng float64, distance int) (float64, float64, float64, float64) {
-	r := 6371.009
+func LatLongInDistance(lat float64, lng float64) (float64, float64, float64, float64) {
+	// 111 kilometers / 1000 = 111 meters.
+	// 1 degree of latitude = ~111 kilometers.
+	// 1 / 1000 means an offset of coordinate by 111 meters.
 
-	maxLat  := lat + Deg(float64(distance)/ r)
-	minLat  := lat -  Deg(float64(distance) / r)
+	offset := 27 / 1000.0; //~mean  about 3000 m
+	latMax := lat + offset;
+	latMin := lat - offset;
 
-	maxLng := lng + Deg(float64(distance) / r / math.Cos( Deg(lat) ))
-	minLng := lng - Deg(float64(distance) / r / math.Cos( Deg(lat) ))
+	// With longitude, things are a bit more complex.
+	// 1 degree of longitude = 111km only at equator (gradually shrinks to zero at the poles)
+	// So need to take into account latitude too, using cos(lat).
 
-	return  minLat,minLng,maxLat,maxLng
-}
+	lngOffset := offset * math.Cos(lat* math.Pi / 180.0);
+	lngMax := lng + lngOffset;
+	lngMin := lng - lngOffset;
 
-const x = math.Pi / 180;
+	return  latMin,lngMin,latMax,lngMax
 
-func Rad(d float64) float64 {
-	return d * x
-};
-
-func Deg(r float64) float64 {
-	return r / x
 }
