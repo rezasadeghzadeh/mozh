@@ -10,9 +10,20 @@ import (
 )
 
 type User struct {
-	Id bson.ObjectId `bson:"_id,omitempty" json:"id"`
-	Username string
-	Password []byte
+	Id            bson.ObjectId `bson:"_id,omitempty" json:"id"`
+	Username      string
+	Password      []byte
+	Firebasetoken string
+}
+func UserById(id string) (*User) {
+	user := User{}
+	c:= mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.UserCollection)
+	err := c.FindId(bson.ObjectIdHex(id)).One(&user)
+	if err != nil{
+		log.Printf("Error : %v",err)
+		return nil
+	}
+	return &user
 }
 
 func userByUsernameAndPass(username string , password []byte) (*User) {

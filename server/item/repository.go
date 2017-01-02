@@ -21,7 +21,7 @@ type Item struct {
 	Id bson.ObjectId `bson:"_id,omitempty" json:"id"`
 	Title string
 	Description string
-	ItemType string
+	ItemType int
 	RegisterDate int64
 	Date string
 	CategoryId string
@@ -81,7 +81,7 @@ func   Items(title string, categoryId string, provinceId string,
 }
 
 func NewItem(id string, title string, category string, categoryTitle string, description string, date string,
-	itemType string, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string,
+	itemType int, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string,
 	mobile string, latitude float64, longitude float64, address string, email string, telegramId string,
 	ownerId string) (string,error) {
 	newItem  :=  Item{

@@ -25,7 +25,7 @@ func NewItemHandler()  {
 		categoryTitle := ctx.PostValue("CategoryTitle")
 		description :=ctx.PostValue("Description")
 		date := ctx.PostValue("Date")
-		itemType := ctx.PostValue("ItemType")
+		itemType,_ := strconv.Atoi(ctx.PostValue("ItemType"))
 		cityId := ctx.PostValue("CityId")
 		cityTitle := ctx.PostValue("CityTitle")
 		provinceId := ctx.PostValue("ProvinceId")

@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import ir.sadeghzadeh.mozhdeh.fragment.BrowseFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.CategoryFragment;
+import ir.sadeghzadeh.mozhdeh.fragment.DetailItemFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.EnterEmailOrMobileFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.MyItemsFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.NewFragment;
@@ -57,15 +58,29 @@ public class MainActivity extends BaseActivity {
             initUtil();
             MainActivityPermissionsDispatcher.writeVersionToLogWithCheck(this);
             UpdateChecker.checkForDialog(this);
-            //setDefaultLanguage();
             setContentView(R.layout.activity_main);
+
+            //setDefaultLanguage();
             initCustomActionBar();
             initBackButton();
             initElements();
-            addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
+
+            //check if passed an id, we should open detail fragment
+            String id =  getIntent().getStringExtra(Const.ID);
+            if(id != null){
+                Bundle args  =  new Bundle();
+                args.putString(Const.ID,id);
+                DetailItemFragment fragment  = new DetailItemFragment();
+                fragment.setArguments(args);
+                addFragmentToContainer(fragment,DetailItemFragment.TAG);
+            }else {
+                addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
+            }
+
             openDatabase();
             initProgress();
             showProgress();
+
 
     }
 
