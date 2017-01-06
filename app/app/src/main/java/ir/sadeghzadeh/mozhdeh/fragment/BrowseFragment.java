@@ -37,6 +37,8 @@ public class BrowseFragment extends BaseFragment {
     String selectedProvinceId;
     String selectedProvideTitle;
     String currentCategoryId;
+    private String latitude;
+    private String longitude;
 
 
     @Override
@@ -100,6 +102,13 @@ public class BrowseFragment extends BaseFragment {
                 itemType = args.getString(Const.ITEM_TYPE);
                 params.put(Const.ITEM_TYPE,itemType);
             }
+            if(args.getString(Const.LATITUDE) != null && args.getString(Const.LONGITUDE) != null ){
+                latitude = args.getString(Const.LATITUDE);
+                params.put(Const.LATITUDE,latitude);
+                longitude  =  args.getString(Const.LONGITUDE);
+                params.put(Const.LONGITUDE,longitude);
+            }
+
         }
         params.put(Const.APPROVED,"true");
 

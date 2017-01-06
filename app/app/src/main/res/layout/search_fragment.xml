@@ -76,12 +76,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="@string/location" />
+            <Button
+                android:id="@+id/showMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/select_location" />
 
             <Button
                 android:id="@+id/select_province"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:visibility="gone"
                 android:text="@string/select_province" />
 
             <Button
@@ -90,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:enabled="false"
+                android:visibility="gone"
                 android:text="@string/select_city" />
 
         </LinearLayout>

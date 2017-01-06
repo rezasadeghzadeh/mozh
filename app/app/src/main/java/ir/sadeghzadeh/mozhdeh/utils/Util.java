@@ -290,6 +290,10 @@ public class Util {
 
     public static String buildCommaSeperate(List<String> list){
         String result  =  "";
+        if(list.size() == 0){
+            return result;
+        }
+
         for (String row : list){
             result += row + ",";
         }

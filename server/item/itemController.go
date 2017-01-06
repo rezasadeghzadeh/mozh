@@ -114,9 +114,10 @@ func ListItemHandler()  {
 		provinceId := ctx.URLParam("ProvinceId")
 		approved:= ctx.URLParam("Approved")
 		ownerId := ctx.URLParam("OwnerId")
+		latitude,_ := strconv.ParseFloat(ctx.PostValue("Latitude"),32)
+		longitude,_ := strconv.ParseFloat(ctx.PostValue("Longitude"),32)
 		categoriesSlice := util.CommaSeperateToSlice(categories)
-		log.Printf("Categories: %s",categoriesSlice)
-		items := Items(title,categoriesSlice,provinceId,cityId,itemType,approved, ownerId)
+		items := Items(title,categoriesSlice,provinceId,cityId,itemType,approved, ownerId,latitude, longitude)
 		ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 		ctx.JSON(iris.StatusOK,	items)
 	})
@@ -149,7 +150,7 @@ func MyItemsHandler()  {
 	iris.Get("/item/my", auth.JwtMiddleware.Serve, func(ctx *iris.Context) {
 		currentUserId  := auth.GetCurrentUserId(ctx)
 		if currentUserId != ""{
-			items := Items("",[]string{},"","",0,"", currentUserId)
+			items := Items("",[]string{},"","",0,"", currentUserId,0,0)
 			ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 			ctx.JSON(iris.StatusOK,	items)
 		}

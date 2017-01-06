@@ -46,7 +46,7 @@ type Item struct {
 
 
 func   Items(title string, categoryIds []string, provinceId string,
-	cityId string, itemType int, approved string, ownerId string) []Item {
+	cityId string, itemType int, approved string, ownerId string, latitude float64, longitude float64) []Item {
 	var items []Item
 	log.Printf("Connecting to  %s  database \n",config.Config.MongoDatabaseName )
 	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection)
@@ -55,6 +55,7 @@ func   Items(title string, categoryIds []string, provinceId string,
 	if title != ""{
 		q["title"] =  title
 	}
+	log.Printf("Categories  in search : %v",categoryIds)
 	if len(categoryIds) > 0 {
 		q["categoryids"] = bson.M{"$in" :categoryIds}
 	}
@@ -73,6 +74,12 @@ func   Items(title string, categoryIds []string, provinceId string,
 
 	if ownerId !=  ""{
 		q["ownerid"] =  ownerId
+	}
+	if latitude  !=  0 &&  longitude !=  0{
+		latMin, lngMin, latMax, lngMax := util.LatLongInDistance(latitude, longitude)
+		log.Printf("%10f %10f %10f %10f",latMin, lngMin, latMax, lngMax )
+		q["latitude"] = bson.M{"$gte": latMin, "$lte":  latMax}
+		q["longitude"] = bson.M{"$gte": lngMin, "$lte":  lngMax}
 	}
 	log.Printf("List items criteria: %v",q)
 	err := collection.Find(q).Sort("-registerdate").All(&items)

@@ -1,5 +1,7 @@
 package ir.sadeghzadeh.mozhdeh.fragment;
 
+import android.Manifest;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.apache.http.entity.mime.content.StringBody;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +24,7 @@ import ir.sadeghzadeh.mozhdeh.Const;
 import ir.sadeghzadeh.mozhdeh.MainActivity;
 import ir.sadeghzadeh.mozhdeh.R;
 import ir.sadeghzadeh.mozhdeh.dialog.ChooseItemsDialog;
+import ir.sadeghzadeh.mozhdeh.dialog.ChooseLocationOnMapDialog;
 import ir.sadeghzadeh.mozhdeh.dialog.OnOneItemSelectedInDialog;
 import ir.sadeghzadeh.mozhdeh.entity.Category;
 import ir.sadeghzadeh.mozhdeh.entity.City;
@@ -27,11 +32,14 @@ import ir.sadeghzadeh.mozhdeh.entity.KeyValuePair;
 import ir.sadeghzadeh.mozhdeh.entity.Province;
 import ir.sadeghzadeh.mozhdeh.utils.Util;
 import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * Created by reza on 11/2/16.
  */
-public class SearchFragment extends BaseFragment {
+@RuntimePermissions
+public class SearchFragment extends BaseFragment implements ChooseLocationOnMapDialog.OnLocationChoosed {
     public static final String TAG="SearchFragment";
     List<String> currentCategoryIds= new ArrayList<>();
     List<String> currentCategoryTitles = new ArrayList<>();
@@ -47,6 +55,11 @@ public class SearchFragment extends BaseFragment {
     String selectedProvinceId;
     String  selectedProvideTitle;
     int selectedItemType;
+    private String selectedAddress;
+    private String latitude;
+    private String longitude;
+    Button showMap;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -60,6 +73,7 @@ public class SearchFragment extends BaseFragment {
         View view = layoutInflater.inflate(R.layout.search_fragment, container, false);
         initItemTypes(view);
         initTitle(view);
+        initShowMap(view);
         initSelectCategory(view);
         initSelectProvince(view);
         initSelectCity(view);
@@ -67,6 +81,7 @@ public class SearchFragment extends BaseFragment {
         initBackButton();
         return view;
     }
+
 
     private void initBackButton() {
         activity.backButton.setVisibility(View.GONE);
@@ -164,7 +179,11 @@ public class SearchFragment extends BaseFragment {
                                             currentCategoryIds.add(pair.key);
                                             currentCategoryTitles.add(pair.value);
                                         }
-                                        openCategoryPopup.setText(Util.buildCommaSeperate(currentCategoryTitles));
+                                        if(currentCategoryIds.size() > 0){
+                                            openCategoryPopup.setText(Util.buildCommaSeperate(currentCategoryTitles));
+                                        }else {
+                                            openCategoryPopup.setText(getString(R.string.select));
+                                        }
                                     }
                                 });
                                 dialog.show(activity.getSupportFragmentManager().beginTransaction(),TAG);
@@ -200,9 +219,41 @@ public class SearchFragment extends BaseFragment {
                 bundle.putString(Const.CITY_ID,selectedCityId);
                 bundle.putString(Const.TITLE,title.getText().toString());
                 bundle.putString(Const.ITEM_TYPE,String.valueOf(selectedItemType));
+                if(latitude != null &&  !latitude.isEmpty()){
+                    bundle.putString(Const.LATITUDE,latitude);
+                    bundle.putString(Const.LONGITUDE,longitude);
+                }
                 browseFragment.setArguments(bundle);
                 activity.addFragmentToContainer(browseFragment,TAG);
             }
         });
     }
+
+    private void initShowMap(View view) {
+        showMap  = (Button) view.findViewById(R.id.showMap);
+        showMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.showProgress();
+                SearchFragmentPermissionsDispatcher.showMapInSearchFragmentWithCheck(SearchFragment.this);
+            }
+        });
+    }
+
+
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    public void showMapInSearchFragment() {
+        ChooseLocationOnMapDialog dialog = new ChooseLocationOnMapDialog();
+        dialog.mListener = this;
+        dialog.show(activity.getSupportFragmentManager(),TAG);
+    }
+
+    @Override
+    public void onLocationChoosed(Location location, String address) {
+        this.latitude = String.valueOf(location.getLatitude());
+        this.longitude = String.valueOf(location.getLongitude());
+        this.selectedAddress = address;
+        showMap.setText(address);
+    }
+
 }

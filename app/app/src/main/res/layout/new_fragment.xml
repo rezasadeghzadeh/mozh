@@ -84,7 +84,7 @@
                 android:text="@string/select_location" />
 
 
-            <TextView
+            TextView
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
@@ -96,11 +96,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <Button
+                    android:visibility="gone"
                     android:layout_gravity="left"
                     android:id="@+id/select_province"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:text="@string/select_province" />
                 <Button
+                    android:visibility="gone"
                     android:layout_gravity="left"
                     android:enabled="false"
                     android:id="@+id/select_city"

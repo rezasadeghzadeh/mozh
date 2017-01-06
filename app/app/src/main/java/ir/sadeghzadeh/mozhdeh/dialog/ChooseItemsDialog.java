@@ -12,6 +12,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ir.sadeghzadeh.mozhdeh.MainActivity;
@@ -28,7 +29,7 @@ public class ChooseItemsDialog extends DialogFragment implements OnOneItemSelect
     List<KeyValuePair> items;
     ListView itemListView;
     boolean selectMultiple;
-    List<KeyValuePair> selectedItems;
+    List<KeyValuePair> selectedItems= new ArrayList<>();
 
     public ChooseItemsDialog() {
         activity = (MainActivity) getActivity();

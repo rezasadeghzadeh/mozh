@@ -214,6 +214,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         showMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activity.showProgress();
                 NewFragmentPermissionsDispatcher.showMap2WithCheck(NewFragment.this);
             }
         });
@@ -639,13 +640,16 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                                     public void onItemSelected(List<KeyValuePair> selected) {
                                         selectedCategoryIds.clear();
                                         selectedCategoryTitles.clear();
-
                                         for( KeyValuePair pair : selected){
                                             selectedCategoryIds.add(pair.key);
                                             selectedCategoryTitles.add(pair.value);
                                         }
+                                        if(selected.size() > 0){
+                                            openCategoryPopup.setText(Util.buildCommaSeperate(selectedCategoryTitles));
+                                        }else {
+                                            openCategoryPopup.setText(getString(R.string.select));
+                                        }
 
-                                        openCategoryPopup.setText(Util.buildCommaSeperate(selectedCategoryTitles));
                                     }
                                 });
                                 dialog.show(activity.getSupportFragmentManager().beginTransaction(), TAG);

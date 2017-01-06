@@ -26,7 +26,7 @@
     <string name="type">نوع</string>
     <string name="lost">گمشده</string>
     <string name="found">پیدا شده</string>
-    <string name="location">محل</string>
+    <string name="location">محدوده</string>
     <string name="select_location"> انتخاب محل از روی نقشه</string>
     <string name="close">بستن</string>
     <string name="ok">تایید</string>
@@ -48,7 +48,7 @@
     <string name="date">تاریخ</string>
     <string name="touch_to_chose_place" >برای انتخاب محل ، نقشه را لمس کنید</string>
     <string name="or">یا</string>
-    <string name="location_choose_hint">در صورت امکان، محل گم شدن یا پیدا شدن را روی نقشه انتخاب کنید. یا می توانیدفقط استان و شهر را انتخاب کنید</string>
+    <string name="location_choose_hint">در صورت امکان، محل گم شدن یا پیدا شدن را روی نقشه انتخاب کنید.</string>
     <string name="service_not_available">سرویس  تبدیل  آدرس  در دسترس نیست</string>
     <string name="invalid_lat_long_used">نقاط آدرس معتبر نیست</string>
     <string name="no_address_found">آدرسی ویدا نشد</string>

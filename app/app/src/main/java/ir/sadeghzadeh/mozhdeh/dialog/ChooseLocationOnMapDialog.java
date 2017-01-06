@@ -112,6 +112,8 @@ public class ChooseLocationOnMapDialog extends DialogFragment implements
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         buildGoogleApiClient();
         mMap.setMyLocationEnabled(true);
+        activity.hideProgress();
+
     }
 
     protected synchronized void buildGoogleApiClient() {
