@@ -50,7 +50,7 @@ import ir.sadeghzadeh.mozhdeh.ApplicationController;
 import ir.sadeghzadeh.mozhdeh.Const;
 import ir.sadeghzadeh.mozhdeh.R;
 import ir.sadeghzadeh.mozhdeh.dialog.ChooseLocationOnMapDialog;
-import ir.sadeghzadeh.mozhdeh.dialog.ChooseOneItemDialog;
+import ir.sadeghzadeh.mozhdeh.dialog.ChooseItemsDialog;
 import ir.sadeghzadeh.mozhdeh.dialog.FetchAddressIntentService;
 import ir.sadeghzadeh.mozhdeh.dialog.OnOneItemSelectedInDialog;
 import ir.sadeghzadeh.mozhdeh.entity.Category;
@@ -75,7 +75,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     private static final int PICK_IMAGE = 1;
     private static final int DECODE_LOCATION_ADDRESS = 2;
 
-    String currentCategoryId;
+    List<String> selectedCategoryIds= new ArrayList<>();
     Button openCategoryPopup;
     Button submit;
     EditText title;
@@ -100,7 +100,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     String selectedCityTitle;
     String selectedProvinceId;
     String selectedProvideTitle;
-    String currentCategoryTitle;
+    List<String> selectedCategoryTitles = new ArrayList<>();
     boolean takeImageFromCamera = false;
     Button showMap;
     private String selectedAddress;
@@ -154,10 +154,14 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                 selectProvince.setText(item.ProvinceTitle);
                 selectedProvinceId =  item.ProvinceId;
                 selectedProvideTitle = item.ProvinceTitle;
-                openCategoryPopup.setText(item.CategoryTitle);
-                currentCategoryId = item.CategoryId;
-                currentCategoryTitle = item.CategoryTitle;
-                if(Integer.parseInt(item.ItemType) == Const.FOUND){
+                String title="";
+                for(String t : item.CategoryTitles){
+                    title += t;
+                }
+                openCategoryPopup.setText(title);
+                selectedCategoryIds = item.CategoryIds;
+                selectedCategoryTitles = item.CategoryTitles;
+                if (item.ItemType == Const.FOUND){
                     radioGroup.check(R.id.found);
                 }else {
                     radioGroup.check(R.id.lost);
@@ -236,14 +240,14 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         selectCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChooseOneItemDialog dialog = new ChooseOneItemDialog();
+                ChooseItemsDialog dialog = new ChooseItemsDialog();
                 List<City> cities = activity.databaseHandler.getCities(selectedProvinceId);
                 List<KeyValuePair> citiesKeyValuePair = new ArrayList<KeyValuePair>();
                 for (City c : cities) {
                     KeyValuePair keyValuePair = new KeyValuePair(c.id, c.name);
                     citiesKeyValuePair.add(keyValuePair);
                 }
-                dialog.setArguments(citiesKeyValuePair, new OnOneItemSelectedInDialog() {
+              /*  dialog.setArguments(citiesKeyValuePair, new OnOneItemSelectedInDialog() {
                     @Override
                     public void onItemSelected(String selectedId, String selectedTitle) {
                         selectedCityId = selectedId;
@@ -251,7 +255,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                         selectCity.setText(selectedCityTitle);
                     }
                 });
-                dialog.show(activity.getSupportFragmentManager().beginTransaction(), TAG);
+                dialog.show(activity.getSupportFragmentManager().beginTransaction(), TAG);*/
             }
         });
     }
@@ -261,14 +265,14 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         selectProvince.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChooseOneItemDialog dialog = new ChooseOneItemDialog();
+                ChooseItemsDialog dialog = new ChooseItemsDialog();
                 List<Province> provinceList = activity.databaseHandler.getProvinces();
                 List<KeyValuePair> items = new ArrayList<KeyValuePair>();
                 for (Province p : provinceList) {
                     KeyValuePair keyValuePair = new KeyValuePair(String.valueOf(p.id), p.name);
                     items.add(keyValuePair);
                 }
-                dialog.setArguments(items, new OnOneItemSelectedInDialog() {
+              /*  dialog.setArguments(items, new OnOneItemSelectedInDialog() {
                     @Override
                     public void onItemSelected(String selectedId, String selectedTitle) {
                         selectedProvinceId = selectedId;
@@ -283,7 +287,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                         }
                     }
                 });
-                dialog.show(activity.getSupportFragmentManager().beginTransaction(), TAG);
+                dialog.show(activity.getSupportFragmentManager().beginTransaction(), TAG);*/
             }
         });
     }
@@ -334,8 +338,8 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     multipartEntity.addPart(Const.TITLE, new StringBody(title.getText().toString(), chars));
                     multipartEntity.addPart(Const.DESCRIPTION, new StringBody(description.getText().toString(), chars));
                     multipartEntity.addPart(Const.DATE, new StringBody(occurredDate, chars));
-                    multipartEntity.addPart(Const.CATEGORY, new StringBody(currentCategoryId));
-                    multipartEntity.addPart(Const.CATEGORY_TITLE, new StringBody(currentCategoryTitle, chars));
+                    multipartEntity.addPart(Const.CATEGORIES, new StringBody(Util.buildCommaSeperate(selectedCategoryIds)));
+                    multipartEntity.addPart(Const.CATEGORY_TITLES, new StringBody(Util.buildCommaSeperate(selectedCategoryTitles), chars));
                     if(selectedProvinceId != null && !selectedProvinceId.isEmpty()){
                         multipartEntity.addPart(Const.PROVINCE_ID, new StringBody(selectedProvinceId));
                         multipartEntity.addPart(Const.PROVINCE_TITLE, new StringBody(selectedProvideTitle, chars));
@@ -415,7 +419,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     }
 
     private boolean validateForm() {
-        if (currentCategoryId == null || currentCategoryId.length() == 0) {
+        if (selectedCategoryIds == null || selectedCategoryIds.size() == 0) {
             openCategoryPopup.setError(getString(R.string.category_is_required));
             openCategoryPopup.requestFocus();
             return false;
@@ -623,20 +627,25 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                         new GsonRequest(Const.LIST_CATEGORY_URL, Category[].class, null, null, new Response.Listener<Category[]>() {
                             @Override
                             public void onResponse(Category[] categories) {
-                                ChooseOneItemDialog dialog = new ChooseOneItemDialog();
+                                ChooseItemsDialog dialog = new ChooseItemsDialog();
                                 List<KeyValuePair> keyValuePairsCategories = new ArrayList<KeyValuePair>();
                                 for (Category c : categories) {
                                     KeyValuePair keyValuePair = new KeyValuePair(c.Id, c.Title);
                                     keyValuePairsCategories.add(keyValuePair);
                                 }
 
-                                dialog.setArguments(keyValuePairsCategories, new OnOneItemSelectedInDialog() {
+                                dialog.setArguments(keyValuePairsCategories, true, new OnOneItemSelectedInDialog() {
                                     @Override
-                                    public void onItemSelected(String selectedId, String selectedTitle) {
-                                        currentCategoryId = selectedId;
-                                        openCategoryPopup.setText(selectedTitle);
-                                        currentCategoryTitle = selectedTitle;
+                                    public void onItemSelected(List<KeyValuePair> selected) {
+                                        selectedCategoryIds.clear();
+                                        selectedCategoryTitles.clear();
 
+                                        for( KeyValuePair pair : selected){
+                                            selectedCategoryIds.add(pair.key);
+                                            selectedCategoryTitles.add(pair.value);
+                                        }
+
+                                        openCategoryPopup.setText(Util.buildCommaSeperate(selectedCategoryTitles));
                                     }
                                 });
                                 dialog.show(activity.getSupportFragmentManager().beginTransaction(), TAG);

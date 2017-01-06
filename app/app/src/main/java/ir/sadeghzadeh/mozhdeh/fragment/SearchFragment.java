@@ -19,12 +19,13 @@ import ir.sadeghzadeh.mozhdeh.ApplicationController;
 import ir.sadeghzadeh.mozhdeh.Const;
 import ir.sadeghzadeh.mozhdeh.MainActivity;
 import ir.sadeghzadeh.mozhdeh.R;
-import ir.sadeghzadeh.mozhdeh.dialog.ChooseOneItemDialog;
+import ir.sadeghzadeh.mozhdeh.dialog.ChooseItemsDialog;
 import ir.sadeghzadeh.mozhdeh.dialog.OnOneItemSelectedInDialog;
 import ir.sadeghzadeh.mozhdeh.entity.Category;
 import ir.sadeghzadeh.mozhdeh.entity.City;
 import ir.sadeghzadeh.mozhdeh.entity.KeyValuePair;
 import ir.sadeghzadeh.mozhdeh.entity.Province;
+import ir.sadeghzadeh.mozhdeh.utils.Util;
 import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
 
 /**
@@ -32,7 +33,8 @@ import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
  */
 public class SearchFragment extends BaseFragment {
     public static final String TAG="SearchFragment";
-    String currentCategoryId;
+    List<String> currentCategoryIds= new ArrayList<>();
+    List<String> currentCategoryTitles = new ArrayList<>();
     MainActivity activity;
     Button openCategoryPopup;
     Button submit;
@@ -84,14 +86,14 @@ public class SearchFragment extends BaseFragment {
         selectCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChooseOneItemDialog dialog = new ChooseOneItemDialog();
+                ChooseItemsDialog dialog = new ChooseItemsDialog();
                 List<City> cities = activity.databaseHandler.getCities(selectedProvinceId);
                 List<KeyValuePair> citiesKeyValuePair  =  new ArrayList<KeyValuePair>();
                 for(City c: cities){
                     KeyValuePair keyValuePair = new KeyValuePair(c.id,c.name);
                     citiesKeyValuePair.add(keyValuePair);
                 }
-                dialog.setArguments(citiesKeyValuePair, new OnOneItemSelectedInDialog() {
+                /*dialog.setArguments(citiesKeyValuePair, new OnOneItemSelectedInDialog() {
                     @Override
                     public void onItemSelected(String selectedId, String selectedTitle) {
                         selectedCityId = selectedId;
@@ -99,7 +101,7 @@ public class SearchFragment extends BaseFragment {
                         selectCity.setText(selectedCityTitle);
                     }
                 });
-                dialog.show(activity.getSupportFragmentManager().beginTransaction(),TAG);
+                dialog.show(activity.getSupportFragmentManager().beginTransaction(),TAG);*/
             }
         });
     }
@@ -109,14 +111,14 @@ public class SearchFragment extends BaseFragment {
         selectProvince.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChooseOneItemDialog dialog = new ChooseOneItemDialog();
+                ChooseItemsDialog dialog = new ChooseItemsDialog();
                 List<Province> provinceList = activity.databaseHandler.getProvinces();
                 List<KeyValuePair> items = new ArrayList<KeyValuePair>();
                 for(Province p: provinceList){
                     KeyValuePair keyValuePair = new KeyValuePair(String.valueOf(p.id),p.name);
                     items.add(keyValuePair);
                 }
-                dialog.setArguments(items, new OnOneItemSelectedInDialog() {
+              /*  dialog.setArguments(items, new OnOneItemSelectedInDialog() {
                     @Override
                     public void onItemSelected(String selectedId, String selectedTitle) {
                         selectedProvinceId = selectedId;
@@ -131,7 +133,7 @@ public class SearchFragment extends BaseFragment {
                         }
                     }
                 });
-                dialog.show(activity.getSupportFragmentManager().beginTransaction(),TAG);
+                dialog.show(activity.getSupportFragmentManager().beginTransaction(),TAG);*/
             }
         });
 
@@ -146,19 +148,23 @@ public class SearchFragment extends BaseFragment {
                         new GsonRequest(Const.LIST_CATEGORY_URL, Category[].class, null,null, new Response.Listener<Category[]>() {
                             @Override
                             public void onResponse(Category[] categories) {
-                                ChooseOneItemDialog dialog = new ChooseOneItemDialog();
+                                ChooseItemsDialog dialog = new ChooseItemsDialog();
                                 List<KeyValuePair> keyValuePairsCategories  = new ArrayList<KeyValuePair>();
                                 for(Category c: categories){
                                     KeyValuePair keyValuePair = new KeyValuePair(c.Id,c.Title);
                                     keyValuePairsCategories.add(keyValuePair);
                                 }
 
-                                dialog.setArguments(keyValuePairsCategories, new OnOneItemSelectedInDialog() {
+                                dialog.setArguments(keyValuePairsCategories, true, new OnOneItemSelectedInDialog() {
                                     @Override
-                                    public void onItemSelected(String selectedId, String selectedTitle) {
-                                        currentCategoryId = selectedId;
-                                        openCategoryPopup.setText(selectedTitle);
-
+                                    public void onItemSelected(List<KeyValuePair> selected) {
+                                        currentCategoryIds.clear();
+                                        currentCategoryTitles.clear();
+                                        for(KeyValuePair pair: selected ){
+                                            currentCategoryIds.add(pair.key);
+                                            currentCategoryTitles.add(pair.value);
+                                        }
+                                        openCategoryPopup.setText(Util.buildCommaSeperate(currentCategoryTitles));
                                     }
                                 });
                                 dialog.show(activity.getSupportFragmentManager().beginTransaction(),TAG);
@@ -189,7 +195,7 @@ public class SearchFragment extends BaseFragment {
 
                 BrowseFragment browseFragment = new BrowseFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(Const.CATEGORY,currentCategoryId);
+                bundle.putString(Const.CATEGORIES, Util.buildCommaSeperate(currentCategoryIds));
                 bundle.putString(Const.PROVINCE_ID,selectedProvinceId);
                 bundle.putString(Const.CITY_ID,selectedCityId);
                 bundle.putString(Const.TITLE,title.getText().toString());

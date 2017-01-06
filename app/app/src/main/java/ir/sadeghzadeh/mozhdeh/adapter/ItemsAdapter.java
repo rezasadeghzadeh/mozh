@@ -119,7 +119,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         //set values
         holder.title.setText(item.Title);
         //holder.mobile.setText(item.Mobile);
-        //holder.category.setText(String.valueOf(item.CategoryId));
+        //holder.category.setText(String.valueOf(item.CategoryIds));
         //holder.description.setText(item.Description);
         holder.date.setText(item.Date + "");
         holder.city.setText(String.valueOf(item.CityTitle));
@@ -130,11 +130,11 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
             holder.thumbnail.setImageUrl(null, null);
             holder.thumbnail.setDefaultImageResId(R.drawable.ic_no_photo);
         }
-        if(item.ItemType.equals(Const.FOUND+"")){
+        if(item.ItemType == Const.FOUND){
             holder.founded.setVisibility(View.VISIBLE);
             holder.lost.setVisibility(View.GONE);
             holder.itemContainer.setBackgroundColor( context.getResources().getColor(R.color.foundedItemBackground));
-        }else if(item.ItemType.equals(Const.LOST+"")){
+        }else if(item.ItemType == Const.LOST ){
             holder.founded.setVisibility(View.GONE);
             holder.lost.setVisibility(View.VISIBLE);
             holder.itemContainer.setBackgroundColor( context.getResources().getColor(R.color.lostItemBackground));

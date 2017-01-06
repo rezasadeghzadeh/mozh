@@ -84,9 +84,9 @@ public class BrowseFragment extends BaseFragment {
                 title  =  args.getString(Const.TITLE);
                 params.put(Const.TITLE,title);
             }
-            if(args.getString(Const.CATEGORY) != null  && !args.getString(Const.CATEGORY).isEmpty()){
-                currentCategoryId  =  args.getString(Const.CATEGORY);
-                params.put(Const.CATEGORY,currentCategoryId);
+            if(args.getString(Const.CATEGORIES) != null  && !args.getString(Const.CATEGORIES).isEmpty()){
+                currentCategoryId  =  args.getString(Const.CATEGORIES);
+                params.put(Const.CATEGORIES,currentCategoryId);
             }
             if(args.getString(Const.PROVINCE_ID)  !=  null  &&  !args.getString(Const.PROVINCE_ID).isEmpty()){
                 selectedProvinceId  =  args.getString(Const.PROVINCE_ID);

@@ -8,6 +8,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"../mongo"
 	"time"
+	"strconv"
 )
 
 type Message struct {
@@ -24,8 +25,8 @@ type Item struct {
 	ItemType int
 	RegisterDate int64
 	Date string
-	CategoryId string
-	CategoryTitle string
+	CategoryIds []string
+	CategoryTitles []string
 	CityId string
 	ImageExt string
 	CityTitle string
@@ -44,8 +45,8 @@ type Item struct {
 }
 
 
-func   Items(title string, categoryId string, provinceId string,
-	cityId string, itemType string, approved string, ownerId string) []Item {
+func   Items(title string, categoryIds []string, provinceId string,
+	cityId string, itemType int, approved string, ownerId string) []Item {
 	var items []Item
 	log.Printf("Connecting to  %s  database \n",config.Config.MongoDatabaseName )
 	collection  := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection)
@@ -54,8 +55,8 @@ func   Items(title string, categoryId string, provinceId string,
 	if title != ""{
 		q["title"] =  title
 	}
-	if categoryId !="" {
-		q["categoryid"] = categoryId
+	if len(categoryIds) > 0 {
+		q["categoryids"] = bson.M{"$in" :categoryIds}
 	}
 	if provinceId != ""{
 		q["provinceid"] = provinceId
@@ -63,12 +64,13 @@ func   Items(title string, categoryId string, provinceId string,
 	if cityId != "" {
 		q["cityid"] = cityId
 	}
-	if itemType != "" {
+	if itemType != 0 {
 		q["itemtype"] = itemType
 	}
-	if approved != ""{
-		q["approved"] = approved
+	if approved !=  ""{
+		q["approved"],_ = strconv.ParseBool(approved)
 	}
+
 	if ownerId !=  ""{
 		q["ownerid"] =  ownerId
 	}
@@ -77,17 +79,18 @@ func   Items(title string, categoryId string, provinceId string,
 	if(err != nil){
 		log.Printf(err.Error())
 	}
+
 	return items
 }
 
-func NewItem(id string, title string, category string, categoryTitle string, description string, date string,
+func NewItem(id string, title string, categories []string, categoryTitles []string, description string, date string,
 	itemType int, imageExt string, cityId string, cityTitle string, provinceId string, provinceTitle string,
 	mobile string, latitude float64, longitude float64, address string, email string, telegramId string,
 	ownerId string) (string,error) {
 	newItem  :=  Item{
 		Title:title,
-		CategoryId:category,
-		CategoryTitle:categoryTitle,
+		CategoryIds:categories,
+		CategoryTitles:categoryTitles,
 		Description:description,
 		Date:date,
 		ItemType:itemType,

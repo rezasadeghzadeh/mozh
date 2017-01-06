@@ -71,7 +71,7 @@ public class CategoryFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String[] rowValues =  view.getTag().toString().split(",");
                 Bundle  args  = new Bundle();
-                args.putString(Const.CATEGORY,rowValues[0]);
+                args.putString(Const.CATEGORIES,rowValues[0]);
                 Fragment browseFragment  = new BrowseFragment();
                 browseFragment.setArguments(args);
                 activity.addFragmentToContainer(browseFragment,TAG);

@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -286,5 +287,15 @@ public class Util {
         }
         return url;
     }
+
+    public static String buildCommaSeperate(List<String> list){
+        String result  =  "";
+        for (String row : list){
+            result += row + ",";
+        }
+        result  =  result.substring(0,result.length()-1); //remove  last comma
+        return result;
+    }
+
 }
 

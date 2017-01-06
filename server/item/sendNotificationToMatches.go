@@ -78,7 +78,8 @@ func getMatchedItems(id string) ([]Item){
 	} else {
 		q["itemtype"] = constant.FoundedType
 	}
-	q["categoryid"] = registeredItem.CategoryId
+	//TODO compatibvle search  with multiple cateogry
+	q["categoryid"] = registeredItem.CategoryIds
 	q["approved"] = "true"
 	q["registerdate"] = bson.M{ "$gte" : time.Now().AddDate(0,-1,0).UnixNano() }
 

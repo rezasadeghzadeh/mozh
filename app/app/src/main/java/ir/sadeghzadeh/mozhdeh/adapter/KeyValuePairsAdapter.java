@@ -5,11 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ir.sadeghzadeh.mozhdeh.R;
+import ir.sadeghzadeh.mozhdeh.dialog.OnOneItemSelectedInDialog;
 import ir.sadeghzadeh.mozhdeh.entity.KeyValuePair;
 
 /**
@@ -18,11 +22,15 @@ import ir.sadeghzadeh.mozhdeh.entity.KeyValuePair;
 public class KeyValuePairsAdapter extends ArrayAdapter<KeyValuePair> {
     List<KeyValuePair> items;
     LayoutInflater layoutInflater;
-
-    public KeyValuePairsAdapter(Context context, int resource, List<KeyValuePair> items) {
+    OnOneItemSelectedInDialog callback;
+    List<KeyValuePair>  selected = new ArrayList<>();
+    boolean selectMultiple;
+    public KeyValuePairsAdapter(Context context, int resource, List<KeyValuePair> items, boolean selectMultiple, OnOneItemSelectedInDialog callback) {
         super(context, resource, items);
         this.items  =  items;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.callback  =  callback;
+        this.selectMultiple  =  selectMultiple;
     }
 
     public int getCount() {
@@ -42,6 +50,7 @@ public class KeyValuePairsAdapter extends ArrayAdapter<KeyValuePair> {
         KeyValuePair item = items.get(position);
         View rowView;
         if( paramView == null){
+            //TODO if selectMultipe is the view should be check box else radiobox
             rowView= layoutInflater.inflate(R.layout.key_value_pair_row_item, null);
         }else {
             rowView = paramView;
@@ -49,14 +58,36 @@ public class KeyValuePairsAdapter extends ArrayAdapter<KeyValuePair> {
 
         holder.value= (TextView) rowView.findViewById(R.id.value);
         rowView.setTag(item.key+ "," + item.value);
-
         //set values
         holder.value.setText(item.value);
+
+        holder.checkbox  = (CheckBox) rowView.findViewById(R.id.checkbox);
+        holder.checkbox.setTag(item.key+ "," + item.value);
+        holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton checkbox, boolean isChecked) {
+                String[] rowValues =  checkbox.getTag().toString().split(",");
+                if(isChecked){
+                    selected.add(new KeyValuePair(rowValues[0],rowValues[1]));
+                }else {
+                    for(int  i=0;i< selected.size();i++){
+                        if(selected.get(i).key.equals(rowValues[0])){
+                            selected.remove(i);
+                            break;
+                        }
+                    }
+                }
+                callback.onItemSelected(selected);
+            }
+        });
+
+
         return rowView;
     }
 
     public class Holder {
         TextView value;
+        CheckBox checkbox;
         public Holder() {
         }
     }

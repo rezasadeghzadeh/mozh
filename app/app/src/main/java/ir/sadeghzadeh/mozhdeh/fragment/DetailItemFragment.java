@@ -165,7 +165,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
                 DetailItemFragment.this.item = item;
                 //set values
                 title.setText(item.Title);
-                category.setText(String.valueOf(item.CategoryTitle));
+                category.setText(String.valueOf(item.CategoryTitles));
                 //mobile.setText(item.Mobile);
                 //email.setText(item.Email);
                 //telegramId.setText(item.TelegramId);

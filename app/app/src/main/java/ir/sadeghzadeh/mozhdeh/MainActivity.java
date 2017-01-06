@@ -172,6 +172,8 @@ public class MainActivity extends BaseActivity {
                     addFragmentToContainer(new NewFragment(), NewFragment.TAG);
                 }else {
                     addFragmentToContainer(new EnterEmailOrMobileFragment(), EnterEmailOrMobileFragment.TAG);
+                    highlightNewIcon();
+                    setTitleToAuth();
                 }
 
             }
@@ -180,7 +182,13 @@ public class MainActivity extends BaseActivity {
         myItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG);
+                if(Util.isUserLogged()){
+                    addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG);
+                }else {
+                    addFragmentToContainer(new EnterEmailOrMobileFragment(), EnterEmailOrMobileFragment.TAG);
+                    highlightMyItemsIcon();
+                    setTitleToAuth();
+                }
             }
         });
         searchButton = (Button) findViewById(R.id.search_items_button);
@@ -245,6 +253,10 @@ public class MainActivity extends BaseActivity {
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_white);
         setTitle(getString(R.string.new_item));
+    }
+
+    public void setTitleToAuth() {
+        setTitle(getString(R.string.login_to_accout));
     }
 
    @Override

@@ -12,6 +12,7 @@ import (
 	"github.com/nfnt/resize"
 	"../auth"
 	"strconv"
+	"../util"
 )
 
 func NewItemHandler()  {
@@ -21,8 +22,8 @@ func NewItemHandler()  {
 		log.Println("Start serving /items/new request")
 		id := ctx.PostValue("Id")
 		title:= ctx.PostValue("Title")
-		category := ctx.PostValue("Category")
-		categoryTitle := ctx.PostValue("CategoryTitle")
+		categories := ctx.PostValue("Categories")
+		categoryTitles := ctx.PostValue("CategoryTitles")
 		description :=ctx.PostValue("Description")
 		date := ctx.PostValue("Date")
 		itemType,_ := strconv.Atoi(ctx.PostValue("ItemType"))
@@ -46,7 +47,10 @@ func NewItemHandler()  {
 		}else {
 			log.Printf("Error on uploaded file Error: %s",errUpload)
 		}
-		id,err := NewItem(id,title, category, categoryTitle, description, date, itemType, imageExt,
+		categoryiesIdsSlice  := util.CommaSeperateToSlice(categories)
+		categoriesTitlesSlice := util.CommaSeperateToSlice(categoryTitles)
+
+		id,err := NewItem(id,title, categoryiesIdsSlice, categoriesTitlesSlice, description, date, itemType, imageExt,
 		cityId, cityTitle, provinceId, provinceTitle, mobile, latitude, longitude, address, email, telegramId, ownerId)
 		if err != nil {
 			log.Printf("Error on inserting new Item: %s",err)
@@ -104,14 +108,15 @@ func ListItemHandler()  {
 	iris.Get("/item/list",func(ctx *iris.Context)	{
 		log.Println("Start serving /items request")
 		title:= ctx.URLParam("Title")
-		category := ctx.URLParam("Category")
-		itemType := ctx.URLParam("ItemType")
+		categories := ctx.URLParam("Categories")
+		itemType,_ := strconv.Atoi(ctx.URLParam("ItemType"))
 		cityId := ctx.URLParam("CityId")
 		provinceId := ctx.URLParam("ProvinceId")
-		approved := ctx.URLParam("Approved")
+		approved:= ctx.URLParam("Approved")
 		ownerId := ctx.URLParam("OwnerId")
-		log.Printf("Category: %s",category)
-		items := Items(title,category,provinceId,cityId,itemType,approved, ownerId)
+		categoriesSlice := util.CommaSeperateToSlice(categories)
+		log.Printf("Categories: %s",categoriesSlice)
+		items := Items(title,categoriesSlice,provinceId,cityId,itemType,approved, ownerId)
 		ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 		ctx.JSON(iris.StatusOK,	items)
 	})
@@ -144,7 +149,7 @@ func MyItemsHandler()  {
 	iris.Get("/item/my", auth.JwtMiddleware.Serve, func(ctx *iris.Context) {
 		currentUserId  := auth.GetCurrentUserId(ctx)
 		if currentUserId != ""{
-			items := Items("","","","","","", currentUserId)
+			items := Items("",[]string{},"","",0,"", currentUserId)
 			ctx.Response.Header.Add("Access-Control-Allow-Origin","*")
 			ctx.JSON(iris.StatusOK,	items)
 		}

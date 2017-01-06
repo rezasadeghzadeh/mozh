@@ -9,11 +9,11 @@ public class Item{
     public String id;
     public String Title;
     public String Description;
-    public String ItemType;
+    public Integer ItemType;
     public long RegisterDate;
     public String Date;
-    public String CategoryId;
-    public String CategoryTitle;
+    public List<String> CategoryIds;
+    public List<String> CategoryTitles;
     public String CityId;
     public String CityTitle;
     public String ProvinceId;

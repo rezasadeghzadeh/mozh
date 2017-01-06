@@ -29,7 +29,7 @@ public class Const {
     public static final String TITLE  = "Title";
     public static final String DESCRIPTION  = "Description";
     public static final String DATE = "Date";
-    public static final String CATEGORY = "Category";
+    public static final String CATEGORIES = "Categories";
     public static final String PROVINCE_ID = "ProvinceId";
     public static final String PROVINCE_TITLE  = "ProvinceTitle";
     public static final String CITY_ID = "CityId";
@@ -40,7 +40,7 @@ public class Const {
     public static final int FOUND = 2;
     public static final int LOST = 1;
     public static final String ID = "Id";
-    public static final String CATEGORY_TITLE = "CategoryTitle";
+    public static final String CATEGORY_TITLES = "CategoryTitles";
     public static final String MOBILE = "Mobile";
     public static final String LATITUDE = "Latitude";
     public static final String LONGITUDE = "Longitude";
