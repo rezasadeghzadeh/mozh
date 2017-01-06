@@ -36,7 +36,7 @@ type Item struct {
 	Latitude float64
 	Longitude float64
 	Address string
-	Approved string
+	Approved bool
 	ApprovedTime int64
 	Email string
 	TelegramId string
@@ -104,7 +104,7 @@ func NewItem(id string, title string, categories []string, categoryTitles []stri
 		Latitude:latitude,
 		Longitude:longitude,
 		Address:address,
-		Approved:"false",
+		Approved:false,
 		Email : email,
 		TelegramId : telegramId,
 		OwnerId: ownerId,
