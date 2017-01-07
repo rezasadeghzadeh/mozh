@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.HashMap;
 
@@ -26,7 +28,7 @@ import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
  */
 public class BrowseFragment extends BaseFragment {
 
-    public static String TAG =  "BrowseFragment";
+    public static String TAG = "BrowseFragment";
     ListView itemsListView;
     TextView message;
     Bundle args;
@@ -42,18 +44,21 @@ public class BrowseFragment extends BaseFragment {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        args  =  getArguments();
+        args = getArguments();
         activity.highlightHomeIcon();
         View view = layoutInflater.inflate(R.layout.browse_fragment, container, false);
         initItemsListView(view);
         initBackButton();
         showItems();
+        animate(view.findViewById(R.id.main_layout));
+
         return view;
     }
 
@@ -63,74 +68,74 @@ public class BrowseFragment extends BaseFragment {
 
     private void initItemsListView(View view) {
         itemsListView = (ListView) view.findViewById(R.id.items_list_view);
-        message  = (TextView) view.findViewById(R.id.message);
+        message = (TextView) view.findViewById(R.id.message);
         itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 activity.showProgress();
-                String selectedItemId =  view.getTag().toString();
-                Bundle args  =  new Bundle();
-                args.putString(Const.ID,selectedItemId);
-                DetailItemFragment fragment  = new DetailItemFragment();
+                String selectedItemId = view.getTag().toString();
+                Bundle args = new Bundle();
+                args.putString(Const.ID, selectedItemId);
+                DetailItemFragment fragment = new DetailItemFragment();
                 fragment.setArguments(args);
-                activity.addFragmentToContainer(fragment,TAG);
+                activity.addFragmentToContainer(fragment, TAG);
             }
         });
     }
 
     private void showItems() {
         activity.showProgress();
-        HashMap<String,String> params = new HashMap<>();
-        if(args!= null){
-            if(args.getString(Const.TITLE) != null && !args.getString(Const.TITLE).isEmpty() ){
-                title  =  args.getString(Const.TITLE);
-                params.put(Const.TITLE,title);
+        HashMap<String, String> params = new HashMap<>();
+        if (args != null) {
+            if (args.getString(Const.TITLE) != null && !args.getString(Const.TITLE).isEmpty()) {
+                title = args.getString(Const.TITLE);
+                params.put(Const.TITLE, title);
             }
-            if(args.getString(Const.CATEGORIES) != null  && !args.getString(Const.CATEGORIES).isEmpty()){
-                currentCategoryId  =  args.getString(Const.CATEGORIES);
-                params.put(Const.CATEGORIES,currentCategoryId);
+            if (args.getString(Const.CATEGORIES) != null && !args.getString(Const.CATEGORIES).isEmpty()) {
+                currentCategoryId = args.getString(Const.CATEGORIES);
+                params.put(Const.CATEGORIES, currentCategoryId);
             }
-            if(args.getString(Const.PROVINCE_ID)  !=  null  &&  !args.getString(Const.PROVINCE_ID).isEmpty()){
-                selectedProvinceId  =  args.getString(Const.PROVINCE_ID);
-                params.put(Const.PROVINCE_ID,selectedProvinceId);
+            if (args.getString(Const.PROVINCE_ID) != null && !args.getString(Const.PROVINCE_ID).isEmpty()) {
+                selectedProvinceId = args.getString(Const.PROVINCE_ID);
+                params.put(Const.PROVINCE_ID, selectedProvinceId);
             }
-            if(args.getString(Const.CITY_ID) != null &&  !args.getString(Const.CITY_ID).isEmpty() ){
-                selectedCityId  =  args.getString(Const.CITY_ID);
-                params.put(Const.CITY_ID,selectedCityId);
+            if (args.getString(Const.CITY_ID) != null && !args.getString(Const.CITY_ID).isEmpty()) {
+                selectedCityId = args.getString(Const.CITY_ID);
+                params.put(Const.CITY_ID, selectedCityId);
             }
-            if(args.getString(Const.ITEM_TYPE) != null &&  !args.getString(Const.ITEM_TYPE).isEmpty() ){
+            if (args.getString(Const.ITEM_TYPE) != null && !args.getString(Const.ITEM_TYPE).isEmpty()) {
                 itemType = args.getString(Const.ITEM_TYPE);
-                params.put(Const.ITEM_TYPE,itemType);
+                params.put(Const.ITEM_TYPE, itemType);
             }
-            if(args.getString(Const.LATITUDE) != null && args.getString(Const.LONGITUDE) != null ){
+            if (args.getString(Const.LATITUDE) != null && args.getString(Const.LONGITUDE) != null) {
                 latitude = args.getString(Const.LATITUDE);
-                params.put(Const.LATITUDE,latitude);
-                longitude  =  args.getString(Const.LONGITUDE);
-                params.put(Const.LONGITUDE,longitude);
+                params.put(Const.LATITUDE, latitude);
+                longitude = args.getString(Const.LONGITUDE);
+                params.put(Const.LONGITUDE, longitude);
             }
 
         }
-        params.put(Const.APPROVED,"true");
+        params.put(Const.APPROVED, "true");
 
         ApplicationController.getInstance().addToRequestQueue(
-                new GsonRequest(Const.LIST_ITEMS_URL, Item[].class, params,null, new Response.Listener<Item[]>() {
+                new GsonRequest(Const.LIST_ITEMS_URL, Item[].class, params, null, new Response.Listener<Item[]>() {
                     @Override
                     public void onResponse(Item[] response) {
                         activity.hideProgress();
-                        if(response == null){
+                        if (response == null) {
                             message.setText(getString(R.string.no_item_found));
                             message.setVisibility(View.VISIBLE);
                             return;
                         }
-                        itemsListView.setAdapter(new ItemsAdapter(getContext(),0,response,activity,false));
+                        itemsListView.setAdapter(new ItemsAdapter(getContext(), 0, response, activity, false));
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         activity.hideProgress();
-                        Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
 
                 }
         );

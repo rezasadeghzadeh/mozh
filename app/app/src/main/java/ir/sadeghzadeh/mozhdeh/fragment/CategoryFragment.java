@@ -24,16 +24,17 @@ import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
  * Created by reza on 11/2/16.
  */
 public class CategoryFragment extends BaseFragment {
-    public static final String TAG="CategoryFragment";
+    public static final String TAG = "CategoryFragment";
 
     MainActivity activity;
-    ListView  listView;
+    ListView listView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity  = (MainActivity) getActivity();
+        activity = (MainActivity) getActivity();
     }
+
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -41,6 +42,8 @@ public class CategoryFragment extends BaseFragment {
         View view = layoutInflater.inflate(R.layout.category_fragment, container, false);
         initListView(view);
         initBackButton();
+        animate(view.findViewById(R.id.main_layout));
+
         return view;
     }
 
@@ -50,31 +53,31 @@ public class CategoryFragment extends BaseFragment {
 
     private void initListView(View view) {
         activity.showProgress();
-        listView  = (ListView) view.findViewById(R.id.category_list);
-        GsonRequest<Category[]> request  =  new GsonRequest<>(Const.LIST_CATEGORY_URL, Category[].class,
+        listView = (ListView) view.findViewById(R.id.category_list);
+        GsonRequest<Category[]> request = new GsonRequest<>(Const.LIST_CATEGORY_URL, Category[].class,
                 null, null, new Response.Listener<Category[]>() {
             @Override
             public void onResponse(Category[] response) {
-                listView.setAdapter(new CategoryAdapter(getContext(),0,response));
+                listView.setAdapter(new CategoryAdapter(getContext(), 0, response));
                 activity.hideProgress();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 activity.hideProgress();
-                Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
         ApplicationController.getInstance().addToRequestQueue(request);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] rowValues =  view.getTag().toString().split(",");
-                Bundle  args  = new Bundle();
-                args.putString(Const.CATEGORIES,rowValues[0]);
-                Fragment browseFragment  = new BrowseFragment();
+                String[] rowValues = view.getTag().toString().split(",");
+                Bundle args = new Bundle();
+                args.putString(Const.CATEGORIES, rowValues[0]);
+                Fragment browseFragment = new BrowseFragment();
                 browseFragment.setArguments(args);
-                activity.addFragmentToContainer(browseFragment,TAG);
+                activity.addFragmentToContainer(browseFragment, TAG);
             }
         });
     }

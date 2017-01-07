@@ -23,7 +23,7 @@ import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
 /**
  * Created by reza on 12/15/16.
  */
-public class SendMessageFragment extends BaseFragment{
+public class SendMessageFragment extends BaseFragment {
     public static final String TAG = SendMessageFragment.class.getName();
     EditText message;
     Button sendMessage;
@@ -37,15 +37,17 @@ public class SendMessageFragment extends BaseFragment{
         initMessage(view);
         initSendMessage(view);
 
-        Bundle args  = getArguments();
-        if(args != null &&  !args.getString(Const.ID).isEmpty()){
+        Bundle args = getArguments();
+        if (args != null && !args.getString(Const.ID).isEmpty()) {
             itemId = args.getString(Const.ID);
         }
+        animate(view.findViewById(R.id.main_layout));
+
         return view;
     }
 
     private void initMessage(View view) {
-        message  = (EditText) view.findViewById(R.id.message);
+        message = (EditText) view.findViewById(R.id.message);
     }
 
     private void initSendMessage(View view) {
@@ -53,25 +55,25 @@ public class SendMessageFragment extends BaseFragment{
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String,String> param = new HashMap<>();
+                Map<String, String> param = new HashMap<>();
                 param.put(Const.ID, itemId);
-                param.put(Const.BODY,message.getText().toString());
+                param.put(Const.BODY, message.getText().toString());
                 GsonRequest<RequestResponse> request = new GsonRequest<RequestResponse>(Const.SEND_MESSAGE_URL, RequestResponse.class, param, null, new Response.Listener<RequestResponse>() {
                     @Override
                     public void onResponse(RequestResponse response) {
-                        if(response.Status == 1){
-                            Bundle args  = new Bundle();
-                            args.putString(Const.ID,itemId);
-                            DetailItemFragment  fragment = new DetailItemFragment();
+                        if (response.Status == 1) {
+                            Bundle args = new Bundle();
+                            args.putString(Const.ID, itemId);
+                            DetailItemFragment fragment = new DetailItemFragment();
                             fragment.setArguments(args);
-                            activity.addFragmentToContainer(fragment,DetailItemFragment.TAG);
-                            Toast.makeText(getContext(),getString(R.string.message_sent_successfully),Toast.LENGTH_LONG).show();
+                            activity.addFragmentToContainer(fragment, DetailItemFragment.TAG);
+                            Toast.makeText(getContext(), getString(R.string.message_sent_successfully), Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),getString(R.string.connection_error),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), getString(R.string.connection_error), Toast.LENGTH_LONG).show();
                     }
                 });
                 ApplicationController.getInstance().addToRequestQueue(request);

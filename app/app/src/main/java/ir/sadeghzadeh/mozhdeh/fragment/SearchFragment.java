@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import org.apache.http.entity.mime.content.StringBody;
 
@@ -40,8 +42,8 @@ import permissions.dispatcher.RuntimePermissions;
  */
 @RuntimePermissions
 public class SearchFragment extends BaseFragment implements ChooseLocationOnMapDialog.OnLocationChoosed {
-    public static final String TAG="SearchFragment";
-    List<String> currentCategoryIds= new ArrayList<>();
+    public static final String TAG = "SearchFragment";
+    List<String> currentCategoryIds = new ArrayList<>();
     List<String> currentCategoryTitles = new ArrayList<>();
     MainActivity activity;
     Button openCategoryPopup;
@@ -53,7 +55,7 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
     String selectedCityId;
     String selectedCityTitle;
     String selectedProvinceId;
-    String  selectedProvideTitle;
+    String selectedProvideTitle;
     int selectedItemType;
     private String selectedAddress;
     private String latitude;
@@ -61,9 +63,9 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
     Button showMap;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity  = (MainActivity) getActivity();
+        activity = (MainActivity) getActivity();
     }
 
     @Override
@@ -79,6 +81,8 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
         initSelectCity(view);
         initSubmit(view);
         initBackButton();
+        animate(view.findViewById(R.id.main_layout));
+
         return view;
     }
 
@@ -88,7 +92,7 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
     }
 
     private void initItemTypes(View view) {
-        radioGroup  = (RadioGroup) view.findViewById(R.id.type_radio_group);
+        radioGroup = (RadioGroup) view.findViewById(R.id.type_radio_group);
         selectedItemType = Const.LOST;
     }
 
@@ -103,9 +107,9 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
             public void onClick(View v) {
                 ChooseItemsDialog dialog = new ChooseItemsDialog();
                 List<City> cities = activity.databaseHandler.getCities(selectedProvinceId);
-                List<KeyValuePair> citiesKeyValuePair  =  new ArrayList<KeyValuePair>();
-                for(City c: cities){
-                    KeyValuePair keyValuePair = new KeyValuePair(c.id,c.name);
+                List<KeyValuePair> citiesKeyValuePair = new ArrayList<KeyValuePair>();
+                for (City c : cities) {
+                    KeyValuePair keyValuePair = new KeyValuePair(c.id, c.name);
                     citiesKeyValuePair.add(keyValuePair);
                 }
                 /*dialog.setArguments(citiesKeyValuePair, new OnOneItemSelectedInDialog() {
@@ -129,8 +133,8 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
                 ChooseItemsDialog dialog = new ChooseItemsDialog();
                 List<Province> provinceList = activity.databaseHandler.getProvinces();
                 List<KeyValuePair> items = new ArrayList<KeyValuePair>();
-                for(Province p: provinceList){
-                    KeyValuePair keyValuePair = new KeyValuePair(String.valueOf(p.id),p.name);
+                for (Province p : provinceList) {
+                    KeyValuePair keyValuePair = new KeyValuePair(String.valueOf(p.id), p.name);
                     items.add(keyValuePair);
                 }
               /*  dialog.setArguments(items, new OnOneItemSelectedInDialog() {
@@ -155,18 +159,18 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
     }
 
     private void initSelectCategory(View view) {
-        openCategoryPopup  = (Button) view.findViewById(R.id.openCategoryPopup);
+        openCategoryPopup = (Button) view.findViewById(R.id.openCategoryPopup);
         openCategoryPopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ApplicationController.getInstance().addToRequestQueue(
-                        new GsonRequest(Const.LIST_CATEGORY_URL, Category[].class, null,null, new Response.Listener<Category[]>() {
+                        new GsonRequest(Const.LIST_CATEGORY_URL, Category[].class, null, null, new Response.Listener<Category[]>() {
                             @Override
                             public void onResponse(Category[] categories) {
                                 ChooseItemsDialog dialog = new ChooseItemsDialog();
-                                List<KeyValuePair> keyValuePairsCategories  = new ArrayList<KeyValuePair>();
-                                for(Category c: categories){
-                                    KeyValuePair keyValuePair = new KeyValuePair(c.Id,c.Title);
+                                List<KeyValuePair> keyValuePairsCategories = new ArrayList<KeyValuePair>();
+                                for (Category c : categories) {
+                                    KeyValuePair keyValuePair = new KeyValuePair(c.Id, c.Title);
                                     keyValuePairsCategories.add(keyValuePair);
                                 }
 
@@ -175,24 +179,24 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
                                     public void onItemSelected(List<KeyValuePair> selected) {
                                         currentCategoryIds.clear();
                                         currentCategoryTitles.clear();
-                                        for(KeyValuePair pair: selected ){
+                                        for (KeyValuePair pair : selected) {
                                             currentCategoryIds.add(pair.key);
                                             currentCategoryTitles.add(pair.value);
                                         }
-                                        if(currentCategoryIds.size() > 0){
+                                        if (currentCategoryIds.size() > 0) {
                                             openCategoryPopup.setText(Util.buildCommaSeperate(currentCategoryTitles));
-                                        }else {
+                                        } else {
                                             openCategoryPopup.setText(getString(R.string.select));
                                         }
                                     }
                                 });
-                                dialog.show(activity.getSupportFragmentManager().beginTransaction(),TAG);
+                                dialog.show(activity.getSupportFragmentManager().beginTransaction(), TAG);
 
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getContext(),getString(R.string.connection_error),Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), getString(R.string.connection_error), Toast.LENGTH_LONG).show();
                             }
                         }));
             }
@@ -207,30 +211,30 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
 
             @Override
             public void onClick(View v) {
-                final int selectedTypeId  =  radioGroup.getCheckedRadioButtonId();
-                if(selectedTypeId  ==  R.id.found){
+                final int selectedTypeId = radioGroup.getCheckedRadioButtonId();
+                if (selectedTypeId == R.id.found) {
                     selectedItemType = Const.FOUND;
                 }
 
                 BrowseFragment browseFragment = new BrowseFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(Const.CATEGORIES, Util.buildCommaSeperate(currentCategoryIds));
-                bundle.putString(Const.PROVINCE_ID,selectedProvinceId);
-                bundle.putString(Const.CITY_ID,selectedCityId);
-                bundle.putString(Const.TITLE,title.getText().toString());
-                bundle.putString(Const.ITEM_TYPE,String.valueOf(selectedItemType));
-                if(latitude != null &&  !latitude.isEmpty()){
-                    bundle.putString(Const.LATITUDE,latitude);
-                    bundle.putString(Const.LONGITUDE,longitude);
+                bundle.putString(Const.PROVINCE_ID, selectedProvinceId);
+                bundle.putString(Const.CITY_ID, selectedCityId);
+                bundle.putString(Const.TITLE, title.getText().toString());
+                bundle.putString(Const.ITEM_TYPE, String.valueOf(selectedItemType));
+                if (latitude != null && !latitude.isEmpty()) {
+                    bundle.putString(Const.LATITUDE, latitude);
+                    bundle.putString(Const.LONGITUDE, longitude);
                 }
                 browseFragment.setArguments(bundle);
-                activity.addFragmentToContainer(browseFragment,TAG);
+                activity.addFragmentToContainer(browseFragment, TAG);
             }
         });
     }
 
     private void initShowMap(View view) {
-        showMap  = (Button) view.findViewById(R.id.showMap);
+        showMap = (Button) view.findViewById(R.id.showMap);
         showMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,7 +249,7 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
     public void showMapInSearchFragment() {
         ChooseLocationOnMapDialog dialog = new ChooseLocationOnMapDialog();
         dialog.mListener = this;
-        dialog.show(activity.getSupportFragmentManager(),TAG);
+        dialog.show(activity.getSupportFragmentManager(), TAG);
     }
 
     @Override

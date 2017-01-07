@@ -38,9 +38,8 @@ import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
  * Created by reza on 11/14/16.
  */
 public class DetailItemFragment extends BaseFragment implements OnMapReadyCallback {
-    public static final String TAG  =  DetailItemFragment.class.getName();
-    private MainActivity activity;
-    private String  id;
+    public static final String TAG = DetailItemFragment.class.getName();
+    private static View view;
     TextView title;
     TextView description;
     TextView date;
@@ -53,18 +52,19 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
     TextView email;
     TextView telegramId;
     Button sendMessage;
-
-    private GoogleMap mMap;
     Item item;
     SupportMapFragment mapFragment;
     View mapLayout;
     String uri;
+    private MainActivity activity;
+    private String id;
+    private GoogleMap mMap;
+
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity  = (MainActivity) getActivity();
+        activity = (MainActivity) getActivity();
     }
-    private static View view;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,15 +78,17 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         view = layoutInflater.inflate(R.layout.detail_item_fragment, container, false);
         mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map_container);
-        mapLayout= view.findViewById(R.id.map_layout);
+        mapLayout = view.findViewById(R.id.map_layout);
         Bundle args = getArguments();
-        if(args != null  && !args.getString(Const.ID).isEmpty()){
-            id  =  args.getString(Const.ID);
+        if (args != null && !args.getString(Const.ID).isEmpty()) {
+            id = args.getString(Const.ID);
             initDetails(view);
             initFullScreenImage();
         }
         initBackButton();
         initSendMessageButton(view);
+        animate(view.findViewById(R.id.main_layout));
+
         return view;
     }
 
@@ -95,11 +97,11 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Bundle args  = new Bundle();
-                    args.putString(Const.ID,id);
-                    SendMessageFragment  fragment = new SendMessageFragment();
-                    fragment.setArguments(args);
-                    activity.addFragmentToContainer(fragment,SendMessageFragment.TAG);
+                Bundle args = new Bundle();
+                args.putString(Const.ID, id);
+                SendMessageFragment fragment = new SendMessageFragment();
+                fragment.setArguments(args);
+                activity.addFragmentToContainer(fragment, SendMessageFragment.TAG);
             }
         });
     }
@@ -112,10 +114,10 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
                 // Get the layout inflater
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                View view  = inflater.inflate(R.layout.full_screen_image, null);
+                View view = inflater.inflate(R.layout.full_screen_image, null);
                 builder.setView(view);
                 NetworkImageView imageView = (NetworkImageView) view.findViewById(R.id.item_image);
                 DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -126,10 +128,10 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
                 int width = displaymetrics.widthPixels;
                 imageView.setMaxWidth(width);
                 imageView.setMaxHeight(height);
-                imageView.setImageUrl(uri,ApplicationController.getInstance().getImageLoaderInstance());
+                imageView.setImageUrl(uri, ApplicationController.getInstance().getImageLoaderInstance());
                 final Dialog dialog = builder.create();
                 dialog.show();
-                View itemImageContainer  =  view.findViewById(R.id.item_image_container);
+                View itemImageContainer = view.findViewById(R.id.item_image_container);
                 Button exit = (Button) view.findViewById(R.id.exit_button);
                 View.OnClickListener listener = new View.OnClickListener() {
                     @Override
@@ -145,7 +147,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
 
     private void initDetails(View view) {
         Map<String, String> params = new HashMap<>();
-        params.put(Const.ID,id);
+        params.put(Const.ID, id);
 
         title = (TextView) view.findViewById(R.id.item_title);
         category = (TextView) view.findViewById(R.id.category);
@@ -172,21 +174,21 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
                 description.setText(item.Description);
                 date.setText(item.Date);
                 address.setText(String.valueOf(item.Address));
-                if(item.ImageExt != null && !item.ImageExt.isEmpty()){
+                if (item.ImageExt != null && !item.ImageExt.isEmpty()) {
                     uri = Const.SERVER_URL + Const.FULL_IMAGE_URL + "/" + item.id + item.ImageExt;
                     itemImage.setImageUrl(uri, ApplicationController.getInstance().getImageLoaderInstance());
                 }
 
-                if(item.ItemType.equals(Const.FOUND+"")){
+                if (item.ItemType.equals(Const.FOUND + "")) {
                     founded.setVisibility(View.VISIBLE);
                     lost.setVisibility(View.GONE);
-                }else if(item.ItemType.equals(Const.LOST+"")){
+                } else if (item.ItemType.equals(Const.LOST + "")) {
                     founded.setVisibility(View.GONE);
                     lost.setVisibility(View.VISIBLE);
                 }
-                if(item.Latitude !=null && !item.Latitude.isEmpty() &&  item.Longitude!= null &&  !item.Longitude.isEmpty()){
+                if (item.Latitude != null && !item.Latitude.isEmpty() && item.Longitude != null && !item.Longitude.isEmpty()) {
                     initMap();
-                }else {
+                } else {
                     mapLayout.setVisibility(View.GONE);
                 }
                 activity.hideProgress();
@@ -194,7 +196,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG,error.toString());
+                Log.e(TAG, error.toString());
             }
         });
         ApplicationController.getInstance().addToRequestQueue(request);
@@ -221,7 +223,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         mMap.addMarker(new MarkerOptions().position(point).title("Lost/Found Place"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 10.0f ) );
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(10.0f));
     }
 
     @Override

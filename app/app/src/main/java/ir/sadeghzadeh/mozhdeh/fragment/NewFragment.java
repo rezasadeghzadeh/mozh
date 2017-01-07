@@ -75,7 +75,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     private static final int PICK_IMAGE = 1;
     private static final int DECODE_LOCATION_ADDRESS = 2;
 
-    List<String> selectedCategoryIds= new ArrayList<>();
+    List<String> selectedCategoryIds = new ArrayList<>();
     Button openCategoryPopup;
     Button submit;
     EditText title;
@@ -103,10 +103,10 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     List<String> selectedCategoryTitles = new ArrayList<>();
     boolean takeImageFromCamera = false;
     Button showMap;
+    String id;
     private String selectedAddress;
     private String latitude;
     private String longitude;
-    String id;
     private boolean edit;
 
     @Override
@@ -130,17 +130,19 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         initTelegramId(view);
         initBackButton();
         Bundle args = getArguments();
-        if(args != null  && !args.getString(Const.ID).isEmpty()){
-            edit= true;
-            id  =  args.getString(Const.ID);
+        if (args != null && !args.getString(Const.ID).isEmpty()) {
+            edit = true;
+            id = args.getString(Const.ID);
             initValues();
         }
+        animate(view.findViewById(R.id.main_layout));
+
         return view;
     }
 
     private void initValues() {
         Map<String, String> params = new HashMap<>();
-        params.put(Const.ID,id);
+        params.put(Const.ID, id);
         GsonRequest<Item> request = new GsonRequest<>(Const.DETAIL_ITEM_URL, Item.class, params, null, new Response.Listener<Item>() {
             @Override
             public void onResponse(final Item item) {
@@ -149,30 +151,30 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                 pickDate.setText(item.Date);
                 occurredDate = item.Date;
                 selectCity.setText(item.CityTitle);
-                selectedCityId =  item.CityId;
+                selectedCityId = item.CityId;
                 selectedCityTitle = item.CityTitle;
                 selectProvince.setText(item.ProvinceTitle);
-                selectedProvinceId =  item.ProvinceId;
+                selectedProvinceId = item.ProvinceId;
                 selectedProvideTitle = item.ProvinceTitle;
-                String title="";
-                for(String t : item.CategoryTitles){
+                String title = "";
+                for (String t : item.CategoryTitles) {
                     title += t;
                 }
                 openCategoryPopup.setText(title);
                 selectedCategoryIds = item.CategoryIds;
                 selectedCategoryTitles = item.CategoryTitles;
-                if (item.ItemType == Const.FOUND){
+                if (item.ItemType == Const.FOUND) {
                     radioGroup.check(R.id.found);
-                }else {
+                } else {
                     radioGroup.check(R.id.lost);
                 }
-                String  url  = Util.imageUrlMaker(true,item);
+                String url = Util.imageUrlMaker(true, item);
                 LoadImageTask imageTask = new LoadImageTask(new LoadImageTask.Listener() {
                     @Override
                     public void onImageLoaded(Bitmap bitmap) {
                         FileOutputStream photoOutputStream = null;
                         try {
-                            compressedPhoto  =  createTemporaryFile("picture" + System.currentTimeMillis(), ".jpg");
+                            compressedPhoto = createTemporaryFile("picture" + System.currentTimeMillis(), ".jpg");
                             photoOutputStream = new FileOutputStream(compressedPhoto);
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, photoOutputStream);
                             imageView.setImageBitmap(bitmap);
@@ -191,7 +193,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(),getString(R.string.connection_error),Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.connection_error), Toast.LENGTH_LONG).show();
             }
         });
         ApplicationController.getInstance().addToRequestQueue(request);
@@ -210,7 +212,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     }
 
     private void initShowMap(View view) {
-        showMap  = (Button) view.findViewById(R.id.showMap);
+        showMap = (Button) view.findViewById(R.id.showMap);
         showMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,7 +227,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     public void showMap2() {
         ChooseLocationOnMapDialog dialog = new ChooseLocationOnMapDialog();
         dialog.mListener = this;
-        dialog.show(activity.getSupportFragmentManager(),TAG);
+        dialog.show(activity.getSupportFragmentManager(), TAG);
     }
 
     private void initDate(View view) {
@@ -333,7 +335,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                 Charset chars = Charset.forName(Const.UTF8); // Setting up the encoding
                 MultipartEntity multipartEntity = new MultipartEntity();
                 try {
-                    if(edit){
+                    if (edit) {
                         multipartEntity.addPart(Const.ID, new StringBody(id, chars));
                     }
                     multipartEntity.addPart(Const.TITLE, new StringBody(title.getText().toString(), chars));
@@ -341,24 +343,24 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                     multipartEntity.addPart(Const.DATE, new StringBody(occurredDate, chars));
                     multipartEntity.addPart(Const.CATEGORIES, new StringBody(Util.buildCommaSeperate(selectedCategoryIds)));
                     multipartEntity.addPart(Const.CATEGORY_TITLES, new StringBody(Util.buildCommaSeperate(selectedCategoryTitles), chars));
-                    if(selectedProvinceId != null && !selectedProvinceId.isEmpty()){
+                    if (selectedProvinceId != null && !selectedProvinceId.isEmpty()) {
                         multipartEntity.addPart(Const.PROVINCE_ID, new StringBody(selectedProvinceId));
                         multipartEntity.addPart(Const.PROVINCE_TITLE, new StringBody(selectedProvideTitle, chars));
                     }
 
-                    if(selectedCityId != null && !selectedCityId.isEmpty()){
+                    if (selectedCityId != null && !selectedCityId.isEmpty()) {
                         multipartEntity.addPart(Const.CITY_ID, new StringBody(selectedCityId));
                         multipartEntity.addPart(Const.CITY_TITLE, new StringBody(selectedCityTitle, chars));
                     }
                     multipartEntity.addPart(Const.MOBILE, new StringBody(mobile.getText().toString(), chars));
                     multipartEntity.addPart(Const.EMAIL, new StringBody(email.getText().toString(), chars));
                     multipartEntity.addPart(Const.TELEGRAM_ID, new StringBody(telegramId.getText().toString(), chars));
-                    if(latitude != null &&  !latitude.isEmpty()){
+                    if (latitude != null && !latitude.isEmpty()) {
                         multipartEntity.addPart(Const.LATITUDE, new StringBody(latitude, chars));
                         multipartEntity.addPart(Const.LONGITUDE, new StringBody(longitude, chars));
                     }
 
-                    if(selectedAddress== null  || selectedAddress.isEmpty()){
+                    if (selectedAddress == null || selectedAddress.isEmpty()) {
                         selectedAddress = selectedProvideTitle + " " + selectedCityTitle;
                     }
                     multipartEntity.addPart(Const.ADDRESS, new StringBody(String.valueOf(selectedAddress), chars));
@@ -386,24 +388,24 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                                 compressedPhoto.delete();
                             }
 
-                            AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(getContext());
+                            AlertDialog.Builder dlgAlert = new AlertDialog.Builder(getContext());
                             dlgAlert.setPositiveButton(getString(R.string.bashe), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                 }
                             });
-                            if(edit){
+                            if (edit) {
                                 dlgAlert.setMessage(getString(R.string.updated_successfully));
-                            }else {
+                            } else {
                                 dlgAlert.setMessage(getString(R.string.new_item_added_successfully));
                             }
 
                             dlgAlert.show()
                             ;
-                            if(edit){
+                            if (edit) {
                                 activity.addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG);
-                            }else {
+                            } else {
                                 activity.addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
                             }
 
@@ -485,56 +487,6 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         showMap.setText(address);
     }
 
-    class ImageUploadClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            final Dialog dialog = new Dialog(getContext());
-            dialog.setContentView(R.layout.choose_take_picture_type);
-            TextView fromCamera = (TextView) dialog.findViewById(R.id.take_image_from_camera);
-            //take an image
-            fromCamera.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    // place where to store camera taken picture
-                    try {
-                        photo = createTemporaryFile("picture" + System.currentTimeMillis(), ".jpg");
-                        mImageUri = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", photo);
-                        //mImageUri = Uri.fromFile(photo);
-                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-                        startActivityForResult(intent, TAKE_IMAGE);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-
-            //choose image from gallery
-            TextView fromGallery = (TextView) dialog.findViewById(R.id.take_image_from_gallery);
-            fromGallery.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                    getIntent.setType("image/*");
-
-                    Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    pickIntent.setType("image/*");
-
-                    Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
-
-                    startActivityForResult(chooserIntent, PICK_IMAGE);
-                }
-            });
-            dialog.setTitle(getString(R.string.select_image_from));
-            dialog.show();
-        }
-    }
-
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     public void initUploadImage(View view) {
         uploadImage = (Button) view.findViewById(R.id.upload_mage);
@@ -543,7 +495,6 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         imageView.setOnClickListener(listener);
         uploadImage.setOnClickListener(listener);
     }
-
 
     //call after take image of choose image from gallery
     @Override
@@ -576,13 +527,13 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
             imageUrl = picturePath;
             photo = new File(picturePath);
             compressedPhoto = Compressor.getDefault(getContext()).compressToFile(photo);
-        }else  if(requestCode == DECODE_LOCATION_ADDRESS ){
-            if(resultCode == FetchAddressIntentService.SUCCESS_RESULT){
+        } else if (requestCode == DECODE_LOCATION_ADDRESS) {
+            if (resultCode == FetchAddressIntentService.SUCCESS_RESULT) {
                 Location location = data.getExtras().getParcelable(FetchAddressIntentService.LOCATION_DATA_EXTRA);
                 String address = data.getExtras().getString(FetchAddressIntentService.RESULT_DATA_KEY);
                 onSelectedLocation(location, address);
-            }else{
-                Toast.makeText(getContext(),getString(R.string.connection_error),Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(), getString(R.string.connection_error), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -640,13 +591,13 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                                     public void onItemSelected(List<KeyValuePair> selected) {
                                         selectedCategoryIds.clear();
                                         selectedCategoryTitles.clear();
-                                        for( KeyValuePair pair : selected){
+                                        for (KeyValuePair pair : selected) {
                                             selectedCategoryIds.add(pair.key);
                                             selectedCategoryTitles.add(pair.value);
                                         }
-                                        if(selected.size() > 0){
+                                        if (selected.size() > 0) {
                                             openCategoryPopup.setText(Util.buildCommaSeperate(selectedCategoryTitles));
-                                        }else {
+                                        } else {
                                             openCategoryPopup.setText(getString(R.string.select));
                                         }
 
@@ -665,13 +616,11 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         });
     }
 
-
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         occurredDate = String.format("%d/%d/%d", year, monthOfYear, dayOfMonth);
         pickDate.setText(occurredDate);
     }
-
 
     private File createTemporaryFile(String part, String ext) throws Exception {
         File tempDir = new File(Util.getDownloadDirectoryPath() + "/.temp/");
@@ -691,6 +640,56 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         } catch (Exception e) {
             Toast.makeText(getContext(), "Failed to load", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Failed to load", e);
+        }
+    }
+
+    class ImageUploadClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            final Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.choose_take_picture_type);
+            TextView fromCamera = (TextView) dialog.findViewById(R.id.take_image_from_camera);
+            //take an image
+            fromCamera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    // place where to store camera taken picture
+                    try {
+                        photo = createTemporaryFile("picture" + System.currentTimeMillis(), ".jpg");
+                        mImageUri = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", photo);
+                        //mImageUri = Uri.fromFile(photo);
+                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+                        startActivityForResult(intent, TAKE_IMAGE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+            //choose image from gallery
+            TextView fromGallery = (TextView) dialog.findViewById(R.id.take_image_from_gallery);
+            fromGallery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    getIntent.setType("image/*");
+
+                    Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    pickIntent.setType("image/*");
+
+                    Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
+
+                    startActivityForResult(chooserIntent, PICK_IMAGE);
+                }
+            });
+            dialog.setTitle(getString(R.string.select_image_from));
+            dialog.show();
         }
     }
 

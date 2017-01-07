@@ -24,7 +24,7 @@ import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
 /**
  * Created by reza on 12/10/16.
  */
-public class EnterEmailOrMobileFragment extends BaseFragment{
+public class EnterEmailOrMobileFragment extends BaseFragment {
     public static final String TAG = EnterEmailOrMobileFragment.class.getName();
     Button next;
     EditText email;
@@ -35,6 +35,8 @@ public class EnterEmailOrMobileFragment extends BaseFragment{
         View view = layoutInflater.inflate(R.layout.enter_email_mobile_fragment, container, false);
         initEmail(view);
         initContinue(view);
+        animate(view.findViewById(R.id.main_layout));
+
         return view;
     }
 
@@ -48,32 +50,32 @@ public class EnterEmailOrMobileFragment extends BaseFragment{
             @Override
             public void onClick(View v) {
                 //check email address
-                if(email.getText().toString().trim().equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
+                if (email.getText().toString().trim().equals("") || !android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
                     email.setError(getString(R.string.invalid_email));
                     email.requestFocus();
                     return;
                 }
 
-                Map<String,String> params = new HashMap<>();
-                params.put("email",email.getText().toString());
+                Map<String, String> params = new HashMap<>();
+                params.put("email", email.getText().toString());
                 activity.showProgress();
                 GsonRequest<RequestResponse> request = new GsonRequest<RequestResponse>(Const.SEND_PASS_TO_EMAIL_URL, RequestResponse.class, params, null, new Response.Listener<RequestResponse>() {
                     @Override
                     public void onResponse(RequestResponse response) {
-                        if(response.Status == 1){
-                            Util.saveInPreferences(Const.USERNAME,email.getText().toString());
+                        if (response.Status == 1) {
+                            Util.saveInPreferences(Const.USERNAME, email.getText().toString());
                             activity.hideProgress();
-                            EnterPasswordFragment  fragment = new EnterPasswordFragment();
+                            EnterPasswordFragment fragment = new EnterPasswordFragment();
                             activity.addFragmentToContainer(fragment, EnterPasswordFragment.TAG);
-                        }else {
+                        } else {
                             activity.hideProgress();
-                            Toast.makeText(getContext(),response.Message,Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), response.Message, Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),getString(R.string.connection_error),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), getString(R.string.connection_error), Toast.LENGTH_LONG).show();
                     }
                 });
                 ApplicationController.getInstance().addToRequestQueue(request);

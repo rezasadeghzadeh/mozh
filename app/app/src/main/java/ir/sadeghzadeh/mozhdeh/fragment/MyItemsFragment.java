@@ -22,13 +22,13 @@ import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
  * Created by reza on 11/2/16.
  */
 public class MyItemsFragment extends BaseFragment {
-    public static final String TAG="MyItemsFragment";
+    public static final String TAG = "MyItemsFragment";
 
     ListView itemsListView;
     TextView message;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
@@ -40,6 +40,8 @@ public class MyItemsFragment extends BaseFragment {
         initMessage(view);
         initItemsListView(view);
         showItems();
+        animate(view.findViewById(R.id.main_layout));
+
         return view;
     }
 
@@ -50,24 +52,24 @@ public class MyItemsFragment extends BaseFragment {
     private void showItems() {
         activity.showProgress();
         ApplicationController.getInstance().addToRequestQueue(
-                new GsonRequest(Const.MY_ITEMS_URL, Item[].class, null,null, new Response.Listener<Item[]>() {
+                new GsonRequest(Const.MY_ITEMS_URL, Item[].class, null, null, new Response.Listener<Item[]>() {
                     @Override
                     public void onResponse(Item[] response) {
                         activity.hideProgress();
-                        if(response == null){
+                        if (response == null) {
                             message.setText(getString(R.string.no_item_found));
                             message.setVisibility(View.VISIBLE);
                             return;
                         }
-                        itemsListView.setAdapter(new ItemsAdapter(getContext(),0,response,activity,true));
+                        itemsListView.setAdapter(new ItemsAdapter(getContext(), 0, response, activity, true));
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         activity.hideProgress();
-                        Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
 
                 }
         );
