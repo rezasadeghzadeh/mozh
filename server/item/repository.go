@@ -147,7 +147,7 @@ func approveItem(id string) {
 	// Update
 	q := bson.M{}
 	q["_id"] = bson.ObjectIdHex(id)
-	change := bson.M{"$set": bson.M{"approved": "true", "approvedtime": util.GetCurrentMilis() }}
+	change := bson.M{"$set": bson.M{"approved": true, "approvedtime": util.GetCurrentMilis() }}
 	err := mongo.MongoSession.DB(config.Config.MongoDatabaseName).C(constant.ItemCollection).Update(q, change)
 	if err != nil {
 		log.Printf("Error in approving  item %d  error: %v \n",err)

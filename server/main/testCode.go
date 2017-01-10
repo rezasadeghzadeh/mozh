@@ -6,6 +6,8 @@ import (
 	"golang.org/x/net/ipv4"
 	"math/rand"
 	"github.com/labstack/gommon/log"
+	"company/topology/network/ip"
+	"net"
 )
 
 type Node struct {
@@ -38,6 +40,19 @@ func main() {
 	result  := resultMap{}
 	result["4.2.2.4"] = [30]string{}
 	fmt.Printf("%v",result)
+
+
+
+
+	IP, err := ip.LocalNetworkIP()
+	if err != nil {
+		fmt.Printf("Error  in getting local IP")
+	}
+	fmt.Printf("%v\n",IP.String())
+	_, netIP, _ := net.ParseCIDR(IP.String())
+	fmt.Printf("%v\n",netIP)
+	IPs := ip.SubnetAvailableIPs(netIP)
+	fmt.Printf("%v\n",IPs)
 }
 
 func randInt(min int, max int) int {

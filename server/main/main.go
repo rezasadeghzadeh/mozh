@@ -52,7 +52,7 @@ func registerRoutes()  {
 
 func listCategories() {
 	iris.Get("/category/list",func(ctx *iris.Context)	{
-		log.Println("Start serving /categories request")
+		log.Println("Start serving /category/list request")
 		categories := category.Categories()
 		ctx.JSON(iris.StatusOK,	categories)
 	})

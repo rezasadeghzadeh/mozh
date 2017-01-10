@@ -71,13 +71,13 @@
     <string name="telegram_id">تلگرام ID</string>
     <string name="email">ایمیل</string>
     <string name="enter_email">لطفا ایمیلتان را وارد کنید</string>
-    <string name="login_hit">لطفا وارد شوید</string>
+    <string name="login_hit">برای ادامه کار ایمیل خود را در فرم زیر وارد نمایید و دکمه انتخاب را بزنید. یک کد فعال سازی به ایمیل شما ارسال خواهد شد. لازم است کد فعال سازی را در مرحله بعدی وارد نمایید</string>
     <string name="next">ادامه</string>
     <string name="invalid_email">ایمیل معتبر نیست</string>
     <string name="enter_received_code">لطفا کد دریافت شده را وارد کنید</string>
     <string name="received_code">کد دریافت شده</string>
     <string name="invalid_password">لطفا کد را وارد نمایید</string>
-    <string name="code_sent_to_email">کد ورود به ایمیل شما ارسال شد</string>
+    <string name="code_sent_to_email">کد فعال سازی به ایمیل شما ارسال شد</string>
     <string name="auth_failed">کد وارد شده اشتباه است</string>
     <string name="edit">ویرایش</string>
     <string name="preview">پیش نمایش</string>
@@ -88,4 +88,4 @@
     <string name="messages">پیام ها</string>
     <string name="no_message_registered">پیامی ثبت نشده است</string>
     <string name="login_to_accout">وارد حساب کاربری خود شوید</string>
-</resources>
+    <string name="optional_paranthes">(اختیاری)</string></resources>

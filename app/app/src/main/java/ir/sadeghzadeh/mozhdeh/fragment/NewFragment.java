@@ -401,6 +401,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                                 dlgAlert.setMessage(getString(R.string.new_item_added_successfully));
                             }
 
+                            activity.closeKeyboard();
                             dlgAlert.show()
                             ;
                             if (edit) {

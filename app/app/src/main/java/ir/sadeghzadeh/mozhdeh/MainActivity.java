@@ -213,7 +213,7 @@ public class MainActivity extends BaseActivity {
     public void highlightHomeIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_white);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
-        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
+        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_black);
         setTitle(getString(R.string.home));
@@ -222,7 +222,7 @@ public class MainActivity extends BaseActivity {
     public void highlightSearchIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_white);
-        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
+        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_black);
         setTitle(getString(R.string.search));
@@ -231,7 +231,7 @@ public class MainActivity extends BaseActivity {
     public void highlightMyItemsIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
-        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_white);
+        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_white);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_black);
         setTitle(getString(R.string.my_items));
@@ -240,7 +240,7 @@ public class MainActivity extends BaseActivity {
     public void highlightCategoryIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
-        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
+        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_white);
         newButton.setBackgroundResource(R.drawable.ic_new_black);
         setTitle(getString(R.string.category));
@@ -249,7 +249,7 @@ public class MainActivity extends BaseActivity {
     public void highlightNewIcon() {
         homeButton.setBackgroundResource(R.drawable.ic_home_black);
         searchButton.setBackgroundResource(R.drawable.ic_search_black);
-        //myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
+        myItemsButton.setBackgroundResource(R.drawable.ic_my_items_black);
         categoryButton.setBackgroundResource(R.drawable.ic_category_black);
         newButton.setBackgroundResource(R.drawable.ic_new_white);
         setTitle(getString(R.string.new_item));

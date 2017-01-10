@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -155,11 +156,11 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         date = (TextView) view.findViewById(R.id.date);
         address = (TextView) view.findViewById(R.id.address);
         itemImage = (NetworkImageView) view.findViewById(R.id.item_image);
-        //mobile = (TextView) view.findViewById(R.id.mobile);
+        mobile = (TextView) view.findViewById(R.id.mobile);
         lost = (TextView) view.findViewById(R.id.lost_type);
         founded = (TextView) view.findViewById(R.id.founded_type);
-        //email  = (TextView) view.findViewById(R.id.email);
-        //telegramId = (TextView) view.findViewById(R.id.telegram_id);
+        email  = (TextView) view.findViewById(R.id.email);
+        telegramId = (TextView) view.findViewById(R.id.telegram_id);
 
         GsonRequest<Item> request = new GsonRequest<>(Const.DETAIL_ITEM_URL, Item.class, params, null, new Response.Listener<Item>() {
             @Override
@@ -168,9 +169,9 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
                 //set values
                 title.setText(item.Title);
                 category.setText(String.valueOf(item.CategoryTitles));
-                //mobile.setText(item.Mobile);
-                //email.setText(item.Email);
-                //telegramId.setText(item.TelegramId);
+                mobile.setText(item.Mobile);
+                email.setText(item.Email);
+                telegramId.setText(item.TelegramId);
                 description.setText(item.Description);
                 date.setText(item.Date);
                 address.setText(String.valueOf(item.Address));
@@ -223,7 +224,8 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
         mMap.addMarker(new MarkerOptions().position(point).title("Lost/Found Place"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(10.0f));
+        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+        mMap.animateCamera(zoom);
     }
 
     @Override
