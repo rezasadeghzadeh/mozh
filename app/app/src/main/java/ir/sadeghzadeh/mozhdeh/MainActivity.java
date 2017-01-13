@@ -21,6 +21,7 @@ import ir.sadeghzadeh.mozhdeh.fragment.BrowseFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.CategoryFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.DetailItemFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.EnterEmailOrMobileFragment;
+import ir.sadeghzadeh.mozhdeh.fragment.LoginFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.MyItemsFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.NewFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.SearchFragment;
@@ -77,7 +78,7 @@ public class MainActivity extends BaseActivity {
                 addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
             }
 
-            openDatabase();
+            //openDatabase();
             initProgress();
             showProgress();
 
@@ -94,6 +95,7 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
+
 
     private void initUtil() {
         Util.context  = getApplicationContext();
@@ -171,7 +173,11 @@ public class MainActivity extends BaseActivity {
                 if(Util.isUserLogged()){
                     addFragmentToContainer(new NewFragment(), NewFragment.TAG);
                 }else {
-                    addFragmentToContainer(new EnterEmailOrMobileFragment(), EnterEmailOrMobileFragment.TAG);
+                    Bundle args  = new Bundle();
+                    args.putBoolean(Const.REDIRECT_TO_NEW,true);
+                    LoginFragment fragment  = new LoginFragment();
+                    fragment.setArguments(args);
+                    addFragmentToContainer(fragment, LoginFragment.TAG);
                     highlightNewIcon();
                     setTitleToAuth();
                 }
@@ -185,7 +191,11 @@ public class MainActivity extends BaseActivity {
                 if(Util.isUserLogged()){
                     addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG);
                 }else {
-                    addFragmentToContainer(new EnterEmailOrMobileFragment(), EnterEmailOrMobileFragment.TAG);
+                    Bundle args = new Bundle();
+                    args.putBoolean(Const.REDIRECT_TO_NEW,false);
+                    LoginFragment  fragment  = new LoginFragment();
+                    fragment.setArguments(args);
+                    addFragmentToContainer(fragment, LoginFragment.TAG);
                     highlightMyItemsIcon();
                     setTitleToAuth();
                 }

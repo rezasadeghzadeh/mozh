@@ -39,6 +39,18 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed(){
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            return;
+        }
+
+        super.onBackPressed();
+    }
+
 
   /*  boolean doubleBackToExitPressed = false;
 

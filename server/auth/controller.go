@@ -6,9 +6,6 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"time"
 	"../constant"
-	"../util"
-	"fmt"
-	"strconv"
 )
 type RequestResponse struct {
 	Status int
@@ -18,12 +15,11 @@ type RequestResponse struct {
 
 func RegisterAuthRoutes()  {
 	authUser()
-	sendPassToEmail()
+	newUser()
 }
 
-
 func authUser() {
-	iris.Get("/auth/genToken", func(ctx *iris.Context) {
+	iris.Get("/auth/validateUserPass", func(ctx *iris.Context) {
 		response  :=  RequestResponse{}
 		user:= parseUser(ctx)
 		firebaseToke  := ctx.URLParam("FirebaseToken")
@@ -38,30 +34,40 @@ func authUser() {
 		}
 		//update firebase Token
 		updateFirebaseToken(userRecord.Id,firebaseToke)
-		token := jwt.New(jwt.SigningMethodHS256)
-		claims := make(jwt.MapClaims)
-		claims["userid"] = userRecord.Id
-		claims["exp"] = time.Now().Add(time.Hour * time.Duration(constant.ExpireLongTime)).Unix()
-		claims["iat"] = time.Now().Unix()
-		token.Claims = claims
-		tokenString, err := token.SignedString(constant.JWTSecretKey)
+		token, err :=   generateToken(userRecord)
 		if err != nil{
 			ctx.JSON(iris.StatusInternalServerError,"error in generating token")
 			log.Printf("Eror in generating token %v",err)
 			return
 		}
-		log.Printf("User  %s authenticated successfully ",user.Username)
-		response.Token = tokenString
+		response.Token=token
 		response.Status = 1
 		response.Message = "success"
 		ctx.JSON(iris.StatusOK,response)
 	})
 }
 
-func sendPassToEmail() {
-	iris.Get("/auth/sendPassToEmail", func(ctx *iris.Context) {
+func generateToken(user *User) (string,error){
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := make(jwt.MapClaims)
+	log.Printf("Generating token for user ",user)
+	claims["userid"] = user.Id
+	claims["exp"] = time.Now().Add(time.Hour * time.Duration(constant.ExpireLongTime)).Unix()
+	claims["iat"] = time.Now().Unix()
+	token.Claims = claims
+	tokenString, err := token.SignedString(constant.JWTSecretKey)
+	if err != nil{
+		return "",err
+	}
+	log.Printf("User  %s authenticated successfully ",user.Username)
+	return tokenString, nil
+}
+
+func newUser() {
+	iris.Get("/auth/newUser", func(ctx *iris.Context) {
+		log.Printf("Start registering new user")
 		res := RequestResponse{Status:0}
-		email  := ctx.URLParam("email")
+		email  := ctx.URLParam("Email")
 		if email == ""{
 			log.Printf("Invalid Email")
 			res.Message = "Invalid Email"
@@ -69,21 +75,24 @@ func sendPassToEmail() {
 			return
 		}
 
-		//send pass to email
-		pass := util.Random(100000,999999)
-		log.Printf("Sending  email to  %s",email)
-		err := util.SendEmail(email,"Mozhdeh New Account",fmt.Sprintf("Your Confirm Code: %d",pass))
-		if err != nil{
-			log.Printf("Error in sending confirm email, %v",err)
-			res.Message = "Error in sending confirm email"
+		//already  exists
+		userRecord := userByUsername(email)
+		log.Printf("result of  founded users: %v",userRecord)
+		if userRecord != nil {
+			res.Status = 2
+			res.Message = "email already exists"
 			ctx.JSON(iris.StatusOK,res)
 			return
 		}
+
+		pass := ctx.URLParam("Password")
+		firebaseToke  := ctx.URLParam("FirebaseToken")
 		user:= User{
 			Username:email,
-			Password:[]byte(strconv.Itoa(pass)),
+			Password:[]byte(pass),
+			Firebasetoken: firebaseToke,
 		}
-		_,err = upsertUser(&user)
+		_,err := upsertUser(&user)
 		if err != nil{
 			log.Printf("Error in registering/updating  user, %v",err)
 			res.Message = "Error in registering new user"
@@ -91,17 +100,24 @@ func sendPassToEmail() {
 			return
 		}
 
+		token, err :=   generateToken(&user)
+		if err != nil{
+			ctx.JSON(iris.StatusInternalServerError,"error in generating token")
+			log.Printf("Eror in generating token %v",err)
+			return
+		}
+		res.Token=token
 		res.Status = 1
-		res.Message = "Email Sent Successfully"
-		log.Printf("Email to  %s sent successfully",email)
+		res.Message = "success"
 		ctx.JSON(iris.StatusOK,res)
+
 	})
 }
 
 func parseUser(ctx  *iris.Context) *User {
 	user := User{
-		Username: ctx.PostValue("username"),
-		Password: []byte(ctx.PostValue("password")),
+		Username: ctx.PostValue("Email"),
+		Password: []byte(ctx.PostValue("Password")),
 	}
 	return &user
 }
@@ -113,6 +129,7 @@ func GetCurrentUserId(ctx *iris.Context) string {
 		}
 	}()
 	token :=JwtMiddleware.Get(ctx)
+	log.Printf("Token: " , token )
 	claims := token.Claims.(jwt.MapClaims)
 	userId := claims["userid"].(string)
 	log.Printf("Current User Id: " + userId )

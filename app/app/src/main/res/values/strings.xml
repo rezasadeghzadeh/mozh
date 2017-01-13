@@ -76,9 +76,9 @@
     <string name="invalid_email">ایمیل معتبر نیست</string>
     <string name="enter_received_code">لطفا کد دریافت شده را وارد کنید</string>
     <string name="received_code">کد دریافت شده</string>
-    <string name="invalid_password">لطفا کد را وارد نمایید</string>
+    <string name="invalid_password">لطفا رمز  عبور را وارد نمایید</string>
     <string name="code_sent_to_email">کد فعال سازی به ایمیل شما ارسال شد</string>
-    <string name="auth_failed">کد وارد شده اشتباه است</string>
+    <string name="auth_failed">ایمیل یا رمز  عبور وارد شده اشتباه است</string>
     <string name="edit">ویرایش</string>
     <string name="preview">پیش نمایش</string>
     <string name="updated_successfully">بروزرسانی با موفقیت انجام شد</string>
@@ -88,4 +88,15 @@
     <string name="messages">پیام ها</string>
     <string name="no_message_registered">پیامی ثبت نشده است</string>
     <string name="login_to_accout">وارد حساب کاربری خود شوید</string>
-    <string name="optional_paranthes">(اختیاری)</string></resources>
+    <string name="optional_paranthes">(اختیاری)</string>
+    <string name="login_hint">برای ادامه کار لازم است وارد سیستم شوید</string>
+    <string name="password">رمز  عبور</string>
+    <string name="login">ورود به سیستم</string>
+    <string name="register">ثبت نام</string>
+    <string name="im_not_member_register">عضو نیستم. ثبت نام</string>
+    <string name="confirm_password">تایید رمز عبور</string>
+    <string name="register_hint">برای ثبت نام در سیستم ایمیل و رمز عبور  را وارد نمایید و دکمه ثبت نام را انتخاب کنید</string>
+    <string name="password_is_not_same">رمز  عبورهای وارد شده یکسان نیست</string>
+    <string name="new_user_failed">خطا در ثبت نام کاربر جدید. لطفا مجددا تلاش  نمایید</string>
+    <string name="email_already_exists">ایمیل قبلا ثبت شده است</string>
+</resources>

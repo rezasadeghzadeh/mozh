@@ -5,6 +5,7 @@
       <root url="file://$USER_HOME$/go/workspace/src/company" />
       <root url="file://$USER_HOME$/go/workspace/src/gopkg.in" />
       <root url="file://$USER_HOME$/go/workspace/src/github.com" />
+      <root url="file://$USER_HOME$/go/workspace/src/paas" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
@@ -12,6 +13,7 @@
       <root url="file://$USER_HOME$/go/workspace/src/company" />
       <root url="file://$USER_HOME$/go/workspace/src/gopkg.in" />
       <root url="file://$USER_HOME$/go/workspace/src/github.com" />
+      <root url="file://$USER_HOME$/go/workspace/src/paas" />
     </SOURCES>
     <excluded>
       <root url="file://$PROJECT_DIR$" />
