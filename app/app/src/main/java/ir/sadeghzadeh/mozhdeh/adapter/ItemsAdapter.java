@@ -85,7 +85,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
                     args.putString(Const.ID,item.id);
                     NewFragment fragment  = new NewFragment();
                     fragment.setArguments(args);
-                    activity.addFragmentToContainer(fragment,NewFragment.TAG);
+                    activity.addFragmentToContainer(fragment,NewFragment.TAG, true);
                 }
             });
 
@@ -96,7 +96,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
                     args.putString(Const.ID,item.id);
                     DetailItemFragment fragment  = new DetailItemFragment();
                     fragment.setArguments(args);
-                    activity.addFragmentToContainer(fragment,DetailItemFragment.TAG);
+                    activity.addFragmentToContainer(fragment,DetailItemFragment.TAG, true);
                 }
             });
 

@@ -46,6 +46,8 @@ public class BrowseFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity.closeKeyboard();
+
     }
 
     @Override
@@ -78,7 +80,7 @@ public class BrowseFragment extends BaseFragment {
                 args.putString(Const.ID, selectedItemId);
                 DetailItemFragment fragment = new DetailItemFragment();
                 fragment.setArguments(args);
-                activity.addFragmentToContainer(fragment, TAG);
+                activity.addFragmentToContainer(fragment, TAG, true);
             }
         });
     }

@@ -61,10 +61,13 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
     private String id;
     private GoogleMap mMap;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
+        activity.closeKeyboard();
+
     }
 
     @Override
@@ -102,7 +105,7 @@ public class DetailItemFragment extends BaseFragment implements OnMapReadyCallba
                 args.putString(Const.ID, id);
                 SendMessageFragment fragment = new SendMessageFragment();
                 fragment.setArguments(args);
-                activity.addFragmentToContainer(fragment, SendMessageFragment.TAG);
+                activity.addFragmentToContainer(fragment, SendMessageFragment.TAG, true);
             }
         });
     }

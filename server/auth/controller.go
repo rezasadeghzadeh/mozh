@@ -6,6 +6,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"time"
 	"../constant"
+	"gopkg.in/mgo.v2/bson"
 )
 type RequestResponse struct {
 	Status int
@@ -92,14 +93,14 @@ func newUser() {
 			Password:[]byte(pass),
 			Firebasetoken: firebaseToke,
 		}
-		_,err := upsertUser(&user)
+		id,err := upsertUser(&user)
 		if err != nil{
 			log.Printf("Error in registering/updating  user, %v",err)
 			res.Message = "Error in registering new user"
 			ctx.JSON(iris.StatusOK,res)
 			return
 		}
-
+		user.Id  = bson.ObjectIdHex(id)
 		token, err :=   generateToken(&user)
 		if err != nil{
 			ctx.JSON(iris.StatusInternalServerError,"error in generating token")

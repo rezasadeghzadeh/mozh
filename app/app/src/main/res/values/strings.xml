@@ -51,7 +51,7 @@
     <string name="location_choose_hint">در صورت امکان، محل گم شدن یا پیدا شدن را روی نقشه انتخاب کنید.</string>
     <string name="service_not_available">سرویس  تبدیل  آدرس  در دسترس نیست</string>
     <string name="invalid_lat_long_used">نقاط آدرس معتبر نیست</string>
-    <string name="no_address_found">آدرسی ویدا نشد</string>
+    <string name="no_address_found">آدرسی پیدا نشد</string>
     <string name="address_found">آدرس پیدا شد</string>
     <string name="bashe">باشه</string>
     <string name="contact">تماس با</string>
@@ -94,7 +94,7 @@
     <string name="login">ورود به سیستم</string>
     <string name="register">ثبت نام</string>
     <string name="im_not_member_register">عضو نیستم. ثبت نام</string>
-    <string name="confirm_password">تایید رمز عبور</string>
+    <string name="confirm_password">تکرار رمز عبور</string>
     <string name="register_hint">برای ثبت نام در سیستم ایمیل و رمز عبور  را وارد نمایید و دکمه ثبت نام را انتخاب کنید</string>
     <string name="password_is_not_same">رمز  عبورهای وارد شده یکسان نیست</string>
     <string name="new_user_failed">خطا در ثبت نام کاربر جدید. لطفا مجددا تلاش  نمایید</string>

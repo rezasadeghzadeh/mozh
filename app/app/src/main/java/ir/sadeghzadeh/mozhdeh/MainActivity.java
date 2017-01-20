@@ -26,13 +26,13 @@ import ir.sadeghzadeh.mozhdeh.fragment.MyItemsFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.NewFragment;
 import ir.sadeghzadeh.mozhdeh.fragment.SearchFragment;
 import ir.sadeghzadeh.mozhdeh.utils.ExceptionHandler;
+import ir.sadeghzadeh.mozhdeh.utils.SizedStack;
 import ir.sadeghzadeh.mozhdeh.utils.Util;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
 public class MainActivity extends BaseActivity {
-
     private static final String TAG = MainActivity.class.getName();
     Button homeButton;
     Button searchButton;
@@ -73,9 +73,9 @@ public class MainActivity extends BaseActivity {
                 args.putString(Const.ID,id);
                 DetailItemFragment fragment  = new DetailItemFragment();
                 fragment.setArguments(args);
-                addFragmentToContainer(fragment,DetailItemFragment.TAG);
+                addFragmentToContainer(fragment,DetailItemFragment.TAG, true);
             }else {
-                addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
+                addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG, false);
             }
 
             //openDatabase();
@@ -126,7 +126,7 @@ public class MainActivity extends BaseActivity {
     public void initProgress(){
         progress = new ProgressDialog(this);
         progress.setMessage(getString(R.string.please_wait));
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.setCancelable(true); // disable dismiss by tapping outside of the dialog
     }
 
     public void showProgress(){
@@ -156,14 +156,14 @@ public class MainActivity extends BaseActivity {
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFragmentToContainer(new BrowseFragment(),BrowseFragment.TAG);
+                addFragmentToContainer(new BrowseFragment(),BrowseFragment.TAG, true);
             }
         });
         categoryButton = (Button) findViewById(R.id.category_button);
         categoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFragmentToContainer(new CategoryFragment(),BrowseFragment.TAG);
+                addFragmentToContainer(new CategoryFragment(),BrowseFragment.TAG, true);
             }
         });
         newButton = (Button) findViewById(R.id.new_bbutton);
@@ -171,13 +171,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(Util.isUserLogged()){
-                    addFragmentToContainer(new NewFragment(), NewFragment.TAG);
+                    addFragmentToContainer(new NewFragment(), NewFragment.TAG, true);
                 }else {
                     Bundle args  = new Bundle();
                     args.putBoolean(Const.REDIRECT_TO_NEW,true);
                     LoginFragment fragment  = new LoginFragment();
                     fragment.setArguments(args);
-                    addFragmentToContainer(fragment, LoginFragment.TAG);
+                    addFragmentToContainer(fragment, LoginFragment.LOGIN_BEFORE_NEW_TAG, true);
                     highlightNewIcon();
                     setTitleToAuth();
                 }
@@ -189,13 +189,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(Util.isUserLogged()){
-                    addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG);
+                    addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG, true);
                 }else {
                     Bundle args = new Bundle();
-                    args.putBoolean(Const.REDIRECT_TO_NEW,false);
+                    args.putBoolean(Const.REDIRECT_TO_MY,true);
                     LoginFragment  fragment  = new LoginFragment();
                     fragment.setArguments(args);
-                    addFragmentToContainer(fragment, LoginFragment.TAG);
+                    addFragmentToContainer(fragment, LoginFragment.LOGIN_BEFORE_MY_TAG, true);
                     highlightMyItemsIcon();
                     setTitleToAuth();
                 }
@@ -205,7 +205,7 @@ public class MainActivity extends BaseActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addFragmentToContainer(new SearchFragment(), SearchFragment.TAG);
+                addFragmentToContainer(new SearchFragment(), SearchFragment.TAG, true);
             }
         });
 

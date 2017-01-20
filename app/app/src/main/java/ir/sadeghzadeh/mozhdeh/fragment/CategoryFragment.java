@@ -33,16 +33,17 @@ public class CategoryFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
+        activity.closeKeyboard();
     }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        activity.highlightCategoryIcon();
         View view = layoutInflater.inflate(R.layout.category_fragment, container, false);
         initListView(view);
         initBackButton();
         animate(view.findViewById(R.id.main_layout));
+        activity.highlightCategoryIcon();
 
         return view;
     }
@@ -77,7 +78,7 @@ public class CategoryFragment extends BaseFragment {
                 args.putString(Const.CATEGORIES, rowValues[0]);
                 Fragment browseFragment = new BrowseFragment();
                 browseFragment.setArguments(args);
-                activity.addFragmentToContainer(browseFragment, TAG);
+                activity.addFragmentToContainer(browseFragment, TAG, true);
             }
         });
     }

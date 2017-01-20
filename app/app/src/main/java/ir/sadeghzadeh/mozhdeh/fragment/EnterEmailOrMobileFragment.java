@@ -66,7 +66,7 @@ public class EnterEmailOrMobileFragment extends BaseFragment {
                             Util.saveInPreferences(Const.USERNAME, email.getText().toString());
                             activity.hideProgress();
                             EnterPasswordFragment fragment = new EnterPasswordFragment();
-                            activity.addFragmentToContainer(fragment, EnterPasswordFragment.TAG);
+                            activity.addFragmentToContainer(fragment, EnterPasswordFragment.TAG, true);
                         } else {
                             activity.hideProgress();
                             Toast.makeText(getContext(), response.Message, Toast.LENGTH_LONG).show();

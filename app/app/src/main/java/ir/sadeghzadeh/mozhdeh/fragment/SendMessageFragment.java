@@ -30,6 +30,13 @@ public class SendMessageFragment extends BaseFragment {
     String itemId;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity.closeKeyboard();
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View view = layoutInflater.inflate(R.layout.send_message, container, false);
@@ -66,7 +73,7 @@ public class SendMessageFragment extends BaseFragment {
                             args.putString(Const.ID, itemId);
                             DetailItemFragment fragment = new DetailItemFragment();
                             fragment.setArguments(args);
-                            activity.addFragmentToContainer(fragment, DetailItemFragment.TAG);
+                            activity.addFragmentToContainer(fragment, DetailItemFragment.TAG, true);
                             Toast.makeText(getContext(), getString(R.string.message_sent_successfully), Toast.LENGTH_LONG).show();
                         }
                     }

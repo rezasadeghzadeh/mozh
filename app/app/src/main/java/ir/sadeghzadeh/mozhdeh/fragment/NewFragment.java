@@ -110,6 +110,13 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
     private boolean edit;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity.closeKeyboard();
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         activity.highlightNewIcon();
@@ -405,9 +412,9 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
                             dlgAlert.show()
                             ;
                             if (edit) {
-                                activity.addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG);
+                                activity.addFragmentToContainer(new MyItemsFragment(), MyItemsFragment.TAG, true);
                             } else {
-                                activity.addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG);
+                                activity.addFragmentToContainer(new BrowseFragment(), BrowseFragment.TAG, true);
                             }
 
                         }
@@ -460,6 +467,9 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
 
     private void initChooseDate(View view) {
         pickDate = (Button) view.findViewById(R.id.pick_date);
+        String currentDate = String.format("%d/%d/%d",persianCalendar.getPersianYear(), persianCalendar.getPersianMonth()+1, persianCalendar.getPersianDay());
+        occurredDate = currentDate;
+        pickDate.setText(currentDate);
         pickDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -619,7 +629,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        occurredDate = String.format("%d/%d/%d", year, monthOfYear, dayOfMonth);
+        occurredDate = String.format("%d/%d/%d", year, monthOfYear+1, dayOfMonth);
         pickDate.setText(occurredDate);
     }
 

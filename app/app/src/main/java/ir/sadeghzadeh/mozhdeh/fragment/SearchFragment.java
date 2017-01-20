@@ -66,6 +66,7 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
+        activity.closeKeyboard();
     }
 
     @Override
@@ -228,7 +229,7 @@ public class SearchFragment extends BaseFragment implements ChooseLocationOnMapD
                     bundle.putString(Const.LONGITUDE, longitude);
                 }
                 browseFragment.setArguments(bundle);
-                activity.addFragmentToContainer(browseFragment, TAG);
+                activity.addFragmentToContainer(browseFragment, TAG, true);
             }
         });
     }

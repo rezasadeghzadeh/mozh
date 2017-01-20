@@ -2,24 +2,34 @@ package ir.sadeghzadeh.mozhdeh;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
+
+import java.util.EmptyStackException;
+
+import ir.sadeghzadeh.mozhdeh.utils.SizedStack;
 
 /**
  * Created by reza on 11/2/16.
  */
 public class BaseActivity extends AppCompatActivity {
-
-    public void addFragmentToContainer(Fragment fragment, String tag) {
+    SizedStack<String> backStack = new SizedStack<>(5);
+    public void addFragmentToContainer(Fragment fragment, String tag, boolean addToBackStack) {
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
-            fragmentTransaction.addToBackStack(tag);
+            if(addToBackStack){
+                fragmentTransaction.addToBackStack(tag);
+            }
+
             fragmentTransaction.commit();
+            backStack.push(tag);
         } catch (Exception e) {
             Log.e("addFragmentToContainer", e.toString());
         }
@@ -39,23 +49,47 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onBackPressed(){
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            return;
+            boolean closed = imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if(closed){
+                return;
+            }
         }
 
-        super.onBackPressed();
+        try {
+            if(backStack.pop() != null){
+                super.onBackPressed();
+            }else {
+                finish();
+                System.exit(0);
+            }
+        }catch (EmptyStackException e){
+            finish();
+            System.exit(0);
+        }
     }
 
 
-  /*  boolean doubleBackToExitPressed = false;
+
+/*
+    boolean doubleBackToExitPressed = false;
 
     @Override
     public void onBackPressed() {
+*/
+/*        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            return;
+        }*//*
+
+
         if (doubleBackToExitPressed) {
             finish();
             System.exit(0);
@@ -71,7 +105,8 @@ public class BaseActivity extends AppCompatActivity {
                 doubleBackToExitPressed =false;
             }
         }, 2000);
-    }*/
+    }
+*/
 
 
 

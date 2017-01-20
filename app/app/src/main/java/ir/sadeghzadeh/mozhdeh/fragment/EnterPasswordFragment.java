@@ -65,7 +65,7 @@ public class EnterPasswordFragment extends BaseFragment {
                             Util.saveInPreferences(Const.TOKEN, response.Token);
                             activity.hideProgress();
                             NewFragment fragment = new NewFragment();
-                            activity.addFragmentToContainer(fragment, NewFragment.TAG);
+                            activity.addFragmentToContainer(fragment, NewFragment.TAG, true);
                         } else if (response.Status == 0) {
                             activity.hideProgress();
                             Toast.makeText(getContext(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show();

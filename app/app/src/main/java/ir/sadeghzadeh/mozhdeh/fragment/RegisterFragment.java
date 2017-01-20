@@ -32,6 +32,12 @@ public class RegisterFragment extends BaseFragment {
     Button register;
 
     boolean redirectToNew =  false;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity.closeKeyboard();
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,7 +88,6 @@ public class RegisterFragment extends BaseFragment {
                     params.put(Const.FIREBASE_TOKEN, Util.fetchFromPreferences(Const.FIREBASE_TOKEN));
                 }
 
-
                 activity.showProgress();
                 GsonRequest<AuthResponse> request = new GsonRequest<AuthResponse>(Const.NEW_USER_URL, AuthResponse.class, params, null, new Response.Listener<AuthResponse>() {
                     @Override
@@ -96,10 +101,10 @@ public class RegisterFragment extends BaseFragment {
                             activity.hideProgress();
                             if(redirectToNew){
                                 NewFragment fragment = new NewFragment();
-                                activity.addFragmentToContainer(fragment, NewFragment.TAG);
+                                activity.addFragmentToContainer(fragment, NewFragment.TAG, true);
                             }else {
                                 MyItemsFragment fragment = new MyItemsFragment();
-                                activity.addFragmentToContainer(fragment, MyItemsFragment.TAG);
+                                activity.addFragmentToContainer(fragment, MyItemsFragment.TAG, true);
                             }
                         } else if (response.Status == 0) {
                             activity.hideProgress();

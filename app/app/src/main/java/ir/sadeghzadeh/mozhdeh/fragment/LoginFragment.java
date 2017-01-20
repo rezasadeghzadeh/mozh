@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import ir.sadeghzadeh.mozhdeh.ApplicationController;
 import ir.sadeghzadeh.mozhdeh.Const;
@@ -27,12 +28,22 @@ import ir.sadeghzadeh.mozhdeh.volley.GsonRequest;
 public class LoginFragment extends BaseFragment {
 
     public static final String TAG = LoginFragment.class.getName();
+    public static final String LOGIN_BEFORE_MY_TAG = "loginBeforeMyTag";
+    public static final String LOGIN_BEFORE_NEW_TAG = "loginBeforeNewTag";
     EditText email;
     EditText password;
     Button next;
     Button register;
 
     boolean redirectToNew =  false;
+    private boolean redirectToMy=false;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity.closeKeyboard();
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +51,11 @@ public class LoginFragment extends BaseFragment {
         View view = layoutInflater.inflate(R.layout.login_fragment, container, false);
         Bundle args = getArguments();
         if (args != null && args.getBoolean(Const.REDIRECT_TO_NEW)) {
+            activity.highlightNewIcon();
             redirectToNew =  true;
+        }else if(args != null && args.getBoolean(Const.REDIRECT_TO_MY)){
+            activity.highlightMyItemsIcon();
+            redirectToMy  = true;
         }
 
         initEmail(view);
@@ -58,7 +73,7 @@ public class LoginFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 RegisterFragment fragment = new RegisterFragment();
-                activity.addFragmentToContainer(fragment,RegisterFragment.TAG);
+                activity.addFragmentToContainer(fragment,RegisterFragment.TAG, true);
             }
         });
     }
@@ -96,10 +111,10 @@ public class LoginFragment extends BaseFragment {
                             activity.hideProgress();
                             if(redirectToNew){
                                 NewFragment fragment = new NewFragment();
-                                activity.addFragmentToContainer(fragment, NewFragment.TAG);
+                                activity.addFragmentToContainer(fragment, NewFragment.TAG, true);
                             }else {
                                 MyItemsFragment fragment = new MyItemsFragment();
-                                activity.addFragmentToContainer(fragment, MyItemsFragment.TAG);
+                                activity.addFragmentToContainer(fragment, MyItemsFragment.TAG, true);
                             }
                         } else if (response.Status == 0) {
                             activity.hideProgress();
