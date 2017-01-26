@@ -101,10 +101,10 @@ public class RegisterFragment extends BaseFragment {
                             activity.hideProgress();
                             if(redirectToNew){
                                 NewFragment fragment = new NewFragment();
-                                activity.addFragmentToContainer(fragment, NewFragment.TAG, true);
+                                activity.addFragmentToContainer(fragment, NewFragment.TAG, false);
                             }else {
                                 MyItemsFragment fragment = new MyItemsFragment();
-                                activity.addFragmentToContainer(fragment, MyItemsFragment.TAG, true);
+                                activity.addFragmentToContainer(fragment, MyItemsFragment.TAG, false);
                             }
                         } else if (response.Status == 0) {
                             activity.hideProgress();

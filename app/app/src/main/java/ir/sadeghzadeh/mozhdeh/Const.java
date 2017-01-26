@@ -6,8 +6,8 @@ package ir.sadeghzadeh.mozhdeh;
 public class Const {
     public static final String APP_CONFIG = "mozhdeh";
     public static final String VERSION = "0.1";
-    public static final String SERVER_URL  = "http://192.168.177.104:7777";
-    //public static final String SERVER_URL  = "http://209.59.209.181:7777";
+    //public static final String SERVER_URL  = "http://192.168.177.104:7777";
+    public static final String SERVER_URL  = "http://209.59.209.181:7777";
     //public static final String SERVER_URL  = "http://192.168.1.3:7777";
 
     public static final String LIST_ITEMS_URL  = SERVER_URL  + "/item/list";

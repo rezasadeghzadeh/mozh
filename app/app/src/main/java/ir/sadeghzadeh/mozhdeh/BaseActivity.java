@@ -13,7 +13,11 @@ import android.widget.Toast;
 
 import java.util.EmptyStackException;
 
+import ir.sadeghzadeh.mozhdeh.fragment.LoginFragment;
+import ir.sadeghzadeh.mozhdeh.fragment.MyItemsFragment;
+import ir.sadeghzadeh.mozhdeh.fragment.NewFragment;
 import ir.sadeghzadeh.mozhdeh.utils.SizedStack;
+import ir.sadeghzadeh.mozhdeh.utils.Util;
 
 /**
  * Created by reza on 11/2/16.
@@ -26,10 +30,9 @@ public class BaseActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
             if(addToBackStack){
                 fragmentTransaction.addToBackStack(tag);
+                backStack.push(tag);
             }
-
             fragmentTransaction.commit();
-            backStack.push(tag);
         } catch (Exception e) {
             Log.e("addFragmentToContainer", e.toString());
         }
@@ -50,6 +53,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
+    boolean doubleBackToExitPressed = false;
+
     @Override
     public void onBackPressed(){
         View view = this.getCurrentFocus();
@@ -61,17 +66,47 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
 
+        String tag=null;
         try {
-            if(backStack.pop() != null){
-                super.onBackPressed();
-            }else {
+            tag  =  backStack.pop();
+        }catch (EmptyStackException e){
+
+        }
+        if(tag != null){
+              /*  if(!Util.isUserLogged()){
+                    super.onBackPressed();
+                    return;
+                }
+                //we dont want to display login page  to user if he/she  has logged
+                switch (tag){
+                    case LoginFragment.LOGIN_BEFORE_MY_TAG:
+                        getSupportFragmentManager().popBackStackImmediate();
+                        addFragmentToContainer(new NewFragment(), MyItemsFragment.TAG, false);
+                        return;
+                    case LoginFragment.LOGIN_BEFORE_NEW_TAG:
+                        getSupportFragmentManager().popBackStackImmediate();
+                        addFragmentToContainer(new NewFragment(), NewFragment.TAG, false);
+                        return;
+                }*/
+            super.onBackPressed();
+        }else {
+            if (doubleBackToExitPressed) {
                 finish();
                 System.exit(0);
             }
-        }catch (EmptyStackException e){
-            finish();
-            System.exit(0);
+
+            this.doubleBackToExitPressed = true;
+            Toast.makeText(this, getString(R.string.press_back_again_to_exit), Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressed =false;
+                }
+            }, 2000);
         }
+
     }
 
 

@@ -67,7 +67,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         //holder.category = (TextView) rowView.findViewById(R.id.category);
         //holder.description = (TextView) rowView.findViewById(R.id.description);
         holder.date = (TextView) rowView.findViewById(R.id.date);
-        holder.city = (TextView) rowView.findViewById(R.id.city);
+        holder.address = (TextView) rowView.findViewById(R.id.address);
         holder.thumbnail = (NetworkImageView) rowView.findViewById(R.id.thumbnail);
         holder.itemContainer = rowView.findViewById(R.id.item_container);
         holder.myItemsButtonContainer  = rowView.findViewById(R.id.my_item_button_container);
@@ -122,7 +122,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         //holder.category.setText(String.valueOf(item.CategoryIds));
         //holder.description.setText(item.Description);
         holder.date.setText(item.Date + "");
-        holder.city.setText(String.valueOf(item.CityTitle));
+        holder.address.setText(item.Address.replaceAll("\n","،"));
         if(item.ImageExt != null && !item.ImageExt.isEmpty()){
             String uri = Util.imageUrlMaker(true,item);
             holder.thumbnail.setImageUrl(uri, ApplicationController.getInstance().getImageLoaderInstance());
@@ -149,7 +149,7 @@ public class ItemsAdapter extends ArrayAdapter<Item>{
         TextView category;
         TextView description;
         TextView date;
-        TextView city;
+        TextView address;
         NetworkImageView thumbnail;
         TextView founded;
         TextView lost;
