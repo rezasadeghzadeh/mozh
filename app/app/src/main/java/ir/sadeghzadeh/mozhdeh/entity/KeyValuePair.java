@@ -18,10 +18,10 @@ public class KeyValuePair {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        KeyValuePair that = (KeyValuePair) o;
+        KeyValuePair pair = (KeyValuePair) o;
 
-        if (key != null ? !key.equals(that.key) : that.key != null) return false;
-        return value != null ? value.equals(that.value) : that.value == null;
+        if (key != null ? !key.equals(pair.key) : pair.key != null) return false;
+        return value != null ? value.equals(pair.value) : pair.value == null;
 
     }
 

@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            registerExceptionHandler();
+            //registerExceptionHandler();
             initUtil();
             MainActivityPermissionsDispatcher.writeVersionToLogWithCheck(this);
             UpdateChecker.checkForDialog(this);
@@ -81,7 +81,6 @@ public class MainActivity extends BaseActivity {
             //openDatabase();
             initProgress();
             showProgress();
-
 
     }
 
@@ -389,5 +388,11 @@ public class MainActivity extends BaseActivity {
 
         return result;
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+    }
+
 }
 

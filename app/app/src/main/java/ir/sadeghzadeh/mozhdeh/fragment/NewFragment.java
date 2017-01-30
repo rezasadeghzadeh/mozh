@@ -498,7 +498,7 @@ public class NewFragment extends BaseFragment implements DatePickerDialog.OnDate
         showMap.setText(address);
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA})
     public void initUploadImage(View view) {
         uploadImage = (Button) view.findViewById(R.id.upload_mage);
         imageView = (ImageView) view.findViewById(R.id.image_item);
